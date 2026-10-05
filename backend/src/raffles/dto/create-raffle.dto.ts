@@ -41,7 +41,7 @@ export class InstantWinPrizeDto {
 
 export class CreateRaffleDto {
   @ApiProperty({
-    example: 'TaylorMade Qi10 Driver Competition',
+    example: '1st Edition Charizard Holographic Competition',
     description: 'Title of the competition',
   })
   @IsString()
@@ -49,7 +49,7 @@ export class CreateRaffleDto {
   title: string;
 
   @ApiPropertyOptional({
-    example: 'Golf Drivers',
+    example: 'Pokemon Cards',
     description: 'Category of the competition',
   })
   @IsString()
@@ -57,7 +57,7 @@ export class CreateRaffleDto {
   category?: string;
 
   @ApiPropertyOptional({
-    example: 'Win a brand new custom TaylorMade Qi10 Max Driver!',
+    example: 'Win a PSA 10 Gem Mint 1st Edition Charizard Holographic Card!',
     description: 'Raffle description',
   })
   @IsString()

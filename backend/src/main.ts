@@ -21,6 +21,8 @@ async function bootstrap() {
   // Enable CORS for Next.js frontend with credentials support
   const allowedOrigins = [
     'http://localhost:3000',
+    'https://tcgdraws.com',
+    'http://test.tcgdraws.com',
     'http://test.fairwaydraws.com',
     process.env.FRONTEND_URL,
   ].filter(Boolean);
@@ -60,9 +62,9 @@ async function bootstrap() {
 
   // Configure Swagger API Documentation
   const config = new DocumentBuilder()
-    .setTitle('⛳ Fairway Draws API Reference')
+    .setTitle('🃏 TCG Draws API Reference')
     .setDescription(
-      'Welcome to the Fairway Draws Platform API Documentation.\n\n' +
+      'Welcome to the TCG Draws Platform API Documentation (Pokemon cards and Collectables).\n\n' +
         'Here you can find all the public, client, host, and admin endpoints for managing ' +
         'raffles, purchasing tickets, processing payments, tracking winners, and managing subscriptions.\n\n' +
         '### Authorization\n' +
@@ -93,7 +95,7 @@ async function bootstrap() {
     .swagger-ui .opblock.opblock-post { background: rgba(0, 240, 100, 0.05); border-color: rgba(0, 240, 100, 0.3); }
     .swagger-ui .opblock.opblock-get { background: rgba(0, 200, 255, 0.05); border-color: rgba(0, 200, 255, 0.3); }
     .swagger-ui .opblock.opblock-put { background: rgba(255, 170, 0, 0.05); border-color: rgba(255, 170, 0, 0.3); }
-    .swagger-ui .opblock.opblock-patch { background: rgba(180, 0, 255, 0.05); border-color: rgba(180, 0, 255, 0.3); }
+    .swagger-ui .opblock .opblock-patch { background: rgba(180, 0, 255, 0.05); border-color: rgba(180, 0, 255, 0.3); }
     .swagger-ui .opblock.opblock-delete { background: rgba(255, 50, 50, 0.05); border-color: rgba(255, 50, 50, 0.3); }
     .swagger-ui .opblock .opblock-summary-method { font-weight: 700; border-radius: 4px; }
     .swagger-ui .btn.authorize { background-color: #00c8ff !important; color: #111 !important; border-color: #00c8ff !important; font-weight: 700 !important; border-radius: 6px !important; }
@@ -111,7 +113,7 @@ async function bootstrap() {
       displayRequestDuration: true,
       defaultModelsExpandDepth: 2,
     },
-    customSiteTitle: 'Fairway Draws API Reference',
+    customSiteTitle: 'TCG Draws API Reference',
     customCss: customCss,
   });
 

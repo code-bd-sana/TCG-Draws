@@ -2,7 +2,7 @@ server {
     listen 77.68.28.114:443 ssl;
     http2 on;
 
-    server_name api.fairwaydraws.com;
+    server_name api.tcgdraws.com;
 
     location / {
         proxy_pass http://127.0.0.1:5001;
@@ -14,15 +14,15 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 
-    ssl_certificate /etc/letsencrypt/live/api.fairwaydraws.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/api.fairwaydraws.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/api.tcgdraws.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/api.tcgdraws.com/privkey.pem;
     include /etc/letsencrypt/options-ssl-nginx.conf;
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 }
 
 server {
     listen 77.68.28.114:80;
-    server_name api.fairwaydraws.com;
+    server_name api.tcgdraws.com;
 
     return 301 https://$host$request_uri;
 }

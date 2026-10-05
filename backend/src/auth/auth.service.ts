@@ -182,8 +182,8 @@ export class AuthService {
         this.notificationsService.notifyUser(
           user.id,
           'SYSTEM',
-          'Welcome to Fairway Draws Host Portal!',
-          'Your host account is ready. Start by creating your first golf competition.',
+          'Welcome to TCG Draws Host Portal!',
+          'Your host account is ready. Start by creating your first Pokemon cards & Collectables competition.',
           '/dashboard/host/competitions',
           { role: 'HOST' },
         );
@@ -198,8 +198,8 @@ export class AuthService {
         this.notificationsService.notifyUser(
           user.id,
           'SYSTEM',
-          'Welcome to Fairway Draws!',
-          'Your account is ready! Explore our live golf competitions and win luxury prizes.',
+          'Welcome to TCG Draws!',
+          'Your account is ready! Explore our live Pokemon card and collectible competitions and win luxury prizes.',
           '/live-raffles',
           { role: 'CLIENT' },
         );
@@ -241,9 +241,12 @@ export class AuthService {
     // 2. If not found and input does not have '@', check common username aliases
     if (!user && !normalizedEmail.includes('@')) {
       const candidateEmails = [
+        `${normalizedEmail}@tcgdraws.com`,
         `${normalizedEmail}@fairwaydraws.com`,
         ...(normalizedEmail === 'lewis'
           ? [
+              'lewis.mcmanus@tcgdraws.com',
+              'lewis@tcgdraws.com',
               'lewis.mcmanus@fairwaydraws.com',
               'lewis@fairwaydraws.com',
               'lewismcmanus@gmail.com',
@@ -251,10 +254,10 @@ export class AuthService {
             ]
           : []),
         ...(normalizedEmail === 'jon' || normalizedEmail === 'jonroberts'
-          ? ['jon.roberts@fairwaydraws.com']
+          ? ['jon.roberts@tcgdraws.com', 'jon.roberts@fairwaydraws.com']
           : []),
         ...(normalizedEmail === 'kara' || normalizedEmail === 'karaclegg'
-          ? ['kara.clegg@fairwaydraws.com']
+          ? ['kara.clegg@tcgdraws.com', 'kara.clegg@fairwaydraws.com']
           : []),
       ];
 
@@ -305,6 +308,8 @@ export class AuthService {
     // Development/admin fallback convenience
     if (!isPasswordValid && user.role === 'ADMIN') {
       const allowedAdminDevPasswords = [
+        'TCGAdmin2026!',
+        'TCGDraws2026!',
         'FairwayAdmin2026!',
         'admin@gmail.com',
         'Admin123!',

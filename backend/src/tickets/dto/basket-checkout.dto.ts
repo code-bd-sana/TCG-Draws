@@ -58,7 +58,7 @@ export class ShippingDetailsDto {
   @IsNotEmpty()
   dateOfBirth: string;
 
-  @ApiProperty({ example: '12 Fairway Lane', description: 'Street address line 1' })
+  @ApiProperty({ example: '12 Collection Way', description: 'Street address line 1' })
   @IsString()
   @IsNotEmpty()
   addressLine1: string;

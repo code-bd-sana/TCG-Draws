@@ -21,7 +21,7 @@ export class MailService {
   }
 
   async sendContactFormEmail(dto: ContactFormDto) {
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.SMTP_USER || 'info@fairwaydraws.com';
+    const adminEmail = process.env.ADMIN_EMAIL || process.env.SMTP_USER || 'info@tcgdraws.com';
     const subject = `[Contact Form] ${dto.subject || 'New Inquiry from ' + dto.name}`;
 
     try {
@@ -38,10 +38,10 @@ export class MailService {
                 <!-- Brand Header -->
                 <div style="background-color: #0b4d35; padding: 28px 32px; text-align: left;">
                   <h2 style="color: #FFFFFF; font-family: Helvetica, Arial, sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0; line-height: 1.2;">
-                    Fairway Draws
+                    TCG Draws
                   </h2>
                   <span style="color: #ECF5EE; font-size: 13px; font-weight: 600; margin-top: 4px; display: block;">
-                    New Contact Inquiry Submitted
+                    Pokemon cards and Collectables • New Contact Inquiry
                   </span>
                 </div>
 
@@ -82,7 +82,7 @@ export class MailService {
 
                   <!-- Footer -->
                   <div style="margin-top: 32px; padding-top: 20px; border-top: 1px solid #EFF4ED; text-align: center;">
-                    <p style="font-size: 12px; color: #5e766c; margin: 0;">Fairway Draws Ltd • Sent via Fairway Draws Contact Form</p>
+                    <p style="font-size: 12px; color: #5e766c; margin: 0;">TCG Draws Ltd • Pokemon cards and Collectables • Sent via TCG Draws Contact Form</p>
                   </div>
 
                 </div>
@@ -115,7 +115,7 @@ export class MailService {
       await this.transporter.sendMail({
         from: config.mail.from,
         to: email,
-        subject: 'Verify your email - Fairway Draws',
+        subject: 'Verify your email - TCG Draws',
         html: `
           <div style="background-color: #F8FAF6; padding: 40px 16px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #0e1e17;">
             <div style="max-width: 580px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; border: 1px solid #E2EADF; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
@@ -123,16 +123,16 @@ export class MailService {
               <!-- Brand Header -->
               <div style="background-color: #0b4d35; padding: 28px 32px; text-align: left;">
                 <h2 style="color: #FFFFFF; font-family: Helvetica, Arial, sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">
-                  Fairway Draws
+                  TCG Draws
                 </h2>
                 <span style="color: #ECF5EE; font-size: 13px; font-weight: 600; margin-top: 4px; display: block;">
-                  Account Verification
+                  Pokemon cards and Collectables • Account Verification
                 </span>
               </div>
 
               <!-- Content -->
               <div style="padding: 32px;">
-                <h3 style="color: #0e1e17; font-size: 18px; font-weight: 700; margin-top: 0;">Welcome to Fairway Draws!</h3>
+                <h3 style="color: #0e1e17; font-size: 18px; font-weight: 700; margin-top: 0;">Welcome to TCG Draws!</h3>
                 <p style="color: #334e43; font-size: 14px; line-height: 1.6;">
                   Please click the button below to verify your email address and activate your competition account:
                 </p>
@@ -166,7 +166,7 @@ export class MailService {
       await this.transporter.sendMail({
         from: config.mail.from,
         to: email,
-        subject: 'Reset your password - Fairway Draws',
+        subject: 'Reset your password - TCG Draws',
         html: `
           <div style="background-color: #F8FAF6; padding: 40px 16px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #0e1e17;">
             <div style="max-width: 580px; margin: 0 auto; background-color: #FFFFFF; border-radius: 16px; border: 1px solid #E2EADF; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
@@ -174,10 +174,10 @@ export class MailService {
               <!-- Brand Header -->
               <div style="background-color: #0b4d35; padding: 28px 32px; text-align: left;">
                 <h2 style="color: #FFFFFF; font-family: Helvetica, Arial, sans-serif; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin: 0;">
-                  Fairway Draws
+                  TCG Draws
                 </h2>
                 <span style="color: #ECF5EE; font-size: 13px; font-weight: 600; margin-top: 4px; display: block;">
-                  Password Reset Request
+                  Pokemon cards and Collectables • Password Reset Request
                 </span>
               </div>
 

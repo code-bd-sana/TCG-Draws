@@ -1506,7 +1506,7 @@ export class TicketsService {
         note: `Pending order payment for ${validatedItems.map((v) => v.raffle.title).join(', ').slice(0, 200)}`,
       },
       customer: {
-        email: user?.email || 'customer@fairwaydraws.com',
+        email: user?.email || 'customer@tcgdraws.com',
         firstName: user?.firstName || 'Valued',
         lastName: user?.lastName || 'Customer',
       },

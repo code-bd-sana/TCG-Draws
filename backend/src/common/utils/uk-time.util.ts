@@ -1,6 +1,6 @@
 /**
  * Utilities for UK Timezone (Europe/London: GMT / BST) operations.
- * Fairway Draws operates primarily in the UK market.
+ * TCG Draws operates primarily in the UK market.
  */
 
 export const UK_TIMEZONE = 'Europe/London';

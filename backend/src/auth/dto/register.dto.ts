@@ -45,7 +45,7 @@ export class RegisterDto {
   @IsIn(['CLIENT', 'HOST'], { message: 'Role must be either CLIENT or HOST' })
   role?: string;
 
-  @ApiPropertyOptional({ example: 'Fairway Golf Pro Shop', description: 'Required if role is HOST' })
+  @ApiPropertyOptional({ example: 'TCG Cards & Collectables', description: 'Required if role is HOST' })
   @IsOptional()
   @IsString()
   @MaxLength(255)
@@ -57,12 +57,12 @@ export class RegisterDto {
   @MaxLength(50)
   phone?: string;
 
-  @ApiPropertyOptional({ example: '123 Fairway Green, London, UK', description: 'Physical address' })
+  @ApiPropertyOptional({ example: '123 Card Lane, London, UK', description: 'Physical address' })
   @IsOptional()
   @IsString()
   address?: string;
 
-  @ApiPropertyOptional({ example: 'Official verified supplier of golf clubs and accessories in the UK.', description: 'Bio or description of the host' })
+  @ApiPropertyOptional({ example: 'Official verified supplier of Pokemon cards and Collectables in the UK.', description: 'Bio or description of the host' })
   @IsOptional()
   @IsString()
   bio?: string;

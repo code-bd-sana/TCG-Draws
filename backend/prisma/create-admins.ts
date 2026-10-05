@@ -19,6 +19,30 @@ interface AdminAccountConfig {
 
 const adminAccounts: AdminAccountConfig[] = [
   {
+    email: 'jon.roberts@tcgdraws.com',
+    firstName: 'Jon',
+    lastName: 'Roberts',
+    password: process.env.JON_ADMIN_PASSWORD || process.env.ADMIN_DEFAULT_PASSWORD || 'TCGAdmin2026!',
+  },
+  {
+    email: 'kara.clegg@tcgdraws.com',
+    firstName: 'Kara',
+    lastName: 'Clegg',
+    password: process.env.KARA_ADMIN_PASSWORD || process.env.ADMIN_DEFAULT_PASSWORD || 'TCGAdmin2026!',
+  },
+  {
+    email: 'lewis.mcmanus@tcgdraws.com',
+    firstName: 'Lewis',
+    lastName: 'McManus',
+    password: process.env.LEWIS_ADMIN_PASSWORD || process.env.ADMIN_DEFAULT_PASSWORD || 'TCGAdmin2026!',
+  },
+  {
+    email: 'lewis@tcgdraws.com',
+    firstName: 'Lewis',
+    lastName: 'McManus',
+    password: process.env.LEWIS_ADMIN_PASSWORD || process.env.ADMIN_DEFAULT_PASSWORD || 'TCGAdmin2026!',
+  },
+  {
     email: 'jon.roberts@fairwaydraws.com',
     firstName: 'Jon',
     lastName: 'Roberts',
@@ -57,7 +81,7 @@ const adminAccounts: AdminAccountConfig[] = [
 ];
 
 async function main() {
-  console.log('🚀 Creating / Updating Fairway Draws Admin Accounts...\n');
+  console.log('🚀 Creating / Updating TCG Draws Admin Accounts...\n');
 
   const salt = await bcrypt.genSalt(10);
 

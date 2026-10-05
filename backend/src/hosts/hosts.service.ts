@@ -415,7 +415,7 @@ export class HostsService {
     const recentActivity = recentTickets.map((t) => ({
       id: t.id,
       ticketNumber: t.ticketNumber,
-      raffleTitle: t.raffle?.title || 'Golf Competition',
+      raffleTitle: t.raffle?.title || 'TCG Competition',
       buyerName: `${t.user?.firstName || 'User'} ${t.user?.lastName || ''}`.trim() || t.user?.email || 'Anonymous Client',
       amount: Number(t.raffle?.pricePerTicket || 0),
       createdAt: t.createdAt,

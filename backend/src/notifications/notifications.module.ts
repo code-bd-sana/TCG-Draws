@@ -9,7 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     PrismaModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'fairway-secret-key-change-in-prod',
+      secret: process.env.JWT_SECRET || 'tcgdraws-secret-key-change-in-prod',
       signOptions: { expiresIn: '7d' },
     }),
   ],
