@@ -1,0 +1,179 @@
+import {
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Body,
+  Req,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiConsumes,
+  ApiBearerAuth,
+  ApiBody,
+} from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import type { Request } from 'express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import { UsersService } from './users.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { JwtService } from '@nestjs/jwt';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { FileUploadDto } from '../common/dto/file-upload.dto';
+
+@ApiTags('Users')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+@Controller('api/v1/users')
+export class UsersController {
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+  ) {}
+
+  private extractUserId(req: Request): string {
+    let token = req.cookies?.accessToken;
+    if (!token) {
+      const authHeader = req.headers?.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.split(' ')[1];
+      }
+    }
+    if (!token) {
+      throw new UnauthorizedException('No authentication token found');
+    }
+    try {
+      const payload = this.jwtService.verify(token);
+      return payload.sub;
+    } catch {
+      throw new UnauthorizedException('Invalid or expired token');
+    }
+  }
+
+  @Get('unclaimed-instant-wins')
+  @ApiOperation({ summary: 'Get all unclaimed instant wins for the current user' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of unclaimed instant wins for current user',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async getUnclaimedInstantWins(@Req() req: Request) {
+    const userId = this.extractUserId(req);
+    return this.usersService.getUnclaimedInstantWins(userId);
+  }
+
+  @Post('claim-instant-wins')
+  @ApiOperation({ summary: 'Claim instant wins for the current user' })
+  @ApiResponse({
+    status: 200,
+    description: 'Instant wins claimed successfully',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async claimInstantWins(
+    @Req() req: Request,
+    @Body() body: { winnerIds?: string[] },
+  ) {
+    const userId = this.extractUserId(req);
+    return this.usersService.claimInstantWins(userId, body?.winnerIds);
+  }
+
+  @Get('my-winners')
+  @ApiOperation({ summary: 'Get all winning records for the current user' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of prizes won by current user',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async getMyWinners(@Req() req: Request) {
+    const userId = this.extractUserId(req);
+    return this.usersService.getMyWinners(userId);
+  }
+
+  @Patch('change-password')
+  @ApiOperation({ summary: 'Change user password' })
+  @ApiResponse({ status: 200, description: 'Password changed successfully' })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid current password or new password criteria',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async changePassword(
+    @Req() req: Request,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    const userId = this.extractUserId(req);
+    return this.usersService.changePassword(userId, changePasswordDto);
+  }
+
+  @Patch('profile')
+  @ApiOperation({ summary: 'Update user profile' })
+  @ApiResponse({ status: 200, description: 'Profile updated successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid data' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async updateProfile(
+    @Req() req: Request,
+    @Body() updateProfileDto: UpdateProfileDto,
+  ) {
+    const userId = this.extractUserId(req);
+    return this.usersService.updateProfile(userId, updateProfileDto);
+  }
+
+  @Post('avatar')
+  @ApiOperation({ summary: 'Upload user avatar' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: FileUploadDto })
+  @ApiResponse({ status: 200, description: 'Avatar uploaded successfully' })
+  @ApiResponse({ status: 400, description: 'Invalid file or file missing' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/avatars',
+        filename: (req, file, cb) => {
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join('');
+          cb(null, `${randomName}${extname(file.originalname)}`);
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|webp)$/)) {
+          return cb(
+            new BadRequestException('Only image files are allowed!'),
+            false,
+          );
+        }
+        cb(null, true);
+      },
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5 MB
+      },
+    }),
+  )
+  async uploadAvatar(
+    @Req() req: Request,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
+    const userId = this.extractUserId(req);
+    const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+    const host =
+      req.headers['x-forwarded-host'] || req.headers.host || '127.0.0.1:5000';
+    const baseUrl = process.env.APP_URL || `${protocol}://${host}`;
+    const avatarUrl = `${baseUrl}/uploads/avatars/${file.filename}`;
+    return this.usersService.updateAvatar(userId, avatarUrl);
+  }
+}
+

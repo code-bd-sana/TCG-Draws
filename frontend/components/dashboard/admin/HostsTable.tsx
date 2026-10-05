@@ -1,0 +1,405 @@
+"use client";
+
+import React, { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { adminService, HostData } from "../../../services/admin.service";
+import ReviewHostModal, { HostApplicationData } from "./ReviewHostModal";
+import ConfirmBlockModal from "./ConfirmBlockModal";
+
+export default function HostsTable() {
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedHost, setSelectedHost] = useState<HostApplicationData | null>(null);
+  
+  const [blockModalHost, setBlockModalHost] = useState<HostData | null>(null);
+
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['admin-hosts', page, activeFilter, search],
+    queryFn: () => adminService.getHosts({
+      page,
+      limit: 10,
+      search,
+      status: activeFilter
+    }),
+  });
+
+  const toggleBlockMutation = useMutation({
+    mutationFn: (userId: string) => adminService.toggleBlockStatus(userId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-hosts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-hosts-stats'] });
+      queryClient.invalidateQueries({ queryKey: ['verified-hosts'] });
+      setBlockModalHost(null);
+    },
+  });
+
+  const approveHostMutation = useMutation({
+    mutationFn: (hostId: string) => adminService.approveHost(hostId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-hosts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-hosts-stats'] });
+      queryClient.invalidateQueries({ queryKey: ['verified-hosts'] });
+      setIsModalOpen(false);
+      setSelectedHost(null);
+    },
+  });
+
+  const rejectHostMutation = useMutation({
+    mutationFn: (hostId: string) => adminService.rejectHost(hostId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-hosts'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-hosts-stats'] });
+      queryClient.invalidateQueries({ queryKey: ['verified-hosts'] });
+      setIsModalOpen(false);
+      setSelectedHost(null);
+    },
+  });
+
+  const handleExportCSV = () => {
+    const hosts = data?.hosts || [];
+    if (hosts.length === 0) return;
+
+    const headers = [
+      "ID",
+      "Business Name",
+      "Email",
+      "Plan",
+      "Active Raffles",
+      "Revenue (£)",
+      "Status",
+      "Verified"
+    ];
+
+    const rows = hosts.map((host: HostData) => [
+      host.id,
+      host.businessName || "N/A",
+      host.email,
+      host.plan || "Free",
+      host.raffles || 0,
+      (host.revenue || 0).toFixed(2),
+      host.isBlocked ? "Blocked" : "Active",
+      host.isVerified ? "Yes" : "No"
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map(row => row.map(val => `"${String(val).replace(/"/g, '""')}"`).join(","))
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `hosts_export_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleReview = async (host: HostData) => {
+    // Immediately open modal with all host table details
+    setSelectedHost(host);
+    setIsModalOpen(true);
+
+    // Fetch full enriched host details in background (recent raffles, full subscriptions)
+    try {
+      const detailedHost = await adminService.getHostById(host.id);
+      if (detailedHost) {
+        setSelectedHost(detailedHost);
+      }
+    } catch (e) {
+      // Keep existing host data
+    }
+  };
+
+  const getStatusPill = (isBlocked: boolean) => {
+    if (isBlocked) {
+      return <span className="px-3 py-1 rounded-full border border-[#FECACA] bg-[#FEE2E2] text-[#DC2626] font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">Blocked</span>;
+    }
+    return <span className="px-3 py-1 rounded-full border border-[#BBF7D0] bg-[#DCFCE7] text-[#15803D] font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">Active</span>;
+  };
+
+  const getPlanPill = (plan: string) => {
+    if (plan === "Pending Approval") {
+      return <span className="px-3 py-1 rounded-full border border-[#FDE68A] bg-[#FEF3C7] text-[#D97706] font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">{plan}</span>;
+    }
+    return <span className="px-3 py-1 rounded-full border border-primary/30 bg-accent-bg text-text-brand font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">{plan || 'Free'}</span>;
+  };
+
+  return (
+    <div className="flex flex-col gap-6">
+      
+      {/* Controls Row */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        
+        {/* Left: Search & Filters */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
+          {/* Search Input */}
+          <div className="flex items-center h-10 w-full sm:w-[360px] bg-elevated border border-border-medium rounded-xl px-3 focus-within:border-primary transition-all">
+            <svg className="w-4 h-4 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input 
+              type="text" 
+              placeholder="Search host brand name or email..." 
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="bg-transparent border-none outline-none text-text-primary text-xs placeholder:text-text-muted w-full ml-2 font-sans font-semibold"
+            />
+          </div>
+
+          {/* Filter Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+            {["All", "Active", "Blocked", "Pending"].map((filter) => (
+              <button
+                key={filter}
+                onClick={() => { setActiveFilter(filter); setPage(1); }}
+                className={`px-4 py-1.5 rounded-full text-xs font-heading font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
+                  activeFilter === filter 
+                    ? 'bg-primary text-white shadow-xs' 
+                    : 'bg-surface border border-border text-text-muted hover:text-text-primary'
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: Export CSV */}
+        <button 
+          onClick={handleExportCSV}
+          disabled={!data?.hosts || data.hosts.length === 0}
+          className="h-10 px-4 bg-surface border border-border hover:bg-elevated rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer shrink-0 shadow-xs"
+        >
+          <svg className="w-4 h-4 text-text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          <span className="font-heading font-bold text-xs uppercase tracking-wider text-text-primary">Export CSV</span>
+        </button>
+      </div>
+
+      {/* Table Container */}
+      <div className="w-full bg-surface border border-border rounded-card overflow-hidden overflow-x-auto shadow-card">
+        <table className="w-full min-w-[1000px] text-left border-collapse">
+          <thead>
+            <tr className="border-b border-divider bg-elevated">
+              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[25%]">HOST OPERATOR</th>
+              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[20%]">EMAIL</th>
+              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[15%] text-center">PLAN</th>
+              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[10%] text-center">ACTIVE DRAWS</th>
+              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[10%] text-center">REVENUE</th>
+              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[10%] text-center">STATUS</th>
+              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[10%] text-right">ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, idx) => (
+                <tr key={idx} className="border-b border-divider last:border-b-0">
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-3 animate-pulse">
+                      <div className="w-8 h-8 rounded-full bg-elevated shrink-0" />
+                      <div className="h-4 w-28 bg-elevated rounded" />
+                    </div>
+                  </td>
+                  <td className="py-4 px-6">
+                    <div className="h-4 w-40 bg-elevated rounded animate-pulse" />
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    <div className="h-6 w-24 bg-elevated rounded-full animate-pulse mx-auto" />
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    <div className="h-4 w-10 bg-elevated rounded animate-pulse mx-auto" />
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    <div className="h-4 w-16 bg-elevated rounded animate-pulse mx-auto" />
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    <div className="h-6 w-16 bg-elevated rounded-full animate-pulse mx-auto" />
+                  </td>
+                  <td className="py-4 px-6">
+                    <div className="flex items-center justify-end gap-3">
+                      <div className="w-4.5 h-4.5 bg-elevated rounded animate-pulse" />
+                      <div className="w-4.5 h-4.5 bg-elevated rounded animate-pulse" />
+                      <div className="w-4.5 h-4.5 bg-elevated rounded animate-pulse" />
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : data?.hosts?.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="py-8 text-center text-text-muted font-sans text-xs">
+                  No hosts found.
+                </td>
+              </tr>
+            ) : (
+              data?.hosts?.map((host: HostData, i: number) => (
+                <tr key={host.id} className={`${i !== data.hosts.length - 1 ? 'border-b border-divider' : ''} hover:bg-elevated/40 transition-colors`}>
+                  <td className="py-4 px-6">
+                    <div 
+                      onClick={() => handleReview(host)}
+                      className="flex items-center gap-3 cursor-pointer group w-fit"
+                      title="Click to view host details"
+                    >
+                      <div className="w-9 h-9 rounded-xl bg-accent-bg border border-primary/30 flex items-center justify-center shrink-0 shadow-xs overflow-hidden relative">
+                        {host.avatarUrl ? (
+                          <img
+                            src={host.avatarUrl}
+                            alt={host.businessName || "Host logo"}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            onError={(e) => {
+                              (e.target as HTMLElement).style.display = 'none';
+                            }}
+                          />
+                        ) : null}
+                        <span className={`font-sans font-bold text-xs text-text-brand ${host.avatarUrl ? 'absolute -z-10' : ''}`}>
+                          {host.businessName?.substring(0, 2).toUpperCase() || 'NA'}
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-heading font-bold text-xs text-text-primary group-hover:text-primary transition-colors">
+                          {host.businessName || 'N/A'}
+                        </span>
+                        {host.slug && (
+                          <span className="font-sans text-[10px] text-text-muted">
+                            @{host.slug}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6">
+                    <span className="font-sans font-semibold text-xs text-text-muted">{host.email}</span>
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    {getPlanPill(host.plan)}
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    <span className="font-heading font-bold text-xs text-text-primary">{host.raffles}</span>
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    <span className="font-heading font-black text-xs text-text-primary">£{host.revenue?.toFixed(2) || '0.00'}</span>
+                  </td>
+                  <td className="py-4 px-6 text-center">
+                    {getStatusPill(host.isBlocked)}
+                  </td>
+                  <td className="py-4 px-6">
+                    <div className="flex items-center justify-end gap-3 font-sans">
+                      {!host.isVerified && (
+                        <>
+                          <button 
+                            onClick={() => approveHostMutation.mutate(host.id)}
+                            disabled={approveHostMutation.isPending || rejectHostMutation.isPending}
+                            className="text-[#15803D] hover:text-[#166534] hover:scale-125 active:scale-95 transition-all duration-200 mr-1 flex items-center justify-center shrink-0 cursor-pointer" 
+                            title="Approve Host"
+                          >
+                            {approveHostMutation.isPending && approveHostMutation.variables === host.id ? (
+                              <div className="w-4.5 h-4.5 border-2 border-[#15803D] border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                              </svg>
+                            )}
+                          </button>
+
+                          <button 
+                            onClick={() => rejectHostMutation.mutate(host.id)}
+                            disabled={approveHostMutation.isPending || rejectHostMutation.isPending}
+                            className="text-[#DC2626] hover:text-[#b91c1c] hover:scale-125 active:scale-95 transition-all duration-200 mr-2 flex items-center justify-center shrink-0 cursor-pointer" 
+                            title="Reject Host"
+                          >
+                            {rejectHostMutation.isPending && rejectHostMutation.variables === host.id ? (
+                              <div className="w-4.5 h-4.5 border-2 border-[#DC2626] border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                              </svg>
+                            )}
+                          </button>
+                        </>
+                      )}
+
+                      <button 
+                        onClick={() => handleReview(host)}
+                        className="text-text-muted hover:text-text-primary transition-colors cursor-pointer" 
+                        title="View details"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        </svg>
+                      </button>
+                      
+                      <button 
+                        onClick={() => setBlockModalHost(host)}
+                        disabled={toggleBlockMutation.isPending}
+                        className={`transition-colors cursor-pointer ${host.isBlocked ? 'text-[#15803D] hover:text-[#166534]' : 'text-[#DC2626] hover:text-[#b91c1c]'}`} 
+                        title={host.isBlocked ? "Unblock Host" : "Block Host"}
+                      >
+                        {host.isBlocked ? (
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                          </svg>
+                        ) : (
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination Controls */}
+      {data && data.totalPages > 1 && (
+        <div className="flex justify-between items-center bg-surface border border-border rounded-card px-6 py-4 shadow-card">
+          <button 
+            onClick={() => setPage(p => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className="text-xs font-heading font-bold uppercase tracking-wider text-text-primary disabled:text-text-muted hover:text-text-brand transition-colors disabled:opacity-50 cursor-pointer"
+          >
+            Previous
+          </button>
+          <span className="text-xs font-sans font-bold text-text-muted">Page {page} of {data.totalPages}</span>
+          <button 
+            onClick={() => setPage(p => Math.min(data.totalPages, p + 1))}
+            disabled={page === data.totalPages}
+            className="text-xs font-heading font-bold uppercase tracking-wider text-text-primary disabled:text-text-muted hover:text-text-brand transition-colors disabled:opacity-50 cursor-pointer"
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      <ReviewHostModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        data={selectedHost} 
+        onApprove={(hostId) => approveHostMutation.mutate(hostId)}
+        isApproveLoading={approveHostMutation.isPending}
+        onReject={(hostId) => rejectHostMutation.mutate(hostId)}
+        isRejectLoading={rejectHostMutation.isPending}
+      />
+
+      <ConfirmBlockModal 
+        isOpen={!!blockModalHost}
+        onClose={() => setBlockModalHost(null)}
+        onConfirm={() => blockModalHost && toggleBlockMutation.mutate(blockModalHost.userId)}
+        isLoading={toggleBlockMutation.isPending}
+        isBlocked={blockModalHost?.isBlocked ?? false}
+        userIdentifier={blockModalHost?.businessName || blockModalHost?.email || ""}
+      />
+    </div>
+  );
+}

@@ -1,0 +1,428 @@
+@import "tailwindcss";
+
+:root {
+  /* Semantic Colors - Fairway Draws Theme */
+  --color-bg: #F8FAF6;
+  --color-surface: #FFFFFF;
+  --color-elevated: #F1F5EE;
+  --color-accent-bg: #ECF5EE;
+  
+  --color-primary: #0b4d35;
+  --color-primary-rgb: 11,77,53;
+  --color-primary-hover: #073826;
+  --color-primary-text: #ffffff;
+  
+  --color-text-primary: #0e1e17;
+  --color-text-secondary: #334e43;
+  --color-text-muted: #5e766c;
+  --color-text-brand: #0b4d35;
+  --color-text-accent: #dc2626;
+  
+  --color-border: #E2EADF;
+  --color-border-medium: #CBD8C8;
+  --color-divider: #EFF4ED;
+  
+  --color-success: #16A34A;
+  --color-success-text: #15803D;
+  --color-success-bg: #DCFCE7;
+  
+  /* Radii */
+  --radius-card: 16px;
+  --radius-button: 8px;
+  --radius-badge: 9999px;
+  
+  /* Shadows */
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 25px rgba(11, 77, 53, 0.22);
+  
+  /* Fonts */
+  --font-sans: var(--font-inter), sans-serif;
+  --font-heading: var(--font-space-grotesk), sans-serif;
+}
+
+@theme {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-elevated: var(--color-elevated);
+  --color-accent-bg: var(--color-accent-bg);
+  
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-text: var(--color-primary-text);
+  
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-brand: var(--color-text-brand);
+  --color-text-accent: var(--color-text-accent);
+  
+  --color-border: var(--color-border);
+  --color-border-medium: var(--color-border-medium);
+  --color-divider: var(--color-divider);
+  
+  --color-success: var(--color-success);
+  --color-success-text: var(--color-success-text);
+  --color-success-bg: var(--color-success-bg);
+  
+  --radius-card: var(--radius-card);
+  --radius-button: var(--radius-button);
+  --radius-badge: var(--radius-badge);
+  
+  --shadow-card: var(--shadow-card);
+  --shadow-glow: var(--shadow-glow);
+  
+  --font-sans: var(--font-sans);
+  --font-heading: var(--font-heading);
+}
+
+/* Base resets and defaults */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-divider);
+  border-radius: var(--radius-badge);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border);
+}
+
+/* Utility classes */
+.container-custom {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media (min-width: 1536px) {
+  .container-custom {
+    max-width: 1440px;
+  }
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
+
+/* 3D Hero Heading Text Shadows */
+.text-shadow-hero-green {
+  text-shadow: 0 4px 12px rgba(11, 77, 53, 0.4), 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.text-shadow-hero-red {
+  text-shadow: 0 4px 12px rgba(185, 28, 28, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Glossy Red 3D Button */
+.btn-glossy-red {
+  background: linear-gradient(180deg, #dc2626 0%, #b91c1c 45%, #991b1b 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 8px 20px -4px rgba(185, 28, 28, 0.45);
+  border: 1px solid #7f1d1d;
+}
+
+.btn-glossy-red:hover {
+  background: linear-gradient(180deg, #ef4444 0%, #dc2626 45%, #b91c1c 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 12px 25px -4px rgba(185, 28, 28, 0.6);
+}
+
+/* Glossy White Pill Button */
+.btn-glossy-white {
+  background: linear-gradient(180deg, #ffffff 0%, #f8faf6 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 4px 14px rgba(11, 77, 53, 0.12);
+  border: 1.5px solid #cbd8c8;
+}
+
+.btn-glossy-white:hover {
+  background: linear-gradient(180deg, #ffffff 0%, #ecf5ee 100%);
+  border-color: #0b4d35;
+}
+
+/* Shared public legal-document treatment. Keeps long-form content readable while
+   using the same sage and forest-green campaign system as the marketing pages. */
+.legal-campaign {
+  background: #cfdfcb;
+  color: #426256;
+}
+
+.legal-campaign > div:first-child {
+  background: linear-gradient(135deg, #073826, #0b4d35) !important;
+  border-color: rgba(255, 255, 255, 0.16) !important;
+}
+
+.legal-campaign > div:first-child h1,
+.legal-campaign > div:first-child p,
+.legal-campaign > div:first-child span {
+  color: #ffffff !important;
+}
+
+.legal-campaign aside > div,
+.legal-campaign main > section {
+  background: #edf5e9 !important;
+  border-color: #bdd3ba !important;
+  box-shadow: 0 10px 25px rgba(11, 77, 53, 0.09);
+}
+
+.legal-campaign main > section > div {
+  background: #e2efde !important;
+  border-color: #c4d9c1 !important;
+}
+
+.legal-campaign h2,
+.legal-campaign h3,
+.legal-campaign h4 {
+  color: #073826 !important;
+  border-color: #c4d9c1 !important;
+}
+
+.legal-campaign main,
+.legal-campaign main p,
+.legal-campaign main li {
+  color: #426256 !important;
+}
+
+.legal-campaign a {
+  color: #0b4d35 !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease-in-out, text-decoration-color 0.2s ease-in-out;
+}
+
+.legal-campaign a:hover {
+  color: #073826 !important;
+  text-decoration-color: #073826 !important;
+}
+
+.legal-campaign aside a,
+.legal-campaign aside a.bg-\[\#1A230A\],
+.legal-campaign aside a.bg-\[\#0b4d35\] {
+  background: #0b4d35 !important;
+  border-color: #0b4d35 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.legal-campaign aside a:hover,
+.legal-campaign aside a.bg-\[\#1A230A\]:hover,
+.legal-campaign aside a.bg-\[\#0b4d35\]:hover {
+  background: #073826 !important;
+  border-color: #073826 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.legal-campaign aside button:not(.bg-\[\#1A230A\]):not(.bg-\[\#0b4d35\]) {
+  color: #426256 !important;
+}
+
+.legal-campaign aside button:hover {
+  background: #dcebd8 !important;
+  color: #073826 !important;
+}
+
+.legal-campaign aside button.bg-\[\#1A230A\],
+.legal-campaign aside button.bg-\[\#0b4d35\] {
+  background: #0b4d35 !important;
+  border-color: #0b4d35 !important;
+  color: #ffffff !important;
+}
+
+/* Guard against legacy dark Tailwind utilities within Terms copy */
+.legal-campaign [class~="bg-[#161810]"],
+.legal-campaign [class~="bg-[#111210]"] {
+  background-color: #edf5e9 !important;
+  background-image: none !important;
+  border-color: #bdd3ba !important;
+}
+
+.legal-campaign [class~="text-[#E8EDD4]"],
+.legal-campaign [class~="text-[#B3B8AA]"],
+.legal-campaign [class~="text-[#72943A]"],
+.legal-campaign [class~="text-[#5A752A]"] {
+  color: #426256 !important;
+}
+
+.legal-campaign [class~="text-[#A0D056]"],
+.legal-campaign [class~="text-[#8CB34A]"] {
+  color: #0b4d35 !important;
+}
+
+.legal-campaign strong {
+  color: #073826 !important;
+}
+
+/* Cookie Policy gets its own full campaign treatment rather than inheriting the
+   legacy dark legal-document palette used by older pages. */
+.cookie-policy {
+  background-color: #cfdfcb;
+  background-image: radial-gradient(rgba(11, 77, 53, 0.19) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: #426256;
+}
+
+.cookie-policy aside > div,
+.cookie-policy main > section {
+  background: rgba(245, 250, 242, 0.94) !important;
+  border-color: #b7cfb4 !important;
+  box-shadow: 0 14px 30px rgba(7, 56, 38, 0.12);
+}
+
+.cookie-policy main > section > div,
+.cookie-policy main > section .bg-\[\#111210\] {
+  background: #e1eedc !important;
+  border-color: #c2d9bf !important;
+}
+
+.cookie-policy h2,
+.cookie-policy h3,
+.cookie-policy h4,
+.cookie-policy .text-\[\#E8EDD4\] {
+  color: #073826 !important;
+  border-color: #c2d9bf !important;
+}
+
+.cookie-policy main,
+.cookie-policy main p,
+.cookie-policy main li,
+.cookie-policy .text-\[\#B3B8AA\] {
+  color: #426256 !important;
+}
+
+.cookie-policy .text-\[\#A0D056\],
+.cookie-policy .text-\[\#8CB34A\] {
+  color: #0b4d35 !important;
+}
+
+.cookie-policy .text-\[\#72943A\],
+.cookie-policy .text-\[\#5A752A\] {
+  color: #597a66 !important;
+}
+
+.cookie-policy a { color: #0b4d35 !important; }
+
+.cookie-policy aside button:not(.bg-\[\#1A230A\]) { color: #426256 !important; }
+.cookie-policy aside button:hover { background: #dcebd8 !important; color: #073826 !important; }
+.cookie-policy aside button.bg-\[\#1A230A\],
+.cookie-policy aside a.bg-\[\#1A230A\] {
+  background: #0b4d35 !important;
+  border-color: #0b4d35 !important;
+  color: #ffffff !important;
+}
+
+/* Privacy document — high-contrast, readable data cards on the shared sage
+   paper texture. This explicitly replaces every remaining legacy dark panel. */
+.privacy-policy {
+  background-color: #cfdfcb;
+  background-image: radial-gradient(rgba(11, 77, 53, 0.19) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: #426256;
+}
+
+.privacy-policy aside > div,
+.privacy-policy main > section {
+  background: rgba(245, 250, 242, 0.96) !important;
+  border-color: #b7cfb4 !important;
+  box-shadow: 0 14px 30px rgba(7, 56, 38, 0.12);
+}
+
+.privacy-policy main > section > div,
+.privacy-policy main > section .bg-\[\#111210\] {
+  background: #e1eedc !important;
+  border-color: #c2d9bf !important;
+}
+
+.privacy-policy h2,
+.privacy-policy h3,
+.privacy-policy h4,
+.privacy-policy .text-\[\#E8EDD4\] {
+  color: #073826 !important;
+  border-color: #c2d9bf !important;
+}
+
+.privacy-policy main,
+.privacy-policy main p,
+.privacy-policy main li,
+.privacy-policy .text-\[\#B3B8AA\] {
+  color: #426256 !important;
+}
+
+.privacy-policy .text-\[\#A0D056\],
+.privacy-policy .text-\[\#8CB34A\] { color: #0b4d35 !important; }
+.privacy-policy .text-\[\#72943A\],
+.privacy-policy .text-\[\#5A752A\] { color: #597a66 !important; }
+.privacy-policy a { color: #0b4d35 !important; }
+
+.privacy-policy aside button:not(.bg-\[\#1A230A\]) { color: #426256 !important; }
+.privacy-policy aside button:hover { background: #dcebd8 !important; color: #073826 !important; }
+.privacy-policy aside button.bg-\[\#1A230A\],
+.privacy-policy aside a.bg-\[\#1A230A\] {
+  background: #0b4d35 !important;
+  border-color: #0b4d35 !important;
+  color: #ffffff !important;
+}
+
+/* Guard against legacy Tailwind colour utilities within the privacy copy. */
+.privacy-policy [class~="bg-[#161810]"],
+.privacy-policy [class~="bg-[#111210]"] {
+  background-color: #e1eedc !important;
+  background-image: none !important;
+  border-color: #c2d9bf !important;
+}
+
+.privacy-policy [class~="text-[#E8EDD4]"],
+.privacy-policy [class~="text-[#B3B8AA]"],
+.privacy-policy [class~="text-[#A0D056]"],
+.privacy-policy [class~="text-[#8CB34A]"],
+.privacy-policy [class~="text-[#72943A]"],
+.privacy-policy [class~="text-[#5A752A]"] {
+  color: #426256 !important;
+}
+
+.privacy-policy h2,
+.privacy-policy h3,
+.privacy-policy h4,
+.privacy-policy strong {
+  color: #073826 !important;
+}
+
+/* Print / PDF Export Styles */
+@media print {
+  body {
+    background-color: #F8FAF6 !important;
+    color: #0e1e17 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .no-print,
+  nav,
+  aside {
+    display: none !important;
+  }
+}

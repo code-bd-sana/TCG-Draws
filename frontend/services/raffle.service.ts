@@ -1,0 +1,261 @@
+import { api } from './api';
+
+export interface User {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  avatarUrl: string | null;
+}
+
+export interface HostProfile {
+  id: string;
+  businessName: string;
+  user?: User;
+}
+
+export interface Raffle {
+  id: string;
+  hostId: string;
+  title: string;
+  slug: string;
+  description: string;
+  mainImage: string | null;
+  prizeName: string | null;
+  mainPrizeValue?: string | number | null;
+  pricePerTicket: string | number;
+  totalTickets: number;
+  ticketsSold: number;
+  startDate: string;
+  endDate: string;
+  status: 'DRAFT' | 'PENDING_APPROVAL' | 'ACTIVE' | 'ENDED' | 'CANCELLED';
+  minTickets?: number;
+  maxTickets?: number;
+  isAutoDraw?: boolean;
+  autoDrawDate?: boolean;
+  autoDrawSoldOut?: boolean;
+  category?: string;
+  guaranteedDraw?: boolean;
+  _count?: { instantWins: number; [key: string]: number };
+  createdAt: string;
+  host?: HostProfile;
+}
+
+export interface RecentWinner {
+  id: string;
+  name: string;
+  initials: string;
+  location: string;
+  avatarUrl?: string;
+  prizeWon: string;
+  status: string;
+  statusText: string;
+  whenWon: string;
+}
+
+export interface PaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  lastPage?: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  meta: PaginationMeta;
+}
+
+export interface CreateRaffleData {
+  title: string;
+  description: string;
+  prizeName?: string;
+  mainPrizeValue?: number | string;
+  pricePerTicket: number | string;
+  totalTickets: number;
+  minTickets?: number;
+  maxTickets?: number;
+  startDate: string;
+  endDate: string;
+  isAutoDraw?: boolean;
+  autoDrawDate?: boolean;
+  autoDrawSoldOut?: boolean;
+  [key: string]: unknown;
+}
+
+export interface PublicLiveStats {
+  liveCount: number;
+  closingTodayCount: number;
+  totalPrizesValue: string;
+}
+
+export interface PublicHostPreviewStats {
+  activeDraws: number;
+  ticketsSold: number;
+  totalEarned: number;
+  targetPercent: number;
+}
+
+export interface UpdateRaffleData extends Partial<CreateRaffleData> {
+  status?: 'DRAFT' | 'PENDING_APPROVAL' | 'ACTIVE' | 'ENDED' | 'CANCELLED';
+}
+
+export const raffleService = {
+  async getPublicStats(): Promise<{ id: number; value: string; label: string }[]> {
+    const response = await api.get('/raffles/public/stats');
+    return response.data;
+  },
+
+  async getPublicLiveStats(): Promise<PublicLiveStats> {
+    const response = await api.get('/raffles/public/live-stats');
+    return response.data;
+  },
+
+  async getPublicHostPreviewStats(): Promise<PublicHostPreviewStats> {
+    const response = await api.get('/raffles/public/host-preview-stats');
+    return response.data;
+  },
+
+  async getPublicWinnerStats(): Promise<{ prizesAwarded: string; totalWinners: number; verifiedDraws: string }> {
+    const response = await api.get('/raffles/public/winner-stats');
+    return response.data;
+  },
+
+  async getInstantWinRaffles(limit = 10): Promise<any> {
+    const response = await api.get('/raffles', {
+      params: { limit, hasInstantWins: 'true', statusFilter: 'Live' },
+    });
+    return response.data;
+  },
+
+  async getRecentWinners(): Promise<RecentWinner[]> {
+    const response = await api.get('/raffles/public/recent-winners');
+    return response.data;
+  },
+
+  async getPublicWinnersList(params: {
+    page?: number;
+    limit?: number;
+    activeTab?: string;
+    winnerType?: string;
+    sortBy?: string;
+  }): Promise<{ data: any[]; meta: PaginationMeta }> {
+    const response = await api.get('/raffles/public/winners', { params });
+    return response.data;
+  },
+
+  async getPublicRaffles(params: { search?: string; page?: number; limit?: number; category?: string; statusFilter?: string; sort?: string }): Promise<PaginatedResponse<Raffle>> {
+    const response = await api.get('/raffles', { params });
+    return response.data;
+  },
+
+  async getPublicRaffleBySlug(slug: string): Promise<Raffle> {
+    const response = await api.get(`/raffles/public/${slug}`);
+    return response.data;
+  },
+
+  async getMyRaffles(params?: { page?: number; limit?: number; status?: string }): Promise<PaginatedResponse<Raffle>> {
+    const response = await api.get('/raffles/host/my-raffles', { params });
+    return response.data;
+  },
+
+  async getRaffleById(id: string): Promise<Raffle> {
+    const response = await api.get(`/raffles/host/${id}`);
+    return response.data;
+  },
+
+  async updateRaffle(id: string, data: UpdateRaffleData): Promise<Raffle> {
+    const { pricePerTicket, ...rest } = data;
+    const payload: any = { ...rest };
+    if (pricePerTicket !== undefined) {
+      payload.ticketPrice = typeof pricePerTicket === 'string' ? Number(pricePerTicket) : pricePerTicket;
+    }
+    const response = await api.patch(`/raffles/host/${id}`, payload);
+    return response.data;
+  },
+
+  async createRaffle(data: CreateRaffleData): Promise<Raffle> {
+    const { pricePerTicket, ...rest } = data;
+    const response = await api.post('/raffles', {
+      ...rest,
+      ticketPrice: typeof pricePerTicket === 'string' ? Number(pricePerTicket) : pricePerTicket,
+    });
+    return response.data;
+  },
+
+  async deleteRaffle(id: string): Promise<void> {
+    const response = await api.delete(`/raffles/host/${id}`);
+    return response.data;
+  },
+
+  async drawWinner(id: string): Promise<unknown> {
+    const response = await api.post(`/raffles/host/${id}/draw`);
+    return response.data;
+  },
+
+  async getWinners(id: string): Promise<unknown> {
+    const response = await api.get(`/raffles/host/${id}/winners`);
+    return response.data;
+  },
+
+  async uploadRaffleImage(id: string, file: File): Promise<Raffle> {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post(`/raffles/host/${id}/image`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  async getPendingApprovals(): Promise<Raffle[]> {
+    const response = await api.get('/raffles/admin/pending');
+    return response.data;
+  },
+
+  async approveRaffle(id: string): Promise<Raffle> {
+    const response = await api.patch(`/raffles/admin/${id}/approve`);
+    return response.data;
+  },
+
+  async rejectRaffle(id: string, reason?: string): Promise<Raffle> {
+    const response = await api.patch(`/raffles/admin/${id}/reject`, { reason });
+    return response.data;
+  },
+
+  async getAdminAllRaffles(params?: { search?: string; page?: number; limit?: number; status?: string }): Promise<PaginatedResponse<Raffle>> {
+    const response = await api.get('/raffles/admin/all', { params });
+    return response.data;
+  },
+
+  async adminDeleteRaffle(id: string): Promise<void> {
+    const response = await api.delete(`/raffles/admin/${id}`);
+    return response.data;
+  },
+
+  async updateDeliveryStatus(winnerId: string, deliveryStatus: string, trackingNumber?: string): Promise<any> {
+    const response = await api.patch(`/raffles/winners/${winnerId}/delivery`, {
+      deliveryStatus,
+      trackingNumber,
+    });
+    return response.data;
+  },
+
+  async getSoldTickets(raffleId: string): Promise<any[]> {
+    const response = await api.get(`/raffles/${raffleId}/tickets`);
+    return response.data;
+  },
+
+  async getPendingOrders(raffleId: string): Promise<any[]> {
+    const response = await api.get(`/raffles/${raffleId}/pending-orders`);
+    return response.data;
+  },
+
+  async adminDrawWinner(raffleId: string, winningTicketNumber?: number): Promise<any> {
+    const response = await api.post(`/raffles/admin/${raffleId}/draw`, {
+      winningTicketNumber,
+    });
+    return response.data;
+  }
+};

@@ -1,0 +1,52 @@
+import { VerifiedHost } from "../../types/host.types";
+
+export const verifiedHostsData: VerifiedHost[] = [
+  {
+    id: "host-1",
+    slug: "fairway-pro-shop",
+    name: "Fairway Pro Shop",
+    logo: "/uploads/avatars/ef6734d3d6c19d4ab982e5aa1b5bb10f6.webp",
+    description: "Premier UK retailer hosting official manufacturer golf equipment draws.",
+    category: "Pro Shop",
+    competitionCount: 45,
+    averageRating: 4.9,
+    totalReviews: 120,
+    isVerified: true,
+  },
+  {
+    id: "host-2",
+    slug: "links-and-fairways",
+    name: "Links & Fairways Club",
+    logo: "/uploads/avatars/49989f948cdffa738b7a8105d1346291f.jpg",
+    description: "Championship golf club hosting exclusive member & guest competition draws.",
+    category: "Golf Club",
+    competitionCount: 18,
+    averageRating: 4.9,
+    totalReviews: 85,
+    isVerified: true,
+  },
+  {
+    id: "host-3",
+    slug: "custom-club-studio",
+    name: "Custom Club Studio",
+    logo: "/uploads/avatars/314e3a9140d4e176749103f49b68aa8f9.jpg",
+    description: "Tour-level custom club building, premium shafts, and custom milled putters.",
+    category: "Club Fitter",
+    competitionCount: 14,
+    averageRating: 4.8,
+    totalReviews: 54,
+    isVerified: true,
+  },
+  {
+    id: "host-4",
+    slug: "weekend-golfers-uk",
+    name: "Weekend Golfers UK",
+    logo: "/uploads/avatars/8399cbad6e41dfc87848377b9f77d5ea.jpg",
+    description: "Passionate golf community offering premium draws, apparel, and golf days.",
+    category: "Community",
+    competitionCount: 30,
+    averageRating: 4.7,
+    totalReviews: 95,
+    isVerified: true,
+  }
+];

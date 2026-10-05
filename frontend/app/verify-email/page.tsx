@@ -1,0 +1,19 @@
+import React, { Suspense } from "react";
+import { Metadata } from "next";
+import UserAuthLayout from "../../components/user-auth/UserAuthLayout";
+import VerifyEmailForm from "../../components/user-auth/VerifyEmailForm";
+
+export const metadata: Metadata = {
+  title: "Verify Email | Fairway Draws",
+  description: "Verify your email address to activate your Fairway Draws account.",
+};
+
+export default function VerifyEmailPage() {
+  return (
+    <UserAuthLayout mode="register">
+      <Suspense fallback={<div className="text-white p-4">Loading...</div>}>
+        <VerifyEmailForm />
+      </Suspense>
+    </UserAuthLayout>
+  );
+}
