@@ -131,39 +131,50 @@ export default function UserRegistrationForm() {
     <div className='relative w-full max-w-xl mx-auto flex flex-col gap-6 animate-fadeIn'>
       {/* Toast Alert popup for mock actions */}
       {toastMessage && (
-        <div className='fixed top-4 right-4 z-50 bg-accent-bg border border-primary text-text-brand px-4 py-3 rounded-button shadow-card text-xs md:text-sm animate-fadeIn'>
+        <div className='fixed top-4 right-4 z-50 bg-[#141722] border border-[#D4AF37] text-[#F5E5C0] px-4 py-3 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.25)] text-xs md:text-sm animate-fadeIn'>
           {toastMessage}
         </div>
       )}
 
       {/* Nav Tabs Selector */}
-      <div className='flex items-center justify-start self-start bg-surface border border-divider p-1 rounded-badge'>
-        <div className='bg-accent-bg border border-border-medium px-4 py-2 rounded-badge'>
-          <span className='font-sans text-[11px] md:text-xs font-semibold text-text-brand uppercase tracking-wider'>
-            Client Register
+      <div className='flex items-center justify-start self-start bg-[#12151F] border border-[rgba(212,175,55,0.25)] p-1 rounded-full shadow-inner'>
+        <div className='bg-gradient-to-r from-[rgba(212,175,55,0.25)] to-[rgba(180,140,40,0.15)] border border-[#D4AF37] px-4 py-1.5 rounded-full'>
+          <span className='font-sans text-[11px] md:text-xs font-bold text-[#F5E5C0] uppercase tracking-wider'>
+            Collector Register
           </span>
         </div>
         <button
           type='button'
           onClick={() => router.push('/host/register')}
-          className='font-sans text-[11px] md:text-xs font-semibold text-text-muted hover:text-text-primary px-4 py-2 rounded-badge transition-colors duration-200 cursor-pointer select-none'
+          className='font-sans text-[11px] md:text-xs font-semibold text-[#A69B82] hover:text-[#F4EBD9] px-4 py-1.5 rounded-full transition-colors duration-200 cursor-pointer select-none'
         >
           Host Register
         </button>
       </div>
 
       {/* Main Registration Card wrapper */}
-      <div className='bg-surface border border-divider p-6 md:p-10 rounded-card shadow-card w-full'>
+      <div className='art-deco-card rounded-2xl p-6 sm:p-8 md:p-10 w-full shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative'>
+        {/* Subtle top gold accent light */}
+        <div className='absolute top-0 left-1/2 -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-80' />
+
         {/* Header section */}
-        <div className='flex flex-col gap-2 mb-8'>
-          <h2 className='font-heading font-normal text-3xl md:text-[36px] text-text-primary'>
-            Register
+        <div className='flex flex-col gap-2 mb-7'>
+          <div className='flex items-center justify-between'>
+            <span className='font-sans font-semibold text-[10px] sm:text-xs text-[#D4AF37] tracking-[0.25em] uppercase'>
+              COLLECTOR ENROLLMENT
+            </span>
+            <span className='text-[10px] text-[#A69B82] bg-[#181C28] px-2.5 py-1 rounded-full border border-[rgba(212,175,55,0.2)]'>
+              Instant Access
+            </span>
+          </div>
+          <h2 className='font-heading font-black text-2xl sm:text-3xl md:text-[34px] text-[#F4EBD9] tracking-tight'>
+            Create Vault Account
           </h2>
-          <div className='flex flex-wrap items-center gap-1.5 text-xs md:text-sm'>
-            <span className='text-text-secondary/70'>Already have an account?</span>
+          <div className='flex flex-wrap items-center gap-1.5 text-xs sm:text-sm'>
+            <span className='text-[#A69B82]'>Already have an account?</span>
             <Link
               href='/login'
-              className='font-medium text-primary hover:text-primary-hover transition-colors duration-200'
+              className='font-semibold text-[#D4AF37] hover:text-[#F5E5C0] hover:underline transition-colors duration-200'
             >
               Log in →
             </Link>
@@ -171,12 +182,12 @@ export default function UserRegistrationForm() {
         </div>
 
         {/* Semantic Form */}
-        <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-4 sm:gap-5'>
           {/* Full Name input field */}
           <div className='flex flex-col w-full gap-1.5'>
             <label
               htmlFor='fullName'
-              className='font-sans font-medium text-xs md:text-sm text-text-primary'
+              className='font-sans font-medium text-xs sm:text-sm text-[#A69B82]'
             >
               Full Name
             </label>
@@ -185,20 +196,20 @@ export default function UserRegistrationForm() {
               id='fullName'
               name='fullName'
               autoComplete='name'
-              placeholder='John Smith'
+              placeholder='Ash Ketchum'
               value={formData.fullName}
               onChange={handleInputChange}
               disabled={formState.isSubmitting}
               className={cn(
-                'w-full bg-bg border border-border rounded-button px-4 py-2.5 font-sans text-xs md:text-sm text-text-primary placeholder:text-text-muted/40 transition-all duration-200 outline-none',
+                'w-full input-obsidian rounded-xl px-4 py-3 font-sans text-xs sm:text-sm placeholder:text-[#6E6655] transition-all duration-200 outline-none',
                 errors.fullName
                   ? 'border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500/30'
-                  : 'focus:border-primary focus:ring-1 focus:ring-primary/20',
+                  : '',
                 formState.isSubmitting && 'opacity-50 cursor-not-allowed',
               )}
             />
             {errors.fullName && (
-              <span className='font-sans text-[11px] text-red-500 mt-1 self-start animate-fadeIn'>
+              <span className='font-sans text-[11px] text-red-400 mt-1 self-start animate-fadeIn'>
                 {errors.fullName}
               </span>
             )}
@@ -208,7 +219,7 @@ export default function UserRegistrationForm() {
           <div className='flex flex-col w-full gap-1.5'>
             <label
               htmlFor='email'
-              className='font-sans font-medium text-xs md:text-sm text-text-primary'
+              className='font-sans font-medium text-xs sm:text-sm text-[#A69B82]'
             >
               Email Address
             </label>
@@ -217,20 +228,20 @@ export default function UserRegistrationForm() {
               id='email'
               name='email'
               autoComplete='email'
-              placeholder='you@example.com'
+              placeholder='you@tcgdraws.com'
               value={formData.email}
               onChange={handleInputChange}
               disabled={formState.isSubmitting}
               className={cn(
-                'w-full bg-bg border border-border rounded-button px-4 py-2.5 font-sans text-xs md:text-sm text-text-primary placeholder:text-text-muted/40 transition-all duration-200 outline-none',
+                'w-full input-obsidian rounded-xl px-4 py-3 font-sans text-xs sm:text-sm placeholder:text-[#6E6655] transition-all duration-200 outline-none',
                 errors.email
                   ? 'border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500/30'
-                  : 'focus:border-primary focus:ring-1 focus:ring-primary/20',
+                  : '',
                 formState.isSubmitting && 'opacity-50 cursor-not-allowed',
               )}
             />
             {errors.email && (
-              <span className='font-sans text-[11px] text-red-500 mt-1 self-start animate-fadeIn'>
+              <span className='font-sans text-[11px] text-red-400 mt-1 self-start animate-fadeIn'>
                 {errors.email}
               </span>
             )}
@@ -240,10 +251,10 @@ export default function UserRegistrationForm() {
           <div className='flex flex-col w-full gap-1.5'>
             <label
               htmlFor='phone'
-              className='font-sans font-medium text-xs md:text-sm text-text-primary'
+              className='font-sans font-medium text-xs sm:text-sm text-[#A69B82]'
             >
               Phone Number{' '}
-              <span className='text-text-muted/40 text-[10px] md:text-xs font-normal'>
+              <span className='text-[#6E6655] text-[10px] sm:text-xs font-normal'>
                 (Optional)
               </span>
             </label>
@@ -257,15 +268,15 @@ export default function UserRegistrationForm() {
               onChange={handleInputChange}
               disabled={formState.isSubmitting}
               className={cn(
-                'w-full bg-bg border border-border rounded-button px-4 py-2.5 font-sans text-xs md:text-sm text-text-primary placeholder:text-text-muted/40 transition-all duration-200 outline-none',
+                'w-full input-obsidian rounded-xl px-4 py-3 font-sans text-xs sm:text-sm placeholder:text-[#6E6655] transition-all duration-200 outline-none',
                 errors.phone
                   ? 'border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500/30'
-                  : 'focus:border-primary focus:ring-1 focus:ring-primary/20',
+                  : '',
                 formState.isSubmitting && 'opacity-50 cursor-not-allowed',
               )}
             />
             {errors.phone && (
-              <span className='font-sans text-[11px] text-red-500 mt-1 self-start animate-fadeIn'>
+              <span className='font-sans text-[11px] text-red-400 mt-1 self-start animate-fadeIn'>
                 {errors.phone}
               </span>
             )}
@@ -275,7 +286,7 @@ export default function UserRegistrationForm() {
           <div className='flex flex-col w-full gap-1.5'>
             <label
               htmlFor='password'
-              className='font-sans font-medium text-xs md:text-sm text-text-primary'
+              className='font-sans font-medium text-xs sm:text-sm text-[#A69B82]'
             >
               Password
             </label>
@@ -290,21 +301,20 @@ export default function UserRegistrationForm() {
                 onChange={handleInputChange}
                 disabled={formState.isSubmitting}
                 className={cn(
-                  'w-full bg-bg border border-border rounded-button pl-4 pr-12 py-2.5 font-sans text-xs md:text-sm text-text-primary placeholder:text-text-muted/40 transition-all duration-200 outline-none',
+                  'w-full input-obsidian rounded-xl pl-4 pr-12 py-3 font-sans text-xs sm:text-sm placeholder:text-[#6E6655] transition-all duration-200 outline-none',
                   errors.password
                     ? 'border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500/30'
-                    : 'focus:border-primary focus:ring-1 focus:ring-primary/20',
+                    : '',
                   formState.isSubmitting && 'opacity-50 cursor-not-allowed',
                 )}
               />
               <button
                 type='button'
                 onClick={() => setShowPassword(!showPassword)}
-                className='absolute right-3.5 top-1/2 -translate-y-1/2 text-text-muted/60 hover:text-text-brand p-1 cursor-pointer select-none transition-colors duration-200'
+                className='absolute right-3.5 top-1/2 -translate-y-1/2 text-[#A69B82] hover:text-[#D4AF37] p-1 cursor-pointer select-none transition-colors duration-200'
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
-                  /* Eye Slash Icon */
                   <svg
                     className='w-5 h-5'
                     fill='none'
@@ -319,7 +329,6 @@ export default function UserRegistrationForm() {
                     />
                   </svg>
                 ) : (
-                  /* Eye Icon */
                   <svg
                     className='w-5 h-5'
                     fill='none'
@@ -342,27 +351,27 @@ export default function UserRegistrationForm() {
               </button>
             </div>
             {errors.password && (
-              <span className='font-sans text-[11px] text-red-500 mt-1 self-start animate-fadeIn'>
+              <span className='font-sans text-[11px] text-red-400 mt-1 self-start animate-fadeIn'>
                 {errors.password}
               </span>
             )}
 
             {/* Password Strength Meter */}
-            <div className='flex gap-1.5 mt-1.5 h-[4px] w-full'>
+            <div className='flex gap-1.5 mt-2 h-[4px] w-full'>
               {[1, 2, 3, 4].map((barIndex) => (
                 <div
                   key={barIndex}
                   className={cn(
-                    'h-full flex-1 rounded-badge transition-all duration-300',
+                    'h-full flex-1 rounded-full transition-all duration-300',
                     formData.password.length > 0 && barIndex <= passwordStrength
                       ? passwordStrength <= 1
-                        ? 'bg-red-500'
+                        ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.5)]'
                         : passwordStrength === 2
-                          ? 'bg-orange-500'
+                          ? 'bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]'
                           : passwordStrength === 3
-                            ? 'bg-yellow-500'
-                            : 'bg-primary'
-                      : 'bg-divider',
+                            ? 'bg-yellow-400 shadow-[0_0_8px_rgba(250,204,21,0.5)]'
+                            : 'bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.7)]'
+                      : 'bg-[#181C28]',
                   )}
                 />
               ))}
@@ -373,7 +382,7 @@ export default function UserRegistrationForm() {
           <div className='flex flex-col w-full gap-1.5'>
             <label
               htmlFor='confirmPassword'
-              className='font-sans font-medium text-xs md:text-sm text-text-primary'
+              className='font-sans font-medium text-xs sm:text-sm text-[#A69B82]'
             >
               Confirm Password
             </label>
@@ -388,17 +397,17 @@ export default function UserRegistrationForm() {
                 onChange={handleInputChange}
                 disabled={formState.isSubmitting}
                 className={cn(
-                  'w-full bg-bg border border-border rounded-button pl-4 pr-12 py-2.5 font-sans text-xs md:text-sm text-text-primary placeholder:text-text-muted/40 transition-all duration-200 outline-none',
+                  'w-full input-obsidian rounded-xl pl-4 pr-12 py-3 font-sans text-xs sm:text-sm placeholder:text-[#6E6655] transition-all duration-200 outline-none',
                   errors.confirmPassword
                     ? 'border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500/30'
-                    : 'focus:border-primary focus:ring-1 focus:ring-primary/20',
+                    : '',
                   formState.isSubmitting && 'opacity-50 cursor-not-allowed',
                 )}
               />
               <button
                 type='button'
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className='absolute right-3.5 top-1/2 -translate-y-1/2 text-text-muted/60 hover:text-text-brand p-1 cursor-pointer select-none transition-colors duration-200'
+                className='absolute right-3.5 top-1/2 -translate-y-1/2 text-[#A69B82] hover:text-[#D4AF37] p-1 cursor-pointer select-none transition-colors duration-200'
                 aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
               >
                 {showConfirmPassword ? (
@@ -438,109 +447,83 @@ export default function UserRegistrationForm() {
               </button>
             </div>
             {errors.confirmPassword && (
-              <span className='font-sans text-[11px] text-red-500 mt-1 self-start animate-fadeIn'>
+              <span className='font-sans text-[11px] text-red-400 mt-1 self-start animate-fadeIn'>
                 {errors.confirmPassword}
               </span>
             )}
           </div>
 
           {/* Guidelines / Terms check */}
-          <div className='flex flex-col gap-3 mt-1'>
-            <label className='flex items-start gap-2.5 text-xs md:text-sm text-text-secondary select-none cursor-pointer'>
+          <div className='flex flex-col gap-2.5 mt-1'>
+            <label className='flex items-start gap-2.5 text-xs text-[#A69B82] select-none cursor-pointer'>
               <input
                 type='checkbox'
                 name='acceptedTerms'
                 checked={formData.acceptedTerms}
                 onChange={handleInputChange}
                 disabled={formState.isSubmitting}
-                className='w-4.5 h-4.5 mt-0.5 rounded border border-border bg-bg text-primary focus:ring-0 focus:ring-offset-0 focus:outline-none accent-primary transition-all duration-200 cursor-pointer shrink-0'
+                className='w-4 h-4 mt-0.5 rounded border border-[rgba(212,175,55,0.3)] bg-[#0C0E14] text-[#D4AF37] focus:ring-0 focus:ring-offset-0 focus:outline-none accent-[#D4AF37] transition-all duration-200 cursor-pointer shrink-0'
               />
               <span className='leading-tight'>
                 I confirm that I agree to the{' '}
-                <Link href='/terms' className='text-text-brand hover:underline font-semibold'>
+                <Link href='/terms' className='text-[#D4AF37] hover:underline font-semibold'>
                   Terms and Conditions
                 </Link>{' '}
                 and{' '}
-                <Link href='/privacy' className='text-text-brand hover:underline font-semibold'>
+                <Link href='/privacy' className='text-[#D4AF37] hover:underline font-semibold'>
                   Privacy Policy
                 </Link>
                 .
               </span>
             </label>
             {errors.acceptedTerms && (
-              <span className='font-sans text-[11px] text-red-500 self-start animate-fadeIn'>
+              <span className='font-sans text-[11px] text-red-400 self-start animate-fadeIn'>
                 {errors.acceptedTerms}
               </span>
             )}
 
-            <label className='flex items-start gap-2.5 text-xs md:text-sm text-text-secondary select-none cursor-pointer'>
+            <label className='flex items-start gap-2.5 text-xs text-[#A69B82] select-none cursor-pointer'>
               <input
                 type='checkbox'
                 name='acceptedMarketing'
                 checked={formData.acceptedMarketing}
                 onChange={handleInputChange}
                 disabled={formState.isSubmitting}
-                className='w-4.5 h-4.5 mt-0.5 rounded border border-border bg-bg text-primary focus:ring-0 focus:ring-offset-0 focus:outline-none accent-primary transition-all duration-200 cursor-pointer shrink-0'
+                className='w-4 h-4 mt-0.5 rounded border border-[rgba(212,175,55,0.3)] bg-[#0C0E14] text-[#D4AF37] focus:ring-0 focus:ring-offset-0 focus:outline-none accent-[#D4AF37] transition-all duration-200 cursor-pointer shrink-0'
               />
               <span className='leading-tight'>
-                I want to receive marketing updates, raffle announcements, and exclusive discount
-                codes.
+                I want to receive Pokémon grail alerts, live draw notifications, and exclusive vault drops.
               </span>
             </label>
           </div>
 
           {/* Submit Button */}
-          <PrimaryButton
+          <button
             type='submit'
             disabled={formState.isSubmitting || !isMounted}
-            className='w-full py-3.5 mt-2 font-heading font-semibold text-sm tracking-wide uppercase'
+            className='btn-gold-metallic w-full py-3.5 mt-2 rounded-xl font-heading font-black text-xs sm:text-sm tracking-[0.15em] uppercase cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.99] transition-all flex items-center justify-center gap-2'
           >
-            {formState.isSubmitting ? 'Registering...' : 'Register →'}
-          </PrimaryButton>
-
-          {/* OR Divider */}
-          {/* <div className='flex items-center gap-3 my-2 select-none'>
-            <div className='h-px bg-border flex-1' />
-            <span className='font-sans text-xs text-border-medium uppercase tracking-wider font-semibold'>
-              OR
-            </span>
-            <div className='h-px bg-border flex-1' />
-          </div> */}
-
-          {/* Social Logins */}
-          {/* <div className="flex flex-col gap-3">
-            <button
-              type="button"
-              onClick={() => showToast("Google registration simulated!")}
-              disabled={formState.isSubmitting}
-              className="w-full bg-elevated border border-border hover:bg-border/30 hover:border-border-medium rounded-button py-2.5 font-sans font-medium text-xs md:text-sm text-text-primary transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.24 10.285V13.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.859-3.578-7.859-8s3.53-8 7.859-8c2.46 0 4.105 1.025 5.047 1.926l2.427-2.334C17.955 2.192 15.34 1 12.24 1 6.033 1 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 10.793-4.537 10.793-10.977 0-.742-.08-1.306-.177-1.866H12.24z" />
-              </svg>
-              <span>Register with Google</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => showToast("Apple registration simulated!")}
-              disabled={formState.isSubmitting}
-              className="w-full bg-elevated border border-border hover:bg-border/30 hover:border-border-medium rounded-button py-2.5 font-sans font-medium text-xs md:text-sm text-text-primary transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer select-none"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.17.67-2.88 1.49-.6.69-1.12 1.83-.98 2.94 1.07.08 2.21-.56 2.87-1.37z" />
-              </svg>
-              <span>Register with Apple</span>
-            </button>
-          </div> */}
+            {formState.isSubmitting ? (
+              <>
+                <svg className="animate-spin h-4 w-4 text-[#090A0E]" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <span>Creating Account...</span>
+              </>
+            ) : (
+              <span>Create Account &rarr;</span>
+            )}
+          </button>
         </form>
       </div>
 
       {/* Switch to Host link */}
-      <div className='text-center mt-2 text-xs md:text-sm'>
-        <span className='text-text-secondary/70'>Looking to host draws instead? </span>
+      <div className='text-center mt-1 text-xs sm:text-sm'>
+        <span className='text-[#A69B82]'>Looking to host card competitions instead? </span>
         <Link
           href='/host/register'
-          className='text-text-brand hover:text-primary-hover font-semibold transition-colors inline-flex items-center gap-1 cursor-pointer select-none'
+          className='text-[#D4AF37] hover:text-[#F5E5C0] font-semibold hover:underline transition-colors inline-flex items-center gap-1 cursor-pointer select-none'
         >
           Go to Host Register &rarr;
         </Link>

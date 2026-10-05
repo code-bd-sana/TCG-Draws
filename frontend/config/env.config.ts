@@ -9,8 +9,19 @@ interface EnvConfig {
   appUrl: string;
 }
 
+const normalizeUrl = (url: string): string => {
+  let cleaned = (url || '').trim().replace(/\/+$/, '');
+  // Automatically upgrade insecure tcgdraws.com domain to https to prevent 301 CORS Network Error in browsers
+  if (cleaned.startsWith('http://tcgdraws.com') || cleaned.startsWith('http://www.tcgdraws.com')) {
+    cleaned = cleaned.replace(/^http:\/\//, 'https://');
+  }
+  return cleaned;
+};
+
+const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
+const rawAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+
 export const envConfig: EnvConfig = {
-  // Use localhost:5000 as default per backend port configuration
-  apiUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1',
-  appUrl: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  apiUrl: normalizeUrl(rawApiUrl),
+  appUrl: normalizeUrl(rawAppUrl),
 };

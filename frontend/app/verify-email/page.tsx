@@ -4,8 +4,8 @@ import UserAuthLayout from "../../components/user-auth/UserAuthLayout";
 import VerifyEmailForm from "../../components/user-auth/VerifyEmailForm";
 
 export const metadata: Metadata = {
-  title: "Verify Email | Fairway Draws",
-  description: "Verify your email address to activate your Fairway Draws account.",
+  title: "Verify Email | TCG DRAWS",
+  description: "Verify your email address to activate your TCG DRAWS collector account.",
 };
 
 export default function VerifyEmailPage() {

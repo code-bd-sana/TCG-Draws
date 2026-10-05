@@ -4,7 +4,7 @@ import { FOOTER_SECTIONS, BRAND_NAME, SOCIAL_LINKS } from "../../../lib/constant
 import FairwayDrawsLogo from "../shared/FairwayDrawsLogo";
 
 /**
- * Premium Fairway Draws website footer — light theme, golf branding.
+ * Premium TCG DRAWS website footer — luxury dark obsidian & gold aesthetic.
  */
 export default function WebsiteFooter() {
   const renderSocialIcon = (platform: string) => {
@@ -22,24 +22,24 @@ export default function WebsiteFooter() {
   };
 
   return (
-    <footer className="bg-[#F8FAF6] border-t border-[#EFF4ED] pt-16 pb-10 mt-auto">
+    <footer className="bg-[#07080B] border-t border-[rgba(212,175,55,0.2)] pt-16 pb-10 mt-auto">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
 
           {/* Brand Column */}
           <div className="lg:col-span-2 flex flex-col gap-5">
-            <FairwayDrawsLogo variant="light" size="lg" />
+            <FairwayDrawsLogo variant="dark" size="lg" />
 
-            <p className="font-sans text-xs text-[#5e766c] leading-relaxed max-w-xs">
-              The premier platform for luxury golf prize competitions. Win top-tier equipment, club memberships &amp; PGA tournament access — all for a fraction of the price.
+            <p className="font-sans text-xs text-[#A69B82] leading-relaxed max-w-xs">
+              The premier platform for authentic Pokémon TCG draws. Win PSA &amp; BGS Gem Mint 10 slabs, vintage 1st Edition booster packs, and sealed boxes — for a fraction of the price.
             </p>
 
             {/* Trust badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-[#0b4d35]/15 rounded-xl text-[10px] font-bold text-[#0b4d35] self-start shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+            <div className="inline-flex items-center gap-2 px-3.5 py-2 bg-[#0C0E14] border border-[rgba(212,175,55,0.25)] rounded-xl text-[10px] font-bold text-[#D4AF37] self-start shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 text-[#D4AF37]">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
               </svg>
-              100% Secure · UK Raffle Compliant
+              100% Certified PSA Slabs · UK Compliant
             </div>
 
             {/* Social Icons */}
@@ -50,7 +50,7 @@ export default function WebsiteFooter() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center w-9 h-9 rounded-xl bg-white border border-[#0b4d35]/15 text-[#5e766c] hover:text-[#0b4d35] hover:border-[#0b4d35]/35 hover:shadow-md transition-all duration-200"
+                  className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#12151F] border border-[rgba(212,175,55,0.25)] text-[#A69B82] hover:text-[#D4AF37] hover:border-[#D4AF37] hover:shadow-md transition-all duration-200"
                   aria-label={`${link.platform} Profile`}
                 >
                   {renderSocialIcon(link.platform)}
@@ -62,7 +62,7 @@ export default function WebsiteFooter() {
           {/* Link Columns */}
           {FOOTER_SECTIONS.map((section) => (
             <div key={section.title} className="flex flex-col gap-4">
-              <h4 className="font-sans font-black text-xs text-[#0b4d35] uppercase tracking-wider">
+              <h4 className="font-heading font-black text-xs text-[#D4AF37] uppercase tracking-wider">
                 {section.title}
               </h4>
               <ul className="flex flex-col gap-3">
@@ -70,7 +70,7 @@ export default function WebsiteFooter() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="font-sans text-xs text-[#5e766c] hover:text-[#0b4d35] transition-colors duration-200"
+                      className="font-sans text-xs text-[#A69B82] hover:text-[#D4AF37] transition-colors duration-200"
                     >
                       {link.label}
                     </Link>
@@ -82,18 +82,18 @@ export default function WebsiteFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-[#EFF4ED] pt-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 text-[10px] text-[#5e766c] leading-relaxed">
+        <div className="border-t border-[rgba(212,175,55,0.15)] pt-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 text-[10px] text-[#A69B82] leading-relaxed">
           <div className="max-w-3xl">
-            <p className="mb-1.5 font-semibold">
+            <p className="mb-1.5 font-semibold text-[#F4EBD9]">
               © {new Date().getFullYear()} {BRAND_NAME} Ltd. All rights reserved. Registered in England &amp; Wales.
             </p>
             <p>
-              Prize draws are operated in accordance with the UK Gambling Act 2005 as compliant prize competitions. Participation is limited to individuals aged 18 or older. Ticket purchases are final and non-refundable.
+              Prize competitions are operated in accordance with the UK Gambling Act 2005. Participation is restricted to individuals aged 18 or older resident in the United Kingdom.
             </p>
           </div>
-          <div className="flex items-center gap-2 bg-white border border-[#0b4d35]/15 px-4 py-2.5 rounded-xl text-[10px] text-[#0b4d35] font-bold whitespace-nowrap shadow-sm shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#16A34A] animate-pulse" />
-            SSL Secured Payments
+          <div className="flex items-center gap-2 bg-[#0C0E14] border border-[rgba(212,175,55,0.25)] px-4 py-2.5 rounded-xl text-[10px] text-[#D4AF37] font-bold whitespace-nowrap shadow-sm shrink-0">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+            256-Bit SSL Encrypted Vault Checkout
           </div>
         </div>
       </div>

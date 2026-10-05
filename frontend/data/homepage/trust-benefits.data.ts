@@ -10,39 +10,38 @@ export interface TrustBenefit {
 export const trustStatsData: StatItem[] = [
   {
     id: "trust-stat-1",
-    value: "2,400",
+    value: "2,400+",
     label: "Draws Completed",
   },
   {
     id: "trust-stat-2",
-    value: "£180,000",
-    label: "Prizes Won",
+    value: "£350,000+",
+    label: "Grails Delivered",
   },
   {
     id: "trust-stat-3",
-    value: "12,000",
-    label: "Happy Winners",
+    value: "14,500+",
+    label: "Active Collectors",
   },
-
 ];
 
 export const trustBenefitsData: TrustBenefit[] = [
   {
     id: "benefit-1",
-    title: "100% Secure Payments",
-    description: "Every ticket purchase is protected by 256-bit bank-grade encryption, ensuring your payments are always safe.",
+    title: "100% Authenticated Cards",
+    description: "Every single slab in our draws is graded and certified genuine by PSA, BGS, or CGC with online verification.",
     iconName: "ShieldCheckIcon",
   },
   {
     id: "benefit-2",
-    title: "Fast Host Payouts",
-    description: "Hosts are paid next working day after the live draw.",
+    title: "Fast Next-Day Payouts",
+    description: "Verified card shops and pack breakers receive prompt escrow payouts immediately following draw completion.",
     iconName: "LockClosedIcon",
   },
   {
     id: "benefit-3",
-    title: "Verified Random Draws",
-    description: "All draws are conducted live on stream using public third-party random number generators. Verifiable and fully transparent.",
+    title: "Provably Fair Live Streams",
+    description: "All draws are conducted live on stream with independent third-party random number generation for full transparency.",
     iconName: "SparklesIcon",
   },
 ];

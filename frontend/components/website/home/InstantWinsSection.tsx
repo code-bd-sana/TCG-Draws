@@ -71,14 +71,14 @@ export default function InstantWinsSection() {
       });
 
   return (
-    <section id="instant-wins" className="py-20 bg-bg border-t border-divider">
+    <section id="instant-wins" className="py-20 bg-[#0C0E14] border-t border-[rgba(212,175,55,0.15)]">
       <div className="container-custom">
 
         {/* Section Header */}
         <SectionHeader
-          badgeText="INSTANT WIN PRIZES NOW LIVE"
-          headingText="Win Big. Every Day."
-          paragraphText="All draws are conducted live on stream using a lottery ball machine, ensuring a fair and transparent draw process."
+          badgeText="⚡ INSTANT WIN PRIZES NOW LIVE"
+          headingText="Win Instantly. Every Day."
+          paragraphText="Match allocated lucky ticket numbers immediately to claim instant Pokémon packs, mystery slabs, and grail drops."
         />
 
         {/* Filter Tabs Row */}
@@ -86,10 +86,10 @@ export default function InstantWinsSection() {
           <button
             onClick={() => setActiveCategory("all")}
             className={cn(
-              "font-sans font-semibold text-xs px-5 py-2.5 rounded-button border transition-all duration-200 cursor-pointer select-none",
+              "font-heading font-semibold text-xs px-5 py-2.5 rounded-xl border transition-all duration-200 cursor-pointer select-none",
               activeCategory === "all"
-                ? "bg-primary border-primary text-primary-text hover:bg-primary-hover"
-                : "bg-surface border-border text-text-muted hover:text-text-primary hover:border-border-medium"
+                ? "btn-gold-metallic border-transparent"
+                : "btn-dark-metallic border-[rgba(212,175,55,0.25)] text-[#A69B82] hover:text-[#D4AF37]"
             )}
           >
             All
@@ -99,10 +99,10 @@ export default function InstantWinsSection() {
               key={category.id}
               onClick={() => setActiveCategory(category.slug)}
               className={cn(
-                "font-sans font-semibold text-xs px-5 py-2.5 rounded-button border transition-all duration-200 cursor-pointer select-none capitalize",
+                "font-heading font-semibold text-xs px-5 py-2.5 rounded-xl border transition-all duration-200 cursor-pointer select-none capitalize",
                 activeCategory === category.slug
-                  ? "bg-primary border-primary text-primary-text hover:bg-primary-hover"
-                  : "bg-surface border-border text-text-muted hover:text-text-primary hover:border-border-medium"
+                  ? "btn-gold-metallic border-transparent"
+                  : "btn-dark-metallic border-[rgba(212,175,55,0.25)] text-[#A69B82] hover:text-[#D4AF37]"
               )}
             >
               {category.name}
@@ -112,8 +112,8 @@ export default function InstantWinsSection() {
 
         {/* Competitions Grid */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 text-text-muted gap-4">
-            <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full"></div>
+          <div className="flex flex-col items-center justify-center py-20 text-[#A69B82] gap-4">
+            <div className="animate-spin h-10 w-10 border-4 border-[#D4AF37] border-t-transparent rounded-full"></div>
             <p className="font-sans font-medium text-sm">Loading Instant Wins...</p>
           </div>
         ) : filteredDraws.length > 0 ? (
@@ -123,8 +123,8 @@ export default function InstantWinsSection() {
             ))}
           </div>
         ) : (
-          <div className="text-center text-text-muted py-10">
-            No instant win competitions found.
+          <div className="text-center text-[#A69B82] py-10 font-sans text-sm">
+            No instant win competitions found in this category.
           </div>
         )}
 
@@ -132,9 +132,9 @@ export default function InstantWinsSection() {
         <div className="mt-12 text-center">
           <a
             href="/live-raffles"
-            className="inline-flex items-center justify-center font-sans font-bold text-sm px-8 py-3.5 rounded-button bg-surface border border-border text-text-primary transition-all duration-300 hover:border-border-medium hover:text-text-brand hover:shadow-glow focus:outline-none focus:ring-2 focus:ring-brand/50"
+            className="btn-dark-metallic inline-flex items-center justify-center font-heading font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl border border-[rgba(212,175,55,0.3)] text-[#D4AF37] hover:border-[#D4AF37] hover:shadow-[0_0_20px_rgba(212,175,55,0.2)] transition-all"
           >
-            View All Competitions
+            View All Competitions &rarr;
           </a>
         </div>
       </div>

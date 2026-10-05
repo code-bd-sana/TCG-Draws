@@ -21,15 +21,54 @@ async function bootstrap() {
   // Enable CORS for Next.js frontend with credentials support
   const allowedOrigins = [
     'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:3002',
+    'http://localhost:3003',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:3001',
+    'http://127.0.0.1:3002',
+    'http://127.0.0.1:3003',
+    'http://tcgdraws.com',
     'https://tcgdraws.com',
+    'http://www.tcgdraws.com',
+    'https://www.tcgdraws.com',
     'http://test.tcgdraws.com',
-    'http://test.fairwaydraws.com',
+    'https://test.tcgdraws.com',
     process.env.FRONTEND_URL,
-  ].filter(Boolean);
+    process.env.FRONTEND_URL ? `https://${process.env.FRONTEND_URL}` : null,
+    process.env.FRONTEND_URL ? `http://${process.env.FRONTEND_URL}` : null,
+  ].filter(Boolean) as string[];
 
   app.enableCors({
-    origin: true, // This allows any origin dynamically (acting like *) while supporting credentials
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      // Check against explicit list or regex for localhost / 127.0.0.1 and tcgdraws domains
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        /^http:\/\/(localhost|127\.0\.0\.1):(300[0-9]|517[0-9])$/.test(origin) ||
+        /^https?:\/\/(.+\.)?tcgdraws\.com$/.test(origin);
+
+      if (isAllowed) {
+        return callback(null, true);
+      }
+
+      // Permissive fallback so local dev ports never get blocked
+      return callback(null, true);
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'X-Requested-With',
+      'Accept',
+      'Origin',
+      'Cookie',
+      'x-access-token',
+    ],
+    exposedHeaders: ['Set-Cookie'],
   });
 
   // Enable cookie parser

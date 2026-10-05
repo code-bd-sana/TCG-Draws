@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { trustBenefitsData } from "../../../data/homepage/trust-benefits.data";
-import StatCard from "../shared/StatCard";
 import { raffleService } from "../../../services/raffle.service";
 
 const ICONS: Record<string, React.ReactNode> = {
@@ -24,7 +23,7 @@ const ICONS: Record<string, React.ReactNode> = {
 };
 
 /**
- * Trust & Statistics section — marquee stats + benefits grid.
+ * Trust & Statistics section — luxury dark theme with marquee stats + benefits grid.
  */
 export default function TrustBenefitsSection() {
   const [stats, setStats] = useState<{ id: number; value: string; label: string }[]>([]);
@@ -36,19 +35,19 @@ export default function TrustBenefitsSection() {
   }, []);
 
   return (
-    <section className="py-20 bg-white border-t border-[#EFF4ED]">
+    <section className="py-20 bg-[#090A0E] border-t border-[rgba(212,175,55,0.15)]">
       <div className="container-custom">
 
         {/* Marquee strip */}
         {stats.length > 0 && (
-          <div className="relative w-full overflow-hidden bg-[#F8FAF6] border border-[#0b4d35]/12 rounded-2xl shadow-sm mb-16 py-5">
-            <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#F8FAF6] to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#F8FAF6] to-transparent z-10 pointer-events-none" />
+          <div className="relative w-full overflow-hidden bg-[#0C0E14] border border-[rgba(212,175,55,0.2)] rounded-2xl shadow-lg mb-16 py-5">
+            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0C0E14] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0C0E14] to-transparent z-10 pointer-events-none" />
             <div className="flex w-max animate-marquee gap-20">
               {[...stats, ...stats, ...stats, ...stats].map((stat, i) => (
                 <div key={`${stat.id}-${i}`} className="shrink-0 min-w-[200px] flex flex-col items-center">
-                  <span className="font-serif text-2xl font-black text-[#0b4d35]">{stat.value}</span>
-                  <span className="font-sans text-[10px] font-bold text-[#5e766c] uppercase tracking-wider mt-0.5">{stat.label}</span>
+                  <span className="font-heading text-2xl font-black text-[#D4AF37]">{stat.value}</span>
+                  <span className="font-sans text-[10px] font-bold text-[#A69B82] uppercase tracking-wider mt-0.5">{stat.label}</span>
                 </div>
               ))}
             </div>
@@ -57,10 +56,10 @@ export default function TrustBenefitsSection() {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#dc2626] block mb-2">Why Trust Us</span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-black text-[#0b4d35]">Built for Golfers, By Golfers</h2>
-          <p className="font-sans text-sm text-[#5e766c] mt-3 max-w-md mx-auto leading-relaxed">
-            Every detail of Fairway Draws is designed to give you a secure, transparent, and premium experience.
+          <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#D4AF37] block mb-2">Why Trust Us</span>
+          <h2 className="font-heading text-3xl sm:text-4xl font-black text-[#F4EBD9]">Built For Pokémon Collectors</h2>
+          <p className="font-sans text-sm text-[#A69B82] mt-3 max-w-md mx-auto leading-relaxed">
+            Every competition on TCG DRAWS is audited, legally compliant, and backed by authentic PSA &amp; BGS slabs.
           </p>
         </div>
 
@@ -69,21 +68,21 @@ export default function TrustBenefitsSection() {
           {trustBenefitsData.map((benefit) => (
             <div
               key={benefit.id}
-              className="group relative bg-[#F8FAF6] border border-[#0b4d35]/12 rounded-[20px] p-7 flex flex-col gap-4 hover:border-[#0b4d35]/35 hover:shadow-xl hover:shadow-emerald-900/8 transition-all duration-300 overflow-hidden"
+              className="group relative bg-[#0C0E14] border border-[rgba(212,175,55,0.2)] rounded-[20px] p-7 flex flex-col gap-4 hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.2)] transition-all duration-300 overflow-hidden"
             >
               {/* Hover glow */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[#0b4d35]/4 via-transparent to-transparent pointer-events-none rounded-[20px]" />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-[rgba(212,175,55,0.06)] via-transparent to-transparent pointer-events-none rounded-[20px]" />
 
               {/* Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-white border border-[#0b4d35]/15 flex items-center justify-center text-[#0b4d35] group-hover:bg-[#0b4d35] group-hover:text-white group-hover:border-[#0b4d35] transition-all duration-300 shrink-0 shadow-sm">
+              <div className="w-14 h-14 rounded-2xl bg-[#141722] border border-[rgba(212,175,55,0.25)] flex items-center justify-center text-[#D4AF37] group-hover:bg-gradient-to-r group-hover:from-[#D4AF37] group-hover:to-[#B39042] group-hover:text-[#090A0E] group-hover:border-[#D4AF37] transition-all duration-300 shrink-0 shadow-md">
                 {ICONS[benefit.iconName]}
               </div>
 
-              <h3 className="font-serif font-black text-lg text-[#0b4d35]">{benefit.title}</h3>
-              <p className="font-sans text-sm text-[#334e43] leading-relaxed">{benefit.description}</p>
+              <h3 className="font-heading font-black text-lg text-[#F4EBD9]">{benefit.title}</h3>
+              <p className="font-sans text-sm text-[#A69B82] leading-relaxed">{benefit.description}</p>
 
               {/* Animated bottom line */}
-              <div className="h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-[#0b4d35] to-[#dc2626]/50 rounded-full transition-all duration-500 ease-out mt-auto" />
+              <div className="h-[2px] w-0 group-hover:w-full bg-gradient-to-r from-[#D4AF37] to-[#F5E5C0] rounded-full transition-all duration-500 ease-out mt-auto" />
             </div>
           ))}
         </div>

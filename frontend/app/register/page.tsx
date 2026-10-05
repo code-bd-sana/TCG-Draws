@@ -4,8 +4,8 @@ import UserAuthLayout from "../../components/user-auth/UserAuthLayout";
 import UserRegistrationForm from "../../components/user-auth/UserRegistrationForm";
 
 export const metadata: Metadata = {
-  title: "Player Registration | Fairway Draws",
-  description: "Create an account to join the Fairway Draws community, purchase tickets, and win premium prizes.",
+  title: "Collector Registration | TCG DRAWS",
+  description: "Create your TCG DRAWS account to join the collector community, enter draws for PSA/BGS graded Pokémon slabs, and win rare grails.",
 };
 
 export default function UserRegisterPage() {

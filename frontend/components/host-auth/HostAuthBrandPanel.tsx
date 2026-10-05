@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
 import FairwayDrawsLogo from '../website/shared/FairwayDrawsLogo';
 import { cn } from "../../lib/utils";
 
@@ -18,10 +16,10 @@ export default function HostAuthBrandPanel({
   // Trust stats for Login screen
   const trustStats = [
     {
-      label: "2,400 Draws Completed",
+      label: "2,400+ Competitions Hosted",
       icon: (
         <svg
-          className="w-[18px] h-[18px]"
+          className="w-[18px] h-[18px] text-[#D4AF37]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2.5"
@@ -32,10 +30,10 @@ export default function HostAuthBrandPanel({
       ),
     },
     {
-      label: "£284,600 Paid to Hosts",
+      label: "£350,000+ Paid Out to Breakers",
       icon: (
         <svg
-          className="w-[18px] h-[18px]"
+          className="w-[18px] h-[18px] text-[#D4AF37]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -50,10 +48,10 @@ export default function HostAuthBrandPanel({
       ),
     },
     {
-      label: "Real-Time Sales Dashboard",
+      label: "Real-Time Live Break Analytics",
       icon: (
         <svg
-          className="w-[18px] h-[18px]"
+          className="w-[18px] h-[18px] text-[#D4AF37]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -76,16 +74,14 @@ export default function HostAuthBrandPanel({
 
   // Stepper tracker steps for Registration flow
   const registrationSteps = [
-    { number: 1, label: "Account Details", stepIds: [1, 2] },
-    { number: 2, label: "Business Information", stepIds: [3] },
+    { number: 1, label: "Account Setup", stepIds: [1, 2] },
+    { number: 2, label: "Breaker / Shop Info", stepIds: [3] },
     { number: 3, label: "Logo & Branding", stepIds: [4] },
-    { number: 4, label: "Payout Details", stepIds: [5, 8] },
+    { number: 4, label: "Bank Payouts", stepIds: [5, 8] },
   ];
 
   const getStepStatus = (stepIds: number[]) => {
-    // If the active step matches any of the step's component parts
     const isActive = stepIds.includes(currentStep);
-    // Find the highest step ID represented in this group
     const maxStepId = Math.max(...stepIds);
     const isCompleted = currentStep > maxStepId;
 
@@ -95,51 +91,57 @@ export default function HostAuthBrandPanel({
   };
 
   return (
-    <div className="relative isolate flex h-full flex-col justify-between overflow-hidden border-b border-[#bdd3ba] bg-[#e5f0e2] bg-[url('/hero-banner.jpg')] bg-cover bg-[position:left_center] px-6 py-8 before:absolute before:inset-0 before:z-0 before:bg-gradient-to-b before:from-[#f4faf1]/96 before:via-[#e5f0e2]/92 before:to-[#c9dec4]/96 [&>*]:relative [&>*]:z-10 md:px-[60px] lg:px-[80px] md:py-[50px] lg:py-[64px] lg:min-h-screen lg:w-[795px] lg:border-r-0 lg:border-b-0">
+    <div className="relative isolate flex h-full flex-col justify-between overflow-hidden border-b border-[rgba(212,175,55,0.2)] bg-[#0C0E14] px-6 py-8 md:px-[60px] lg:px-[70px] md:py-[50px] lg:py-[64px] lg:min-h-screen lg:border-r lg:border-[rgba(212,175,55,0.2)] lg:border-b-0">
+      {/* Background ambient lighting */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-[radial-gradient(ellipse_at_top_left,rgba(212,175,55,0.12)_0%,transparent_70%)]" />
+        <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-[radial-gradient(circle,rgba(212,175,55,0.06)_0%,transparent_70%)]" />
+      </div>
+
       {/* Top Branding Logo */}
-      <div>
-        <FairwayDrawsLogo variant="light" size="lg" priority />
+      <div className="relative z-10">
+        <FairwayDrawsLogo variant="dark" size="lg" priority />
       </div>
 
       {/* Center Body Panel */}
-      <div className="my-10 lg:my-auto flex flex-col gap-8 w-full max-w-[635px]">
+      <div className="relative z-10 my-10 lg:my-auto flex flex-col gap-8 w-full max-w-[580px]">
         {/* Header Text Group */}
-        <div className="flex flex-col gap-5 items-start">
+        <div className="flex flex-col gap-4 items-start">
           {/* Community Pill Badge */}
-          <div className="bg-accent-bg border border-border px-[11px] py-[4px] rounded-[99px]">
-            <p className="font-sans font-medium text-[10px] md:text-[12px] text-primary tracking-[0.6px] uppercase whitespace-nowrap">
-              JOIN THE COMMUNITY
+          <div className="bg-[#141722] border border-[rgba(212,175,55,0.3)] px-3.5 py-1 rounded-full shadow-sm">
+            <p className="font-heading font-bold text-[10px] md:text-[11px] text-[#D4AF37] tracking-[0.2em] uppercase whitespace-nowrap">
+              {mode === "login" ? "TCG HOST VAULT" : "VERIFIED TCG BREAKER"}
             </p>
           </div>
 
           {/* Hero Headlines */}
           <div className="flex flex-col items-start w-full">
-            <h1 className="font-heading font-bold text-[36px] md:text-[48px] text-text-primary leading-[1.1] md:leading-[80px] tracking-[0.24px] select-none">
+            <h1 className="font-heading font-black text-[30px] md:text-[40px] text-[#F4EBD9] leading-[1.15] tracking-tight select-none">
               {mode === "login"
-                ? "Run Your Own Golf Competitions"
-                : "Become a Verified Host"}
+                ? "Manage Your Card Draws"
+                : "Become a Verified TCG Host"}
             </h1>
           </div>
-          <div className="max-w-[380px] w-full">
-            <p className="font-sans font-normal text-[16px] md:text-[20px] text-text-secondary leading-normal w-[593px] max-w-full">
+          <div className="max-w-[420px] w-full">
+            <p className="font-sans font-normal text-sm md:text-base text-[#A69B82] leading-relaxed">
               {mode === "login"
-                ? "Log in to manage your raffles, track sales, and view your earnings."
-                : "Apply in minutes. Our team typically reviews applications within 24 hours."}
+                ? "Log in to manage your active draws, track ticket sales, and receive instant payouts."
+                : "Host draws for graded slabs, booster boxes, and vintage collections. Applications reviewed in 24h."}
             </p>
           </div>
         </div>
 
         {/* Bottom Feature Details / Tracker */}
-        <div className="mt-3">
+        <div className="mt-2">
           {mode === "login" ? (
             /* Login Trust Stats list */
             <div className="flex flex-col gap-[16px]">
               {trustStats.map((stat, i) => (
                 <div key={i} className="flex items-center gap-[12px]">
-                  <div className="flex items-center justify-center w-[18px] h-[18px] text-text-secondary">
+                  <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-[#141722] border border-[rgba(212,175,55,0.3)] shrink-0">
                     {stat.icon}
                   </div>
-                  <span className="font-sans font-normal text-[14px] text-text-secondary leading-[21px] whitespace-nowrap">
+                  <span className="font-sans font-medium text-sm text-[#F4EBD9] leading-[21px] whitespace-nowrap">
                     {stat.label}
                   </span>
                 </div>
@@ -153,20 +155,20 @@ export default function HostAuthBrandPanel({
                 const isLast = index === registrationSteps.length - 1;
 
                 return (
-                  <div key={step.number} className="flex gap-[12px] items-start">
+                  <div key={step.number} className="flex gap-[14px] items-start">
                     {/* Visual Connector Column */}
                     <div className="flex flex-col items-center">
                       <div
                         className={cn(
-                          "flex items-center justify-center w-[34px] h-[34px] rounded-full border transition-all duration-300 font-heading text-[13px] shadow-sm",
-                          status === "active" && "bg-primary border-primary text-white font-bold ring-4 ring-primary/20",
-                          status === "completed" && "bg-primary border-primary text-white font-bold",
-                          status === "inactive" && "bg-white border-primary/50 text-primary font-bold shadow-xs"
+                          "flex items-center justify-center w-[34px] h-[34px] rounded-full border transition-all duration-300 font-heading text-xs shadow-sm",
+                          status === "active" && "btn-gold-metallic text-[#090A0E] font-black border-[#F5E5C0] shadow-[0_0_15px_rgba(212,175,55,0.45)] ring-2 ring-[rgba(212,175,55,0.3)]",
+                          status === "completed" && "bg-[#141722] border-[#D4AF37] text-[#D4AF37] font-bold shadow-[0_0_10px_rgba(212,175,55,0.2)]",
+                          status === "inactive" && "bg-[#090A0E] border-[rgba(212,175,55,0.2)] text-[#A69B82] font-semibold"
                         )}
                       >
                         {status === "completed" ? (
                           <svg
-                            className="w-4 h-4"
+                            className="w-4 h-4 text-[#D4AF37]"
                             fill="none"
                             stroke="currentColor"
                             strokeWidth="3"
@@ -179,11 +181,11 @@ export default function HostAuthBrandPanel({
                         )}
                       </div>
                       {!isLast && (
-                        <div className="py-[2px]">
+                        <div className="py-[3px]">
                           <div
                             className={cn(
-                              "w-px h-[36px] transition-colors duration-300",
-                              status === "completed" || status === "active" ? "bg-primary" : "bg-primary/30"
+                              "w-0.5 h-[34px] transition-colors duration-300",
+                              status === "completed" || status === "active" ? "bg-[#D4AF37]" : "bg-[rgba(212,175,55,0.2)]"
                             )}
                           />
                         </div>
@@ -191,13 +193,13 @@ export default function HostAuthBrandPanel({
                     </div>
 
                     {/* Step Label Column */}
-                    <div className="pt-[6px] pb-[36px]">
+                    <div className="pt-[6px] pb-[34px]">
                       <p
                         className={cn(
-                          "font-sans text-[14px] leading-[19.5px] transition-colors duration-300 whitespace-nowrap",
-                          status === "active" && "text-text-primary font-bold tracking-tight",
-                          status === "completed" && "text-text-primary font-semibold",
-                          status === "inactive" && "text-text-secondary font-semibold"
+                          "font-heading text-xs md:text-sm uppercase tracking-wider transition-colors duration-300 whitespace-nowrap",
+                          status === "active" && "text-[#D4AF37] font-black drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]",
+                          status === "completed" && "text-[#F4EBD9] font-bold",
+                          status === "inactive" && "text-[#A69B82] font-semibold"
                         )}
                       >
                         {step.label}
@@ -212,9 +214,9 @@ export default function HostAuthBrandPanel({
       </div>
 
       {/* Bottom Footer Copy */}
-      <div className="mt-8 lg:mt-0">
-        <p className="font-sans font-medium text-[11px] leading-[16.5px] text-text-secondary whitespace-nowrap">
-          © {new Date().getFullYear()} Fairway Draws · Privacy Policy · Terms
+      <div className="relative z-10 mt-8 lg:mt-0">
+        <p className="font-sans font-medium text-[11px] text-[#A69B82] whitespace-nowrap">
+          © {new Date().getFullYear()} TCG DRAWS · Privacy Policy · Terms
         </p>
       </div>
     </div>

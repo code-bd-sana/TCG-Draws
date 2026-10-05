@@ -4,8 +4,8 @@ import UserAuthLayout from "../../components/user-auth/UserAuthLayout";
 import UserLoginForm from "../../components/user-auth/UserLoginForm";
 
 export const metadata: Metadata = {
-  title: "Player Login | Fairway Draws",
-  description: "Log in to your Fairway Draws account to view live raffles, purchase tickets, and view winners.",
+  title: "Collector Login | TCG DRAWS",
+  description: "Log in to your TCG DRAWS vault account to enter exclusive Pokémon card draws, track your entries, and view authenticated slab winners.",
 };
 
 /**

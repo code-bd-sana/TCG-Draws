@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import PrimaryButton from "../website/shared/PrimaryButton";
 
 interface AuthSuccessStateProps {
   title: string;
@@ -18,9 +17,9 @@ export default function AuthSuccessState({
   buttonHref = "/",
 }: AuthSuccessStateProps) {
   return (
-    <div className="bg-surface border border-border p-6 md:p-12 rounded-card shadow-card flex flex-col items-center text-center animate-fadeIn max-w-xl mx-auto">
+    <div className="art-deco-card p-6 md:p-12 rounded-2xl shadow-2xl flex flex-col items-center text-center animate-fadeIn max-w-xl mx-auto">
       {/* Animated Success Circle Icon */}
-      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-success-bg border border-success flex items-center justify-center mb-6 text-success-text shadow-glow">
+      <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-[rgba(16,185,129,0.15)] border border-[#10B981] flex items-center justify-center mb-6 text-[#34D399] shadow-[0_0_25px_rgba(16,185,129,0.3)]">
         <svg
           className="w-8 h-8 md:w-10 md:h-10 animate-scaleIn"
           fill="none"
@@ -33,17 +32,20 @@ export default function AuthSuccessState({
       </div>
 
       {/* Success Text */}
-      <h2 className="font-heading font-bold text-2xl md:text-3xl text-text-primary mb-4">
+      <h2 className="font-heading font-black text-2xl md:text-3xl text-[#F4EBD9] mb-4">
         {title}
       </h2>
-      <p className="font-sans text-sm md:text-base text-text-muted leading-relaxed mb-8">
+      <p className="font-sans text-sm md:text-base text-[#A69B82] leading-relaxed mb-8">
         {description}
       </p>
 
       {/* Action Button */}
-      <PrimaryButton href={buttonHref} className="w-full sm:w-auto px-8">
-        {buttonText}
-      </PrimaryButton>
+      <Link
+        href={buttonHref}
+        className="btn-gold-metallic w-full sm:w-auto px-8 py-3.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider inline-flex items-center justify-center cursor-pointer"
+      >
+        {buttonText} &rarr;
+      </Link>
     </div>
   );
 }

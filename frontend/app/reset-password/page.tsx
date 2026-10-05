@@ -4,8 +4,8 @@ import UserAuthLayout from "../../components/user-auth/UserAuthLayout";
 import ResetPasswordForm from "../../components/user-auth/ResetPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Reset Password | Fairway Draws",
-  description: "Enter your new password to access your Fairway Draws account.",
+  title: "Reset Password | TCG DRAWS",
+  description: "Enter your new password to secure and access your TCG DRAWS vault account.",
 };
 
 export default function ResetPasswordPage() {

@@ -44,38 +44,38 @@ export default function FeaturedCompetitionsSection() {
     carouselRef.current?.scrollBy({ left: dir === 'left' ? -370 : 370, behavior: 'smooth' });
 
   return (
-    <section id="live-draws" className="py-20 bg-white border-t border-[#EFF4ED]">
+    <section id="live-draws" className="py-20 bg-[#090A0E] border-t border-[rgba(212,175,55,0.15)]">
       <div className="container-custom">
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-14">
           <div>
-            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#dc2626] block mb-2">⛳ Live Now</span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-black text-[#0b4d35]">Featured Competitions</h2>
-            <p className="font-sans text-sm text-[#5e766c] mt-2 max-w-md">
-              Browse all featured competitions hosted by verified golf clubs &amp; brands.
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#D4AF37] block mb-2">⚡ Live Now</span>
+            <h2 className="font-heading text-3xl sm:text-4xl font-black text-[#F4EBD9]">Featured Pokémon Competitions</h2>
+            <p className="font-sans text-sm text-[#A69B82] mt-2 max-w-md">
+              Browse authenticated PSA &amp; BGS slabs, sealed booster boxes, and ultra-rare vintage cards.
             </p>
           </div>
           <Link
             href="/live-raffles"
-            className="shrink-0 px-6 py-3 bg-[#0b4d35] hover:bg-[#073826] text-white font-sans text-xs font-black tracking-wider uppercase rounded-xl transition-all duration-200 shadow-md hover:shadow-lg self-start sm:self-auto"
+            className="btn-gold-metallic shrink-0 px-6 py-3.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider self-start sm:self-auto shadow-md"
           >
-            See All Competitions →
+            See All Competitions &rarr;
           </Link>
         </div>
 
         {/* Carousel */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-4 text-[#5e766c]">
-            <div className="animate-spin h-10 w-10 border-4 border-[#0b4d35] border-t-transparent rounded-full" />
-            <p className="font-sans text-sm font-medium">Loading competitions…</p>
+          <div className="flex flex-col items-center justify-center py-20 gap-4 text-[#A69B82]">
+            <div className="animate-spin h-10 w-10 border-4 border-[#D4AF37] border-t-transparent rounded-full" />
+            <p className="font-sans text-sm font-medium">Loading live draws…</p>
           </div>
         ) : draws.length > 0 ? (
           <div className="relative group">
             {/* Left arrow */}
             <button
               onClick={() => scroll('left')}
-              className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white border border-[#0b4d35]/20 shadow-lg text-[#0b4d35] hover:bg-[#0b4d35] hover:text-white hover:scale-105 transition-all opacity-0 group-hover:opacity-100 focus:outline-none"
+              className="absolute -left-5 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-[#12151F] border border-[rgba(212,175,55,0.3)] shadow-lg text-[#D4AF37] hover:border-[#D4AF37] hover:bg-[#1A1E2C] hover:scale-105 transition-all opacity-0 group-hover:opacity-100 focus:outline-none cursor-pointer"
               aria-label="Scroll left"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -97,7 +97,7 @@ export default function FeaturedCompetitionsSection() {
             {/* Right arrow */}
             <button
               onClick={() => scroll('right')}
-              className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-white border border-[#0b4d35]/20 shadow-lg text-[#0b4d35] hover:bg-[#0b4d35] hover:text-white hover:scale-105 transition-all opacity-0 group-hover:opacity-100 focus:outline-none"
+              className="absolute -right-5 top-1/2 -translate-y-1/2 z-10 hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-[#12151F] border border-[rgba(212,175,55,0.3)] shadow-lg text-[#D4AF37] hover:border-[#D4AF37] hover:bg-[#1A1E2C] hover:scale-105 transition-all opacity-0 group-hover:opacity-100 focus:outline-none cursor-pointer"
               aria-label="Scroll right"
             >
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -106,10 +106,10 @@ export default function FeaturedCompetitionsSection() {
             </button>
           </div>
         ) : (
-          <div className="text-center py-16 bg-[#F8FAF6] border border-dashed border-[#0b4d35]/20 rounded-[20px] max-w-md mx-auto">
-            <div className="text-4xl mb-4">🏌️</div>
-            <h3 className="font-serif font-black text-lg text-[#0b4d35] mb-2">No Live Competitions Yet</h3>
-            <p className="font-sans text-sm text-[#5e766c]">New draws are dropping soon. Join the VIP waitlist to be first.</p>
+          <div className="text-center py-16 bg-[#0C0E14] border border-dashed border-[rgba(212,175,55,0.25)] rounded-[20px] max-w-md mx-auto">
+            <div className="text-4xl mb-4">🔥</div>
+            <h3 className="font-heading font-black text-lg text-[#F4EBD9] mb-2">No Live Competitions Yet</h3>
+            <p className="font-sans text-sm text-[#A69B82]">New Pokémon grails are dropping soon. Join the newsletter to be notified.</p>
           </div>
         )}
 

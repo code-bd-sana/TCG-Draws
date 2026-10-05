@@ -1,39 +1,47 @@
 @import "tailwindcss";
 
 :root {
-  /* Semantic Colors - Fairway Draws Theme */
-  --color-bg: #F8FAF6;
-  --color-surface: #FFFFFF;
-  --color-elevated: #F1F5EE;
-  --color-accent-bg: #ECF5EE;
+  /* TCG Draws - Luxury Gold & Obsidian Dark Theme */
+  --color-bg: #090A0E;
+  --color-surface: #12151F;
+  --color-surface-hover: #1A1E2B;
+  --color-elevated: #181C28;
+  --color-accent-bg: rgba(212, 175, 55, 0.08);
   
-  --color-primary: #0b4d35;
-  --color-primary-rgb: 11,77,53;
-  --color-primary-hover: #073826;
-  --color-primary-text: #ffffff;
+  /* Primary Gold Palette */
+  --color-primary: #D4AF37;
+  --color-primary-rgb: 212, 175, 55;
+  --color-primary-bright: #F5E5C0;
+  --color-primary-dark: #8C6D2D;
+  --color-primary-hover: #E5C158;
+  --color-primary-text: #090A0E;
   
-  --color-text-primary: #0e1e17;
-  --color-text-secondary: #334e43;
-  --color-text-muted: #5e766c;
-  --color-text-brand: #0b4d35;
-  --color-text-accent: #dc2626;
+  /* Text Colors */
+  --color-text-primary: #F4EBD9;
+  --color-text-secondary: #A69B82;
+  --color-text-muted: #6E6655;
+  --color-text-gold: #E5C158;
+  --color-text-brand: #D4AF37;
+  --color-text-accent: #E5C158;
   
-  --color-border: #E2EADF;
-  --color-border-medium: #CBD8C8;
-  --color-divider: #EFF4ED;
+  /* Borders & Glows */
+  --color-border: rgba(212, 175, 55, 0.2);
+  --color-border-medium: rgba(212, 175, 55, 0.35);
+  --color-divider: rgba(212, 175, 55, 0.12);
+  --color-border-gold: #D4AF37;
+  --shadow-gold-glow: 0 0 25px rgba(212, 175, 55, 0.25);
+  --shadow-card: 0 15px 35px -5px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 25px rgba(212, 175, 55, 0.25);
   
-  --color-success: #16A34A;
-  --color-success-text: #15803D;
-  --color-success-bg: #DCFCE7;
+  /* Status Colors */
+  --color-success: #10B981;
+  --color-success-text: #34D399;
+  --color-success-bg: rgba(16, 185, 129, 0.15);
   
   /* Radii */
   --radius-card: 16px;
-  --radius-button: 8px;
+  --radius-button: 10px;
   --radius-badge: 9999px;
-  
-  /* Shadows */
-  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 25px rgba(11, 77, 53, 0.22);
   
   /* Fonts */
   --font-sans: var(--font-inter), sans-serif;
@@ -43,21 +51,26 @@
 @theme {
   --color-bg: var(--color-bg);
   --color-surface: var(--color-surface);
+  --color-surface-hover: var(--color-surface-hover);
   --color-elevated: var(--color-elevated);
   --color-accent-bg: var(--color-accent-bg);
   
   --color-primary: var(--color-primary);
+  --color-primary-bright: var(--color-primary-bright);
+  --color-primary-dark: var(--color-primary-dark);
   --color-primary-hover: var(--color-primary-hover);
   --color-primary-text: var(--color-primary-text);
   
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
   --color-text-muted: var(--color-text-muted);
+  --color-text-gold: var(--color-text-gold);
   --color-text-brand: var(--color-text-brand);
   --color-text-accent: var(--color-text-accent);
   
   --color-border: var(--color-border);
   --color-border-medium: var(--color-border-medium);
+  --color-border-gold: var(--color-border-gold);
   --color-divider: var(--color-divider);
   
   --color-success: var(--color-success);
@@ -70,6 +83,7 @@
   
   --shadow-card: var(--shadow-card);
   --shadow-glow: var(--shadow-glow);
+  --shadow-gold-glow: var(--shadow-gold-glow);
   
   --font-sans: var(--font-sans);
   --font-heading: var(--font-heading);
@@ -78,6 +92,7 @@
 /* Base resets and defaults */
 html {
   scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
@@ -94,16 +109,92 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg);
+  background: #090A0E;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-divider);
+  background: rgba(212, 175, 55, 0.25);
   border-radius: var(--radius-badge);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-border);
+  background: rgba(212, 175, 55, 0.5);
+}
+
+/* TCG Art-Deco Metallic Gold Button */
+.btn-gold-metallic {
+  background: linear-gradient(135deg, #F5E5C0 0%, #D4AF37 50%, #997A35 100%);
+  color: #090A0E;
+  font-weight: 700;
+  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(245, 229, 192, 0.35);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-gold-metallic:hover:not(:disabled) {
+  background: linear-gradient(135deg, #FFF0D4 0%, #E5C158 50%, #B39042 100%);
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn-gold-metallic:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
+}
+
+/* Secondary Dark Metallic Button */
+.btn-dark-metallic {
+  background: linear-gradient(180deg, #181C28 0%, #12151F 100%);
+  color: #F4EBD9;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-dark-metallic:hover:not(:disabled) {
+  background: linear-gradient(180deg, #222738 0%, #181C28 100%);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.2);
+  color: #FFFFFF;
+}
+
+/* Glassmorphic Art-Deco Gold Card */
+.art-deco-card {
+  background: rgba(20, 23, 32, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 25px rgba(212, 175, 55, 0.1);
+  position: relative;
+}
+
+.art-deco-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245, 229, 192, 0.5), rgba(212, 175, 55, 0.8), rgba(245, 229, 192, 0.5), transparent);
+  pointer-events: none;
+}
+
+/* Obsidian Input Field with Gold Aura Focus */
+.input-obsidian {
+  background-color: #0C0E14;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: #F4EBD9;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-obsidian::placeholder {
+  color: rgba(166, 155, 130, 0.4);
+}
+
+.input-obsidian:focus {
+  border-color: #D4AF37;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2), 0 0 15px rgba(212, 175, 55, 0.15);
 }
 
 /* Utility classes */

@@ -4,8 +4,8 @@ import UserAuthLayout from "../../components/user-auth/UserAuthLayout";
 import ForgotPasswordForm from "../../components/user-auth/ForgotPasswordForm";
 
 export const metadata: Metadata = {
-  title: "Forgot Password | Fairway Draws",
-  description: "Reset your Fairway Draws account password.",
+  title: "Forgot Password | TCG DRAWS",
+  description: "Recover access to your TCG DRAWS collector account.",
 };
 
 export default function ForgotPasswordPage() {

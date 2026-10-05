@@ -56,89 +56,98 @@ export default function VerifyEmailForm() {
 
   if (verificationStatus === "verifying") {
     return (
-      <div className="bg-surface border border-divider p-6 md:p-10 rounded-card shadow-card w-full max-w-xl mx-auto flex flex-col items-center text-center animate-fadeIn select-none">
-        <h2 className="font-heading font-normal text-2xl md:text-3xl text-text-primary mb-3">
-          Verifying your email...
+      <div className="art-deco-card rounded-2xl p-6 sm:p-8 md:p-10 w-full max-w-xl mx-auto flex flex-col items-center text-center animate-fadeIn select-none shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-80" />
+        <h2 className="font-heading font-black text-2xl sm:text-3xl text-[#F4EBD9] mb-3">
+          Verifying Collector Key...
         </h2>
-        <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mt-4"></div>
+        <div className="animate-spin h-9 w-9 border-4 border-[#D4AF37] border-t-transparent rounded-full mt-4 shadow-[0_0_15px_rgba(212,175,55,0.4)]"></div>
       </div>
     );
   }
 
   if (verificationStatus === "success") {
     return (
-      <div className="bg-surface border border-divider p-6 md:p-10 rounded-card shadow-card w-full max-w-xl mx-auto flex flex-col items-center text-center animate-fadeIn select-none">
+      <div className="art-deco-card rounded-2xl p-6 sm:p-8 md:p-10 w-full max-w-xl mx-auto flex flex-col items-center text-center animate-fadeIn select-none shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-80" />
         {toastMessage && (
-          <div className="fixed top-4 right-4 z-50 bg-accent-bg border border-primary text-text-brand px-4 py-3 rounded-button shadow-card text-xs md:text-sm animate-fadeIn">
+          <div className="fixed top-4 right-4 z-50 bg-[#141722] border border-[#D4AF37] text-[#F5E5C0] px-4 py-3 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.25)] text-xs md:text-sm animate-fadeIn">
             {toastMessage}
           </div>
         )}
-        <div className="w-12 h-12 rounded-full bg-green-500/10 border border-green-500 flex items-center justify-center mb-6">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 text-green-500">
+        <div className="w-14 h-14 rounded-2xl bg-[#181C28] border border-[#D4AF37] flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-7 h-7 text-[#D4AF37]">
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
         </div>
-        <h2 className="font-heading font-normal text-2xl md:text-3xl text-text-primary mb-3">
+        <span className="text-[10px] sm:text-xs font-bold text-[#D4AF37] tracking-[0.25em] uppercase mb-2">
+          VAULT MEMBERSHIP ACTIVE
+        </span>
+        <h2 className="font-heading font-black text-2xl sm:text-3xl text-[#F4EBD9] mb-3">
           Email Verified!
         </h2>
-        <p className="font-sans text-xs md:text-sm text-text-secondary leading-relaxed mb-6 max-w-sm">
-          Your email has been successfully verified. You will be redirected to the login page momentarily.
+        <p className="font-sans text-xs sm:text-sm text-[#A69B82] leading-relaxed mb-6 max-w-sm">
+          Your collector account has been authenticated. Redirecting you to sign in to the vault...
         </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-surface border border-divider p-6 md:p-10 rounded-card shadow-card w-full max-w-xl mx-auto flex flex-col items-center text-center animate-fadeIn select-none">
+    <div className="art-deco-card rounded-2xl p-6 sm:p-8 md:p-10 w-full max-w-xl mx-auto flex flex-col items-center text-center animate-fadeIn select-none shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-80" />
       {/* Toast popup */}
       {toastMessage && (
-        <div className="fixed top-4 right-4 z-50 bg-accent-bg border border-primary text-text-brand px-4 py-3 rounded-button shadow-card text-xs md:text-sm animate-fadeIn">
+        <div className="fixed top-4 right-4 z-50 bg-[#141722] border border-[#D4AF37] text-[#F5E5C0] px-4 py-3 rounded-xl shadow-[0_0_20px_rgba(212,175,55,0.25)] text-xs md:text-sm animate-fadeIn">
           {toastMessage}
         </div>
       )}
 
       {/* Envelope Icon */}
-      <div className="w-12 h-12 rounded-full bg-accent-bg border border-primary flex items-center justify-center mb-6">
+      <div className="w-14 h-14 rounded-2xl bg-[#181C28] border border-[#D4AF37] flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={2}
           stroke="currentColor"
-          className="w-6 h-6 text-text-brand"
+          className="w-7 h-7 text-[#D4AF37]"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
         </svg>
       </div>
 
       {/* Header */}
-      <h2 className="font-heading font-normal text-2xl md:text-3xl text-text-primary mb-3">
+      <span className="text-[10px] sm:text-xs font-bold text-[#D4AF37] tracking-[0.25em] uppercase mb-2">
+        AUTHENTICATION REQUIRED
+      </span>
+      <h2 className="font-heading font-black text-2xl sm:text-3xl text-[#F4EBD9] mb-3">
         Verify Your Email
       </h2>
 
       {/* Explanation */}
-      <p className="font-sans text-xs md:text-sm text-text-secondary leading-relaxed mb-6 max-w-sm">
-        We&apos;ve sent a verification link to your email address {email ? `(${email})` : ''}. Please click the link inside the email to activate and verify your account.
+      <p className="font-sans text-xs sm:text-sm text-[#A69B82] leading-relaxed mb-6 max-w-sm">
+        We&apos;ve sent a verification link to your email address {email ? <span className="text-[#F4EBD9] font-medium">({email})</span> : ''}. Please click the link inside the email to activate your account.
       </p>
 
       {/* Resend Button */}
-      <div className="w-full mb-8">
-        <PrimaryButton
+      <div className="w-full mb-6">
+        <button
           type="button"
           onClick={handleResend}
           disabled={resendMutation.isPending}
-          className="w-full py-3.5 uppercase tracking-wider font-heading font-semibold text-sm"
+          className="btn-gold-metallic w-full py-3.5 rounded-xl font-heading font-black text-xs sm:text-sm tracking-[0.15em] uppercase cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.99] transition-all flex items-center justify-center gap-2"
         >
-          {resendMutation.isPending ? "Resending..." : "Resend Verification Email"}
-        </PrimaryButton>
+          {resendMutation.isPending ? "Resending Link..." : "Resend Verification Email"}
+        </button>
       </div>
 
       {/* Footer link */}
       <Link
         href="/login"
-        className="font-sans font-semibold text-xs text-text-brand hover:text-primary-hover uppercase tracking-wider transition-colors duration-200"
+        className="font-sans font-semibold text-xs text-[#A69B82] hover:text-[#D4AF37] uppercase tracking-wider transition-colors duration-200"
       >
-        &larr; Back to Login
+        &larr; Back to Sign In
       </Link>
     </div>
   );
