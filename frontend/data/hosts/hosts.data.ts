@@ -3,8 +3,8 @@ import { VerifiedHost } from "../../types/host.types";
 export const verifiedHostsData: VerifiedHost[] = [
   {
     id: "host-1",
-    slug: "fairway-pro-shop",
-    name: "Fairway Pro Shop",
+    slug: "fairway-golf-pro-shop",
+    name: "Fairway Golf Pro Shop",
     logo: "/uploads/avatars/ef6734d3d6c19d4ab982e5aa1b5bb10f6.webp",
     description: "Premier UK retailer hosting official manufacturer golf equipment draws.",
     category: "Pro Shop",
@@ -12,6 +12,8 @@ export const verifiedHostsData: VerifiedHost[] = [
     averageRating: 4.9,
     totalReviews: 120,
     isVerified: true,
+    location: "Manchester, UK",
+    memberSince: 2024,
   },
   {
     id: "host-2",

@@ -139,12 +139,12 @@ function BasketQuantityControl({
   const isIncrementDisabled = effectiveQty >= maxAllowed;
 
   return (
-    <div className="flex items-center border border-border-medium rounded-xl overflow-hidden h-9 bg-surface">
+    <div className="flex items-center border border-[rgba(212,175,55,0.25)] rounded-xl overflow-hidden h-9 bg-[#181C28] shadow-inner">
       <button
         type="button"
         onClick={handleDecrement}
         disabled={isDecrementDisabled}
-        className="w-8 h-full flex items-center justify-center text-text-primary font-bold hover:bg-elevated transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed select-none"
+        className="w-8 h-full flex items-center justify-center text-[#D4AF37] font-black text-sm hover:bg-[#12151F] transition-colors cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed select-none"
         aria-label="Decrease quantity"
       >
         -
@@ -162,7 +162,7 @@ function BasketQuantityControl({
         }}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
-        className="w-12 sm:w-14 h-full text-center font-heading font-bold text-xs text-text-primary border-x border-border-medium bg-transparent focus:outline-none focus:bg-elevated/60 transition-colors tabular-nums"
+        className="w-12 sm:w-14 h-full text-center font-heading font-black text-xs text-[#F4EBD9] border-x border-[rgba(212,175,55,0.2)] bg-transparent focus:outline-none focus:bg-[#12151F] transition-colors tabular-nums"
         aria-label={`Quantity for ${item.title}`}
       />
 
@@ -170,7 +170,7 @@ function BasketQuantityControl({
         type="button"
         onClick={handleIncrement}
         disabled={isIncrementDisabled}
-        className="w-8 h-full flex items-center justify-center text-text-primary font-bold hover:bg-elevated transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed select-none"
+        className="w-8 h-full flex items-center justify-center text-[#D4AF37] font-black text-sm hover:bg-[#12151F] transition-colors cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed select-none"
         aria-label="Increase quantity"
       >
         +
@@ -195,16 +195,44 @@ export default function BasketPage() {
     <div className="min-h-screen flex flex-col bg-[#090A0E]">
       <WebsiteNavbar />
 
-      <main className="flex-1 pt-28 pb-20">
-        <div className="container-custom max-w-5xl mx-auto px-4 sm:px-6">
+      <main className="relative isolate flex-1 pt-28 pb-20 sm:pt-32 md:pb-24 overflow-hidden">
+        {/* Ambient Luxury Lighting */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#141722_1px,transparent_1px),linear-gradient(to_bottom,#141722_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_20%,#000_70%,transparent_100%)] opacity-35" />
+          <div className="absolute -top-32 left-1/4 h-[500px] w-[500px] bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] blur-[90px]" />
+          <div className="absolute top-1/2 right-10 h-[450px] w-[450px] bg-[radial-gradient(circle,rgba(163,123,36,0.12)_0%,transparent_70%)] blur-[100px]" />
+          <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-[#090A0E] to-transparent" />
+        </div>
+
+        <div className="container-custom max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+          {/* Breadcrumb Navigation */}
+          <nav className="flex items-center gap-2 font-sans text-xs font-semibold text-[#A69B82] mb-6">
+            <Link href="/" className="hover:text-[#D4AF37] transition-colors">
+              Home
+            </Link>
+            <span>/</span>
+            <Link href="/live-raffles" className="hover:text-[#D4AF37] transition-colors">
+              Competitions
+            </Link>
+            <span>/</span>
+            <span className="text-[#F4EBD9] font-bold">Basket</span>
+          </nav>
+
           {/* Header Title */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[rgba(212,175,55,0.2)]">
             <div>
-              <h1 className="font-heading font-black text-2xl sm:text-3xl text-[#F4EBD9] uppercase tracking-tight">
-                Your Basket
+              <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(212,175,55,0.35)] bg-[#12151F]/90 px-3.5 py-1.5 font-sans text-[10px] font-black uppercase tracking-[0.16em] text-[#D4AF37] mb-2 shadow-sm">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+                VERIFIED COMPETITION ENTRY VAULT
+              </span>
+              <h1 className="font-heading font-black text-3xl sm:text-4xl text-[#F4EBD9] uppercase tracking-tight">
+                YOUR{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0D4] via-[#D4AF37] to-[#B39042] drop-shadow-[0_2px_12px_rgba(212,175,55,0.3)]">
+                  BASKET
+                </span>
               </h1>
-              <p className="font-sans text-xs text-[#A69B82] mt-1">
-                Review your Pokémon card competition entries before proceeding to secure checkout.
+              <p className="font-sans text-xs sm:text-sm text-[#A69B82] mt-1.5">
+                Review your active ticket entries before proceeding to 256-bit encrypted checkout.
               </p>
             </div>
 
@@ -212,7 +240,7 @@ export default function BasketPage() {
               <button
                 type="button"
                 onClick={clearBasket}
-                className="self-start sm:self-auto text-xs font-sans text-red-400 hover:text-red-300 underline transition-colors cursor-pointer"
+                className="self-start sm:self-auto text-xs font-sans font-semibold text-red-400 hover:text-red-300 border border-red-500/20 hover:border-red-500/40 bg-red-950/25 px-3.5 py-1.5 rounded-xl transition-all cursor-pointer shadow-sm"
               >
                 Clear Entire Basket
               </button>
@@ -220,21 +248,23 @@ export default function BasketPage() {
           </div>
 
           {!isInitialized ? (
-            <div className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-12 text-center shadow-2xl">
-              <div className="w-8 h-8 border-3 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-              <p className="font-sans text-xs text-[#A69B82]">Loading your basket...</p>
+            <div className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-3xl p-16 text-center shadow-2xl">
+              <div className="w-10 h-10 border-3 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+              <p className="font-sans text-xs font-semibold text-[#A69B82]">Loading your basket...</p>
             </div>
           ) : items.length === 0 ? (
             /* Empty State */
-            <div className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-12 text-center shadow-2xl flex flex-col items-center">
-              <div className="w-16 h-16 rounded-2xl bg-[#181C28] border border-[rgba(212,175,55,0.25)] flex items-center justify-center text-[#D4AF37] mb-4">
+            <div className="relative isolate overflow-hidden bg-[#12151F] border border-[rgba(212,175,55,0.25)] rounded-3xl p-12 sm:p-16 text-center shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex flex-col items-center max-w-lg mx-auto">
+              <div className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] blur-2xl" />
+
+              <div className="w-20 h-20 rounded-2xl bg-[#181C28] border border-[rgba(212,175,55,0.3)] flex items-center justify-center text-[#D4AF37] mb-5 shadow-inner">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.8}
                   stroke="currentColor"
-                  className="w-8 h-8"
+                  className="w-10 h-10"
                 >
                   <path
                     strokeLinecap="round"
@@ -243,15 +273,16 @@ export default function BasketPage() {
                   />
                 </svg>
               </div>
-              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase tracking-wider mb-2">
+
+              <h2 className="font-heading font-black text-2xl text-[#F4EBD9] uppercase tracking-wider mb-2">
                 Your basket is empty
               </h2>
-              <p className="font-sans text-xs text-[#A69B82] max-w-md mb-6">
+              <p className="font-sans text-xs sm:text-sm text-[#A69B82] max-w-sm mb-8 leading-relaxed">
                 You haven&apos;t added any competition entries yet. Browse active draws and win PSA 10 slabs &amp; vintage packs!
               </p>
               <Link
                 href="/live-raffles"
-                className="btn-gold-metallic px-8 py-3.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-md transition-all"
+                className="btn-gold-metallic px-8 py-3.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-[0_0_15px_rgba(212,175,55,0.3)] hover:scale-105 transition-all"
               >
                 Browse Live Draws →
               </Link>
@@ -268,43 +299,43 @@ export default function BasketPage() {
                   return (
                     <div
                       key={item.raffleId}
-                      className="bg-surface border border-border rounded-card p-4 sm:p-5 shadow-card flex flex-col sm:flex-row items-start sm:items-center gap-4 transition-all hover:border-border-medium"
+                      className="group relative overflow-hidden rounded-2xl border border-[rgba(212,175,55,0.22)] bg-[#12151F] p-4 sm:p-5 shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex flex-col sm:flex-row items-start sm:items-center gap-4 transition-all duration-300 hover:border-[#D4AF37]/50 hover:shadow-[0_15px_35px_rgba(212,175,55,0.15)]"
                     >
                       {/* Image Thumbnail */}
-                      <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-bg shrink-0 border border-divider">
+                      <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-[#090A0E] shrink-0 border border-[rgba(212,175,55,0.3)] shadow-inner">
                         <Image
-                          src={item.image || "https://placehold.co/400x300/1a230a/8cb34a?text=Draw"}
+                          src={item.image || "https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?q=80&w=800&auto=format&fit=crop"}
                           alt={item.title}
                           fill
                           unoptimized
-                          className="object-cover"
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
 
                       {/* Details */}
                       <div className="flex-1 min-w-0">
                         {item.category && (
-                          <span className="inline-block px-2 py-0.5 rounded-full bg-[#ecf5ee] text-[#15803d] font-sans font-bold text-[9px] uppercase tracking-wider mb-1">
+                          <span className="inline-block px-2.5 py-0.5 rounded-full bg-[#181C28] border border-[rgba(212,175,55,0.3)] text-[#D4AF37] font-sans font-bold text-[9px] uppercase tracking-wider mb-1.5">
                             {item.category}
                           </span>
                         )}
                         <Link
                           href={`/live-raffles/${item.slug}`}
-                          className="font-heading font-bold text-sm sm:text-base text-text-primary hover:text-text-brand line-clamp-1 transition-colors"
+                          className="font-heading font-black text-sm sm:text-base text-[#F4EBD9] hover:text-[#D4AF37] line-clamp-1 transition-colors uppercase tracking-tight"
                         >
                           {item.title}
                         </Link>
-                        <p className="font-sans text-xs text-text-muted mt-0.5">
+                        <p className="font-sans text-xs text-[#A69B82] mt-1 font-medium">
                           £{item.pricePerTicket.toFixed(2)} per ticket
                         </p>
                         {item.maxTickets && (
-                          <span className="font-sans text-[10px] text-text-muted block mt-0.5">
+                          <span className="font-sans text-[10px] text-[#A69B82] block mt-0.5">
                             Max {item.maxTickets} tickets per person
                           </span>
                         )}
                         {remaining < 20 && (
-                          <span className="font-sans text-[10px] text-amber-700 font-semibold block">
-                            Only {remaining} left!
+                          <span className="inline-flex items-center gap-1 font-sans text-[10px] text-amber-400 font-bold mt-1">
+                            <span>🔥</span> Only {remaining} left!
                           </span>
                         )}
                       </div>
@@ -318,11 +349,11 @@ export default function BasketPage() {
                         />
 
                         {/* Price Subtotal */}
-                        <div className="text-right min-w-[70px]">
-                          <span className="font-heading font-black text-sm text-text-primary block">
+                        <div className="text-right min-w-[75px]">
+                          <span className="font-heading font-black text-sm sm:text-base text-[#D4AF37] block">
                             £{itemSubtotal.toFixed(2)}
                           </span>
-                          <span className="text-[10px] font-sans text-text-muted">
+                          <span className="text-[10px] font-sans text-[#A69B82]">
                             ({item.quantity} {item.quantity === 1 ? "ticket" : "tickets"})
                           </span>
                         </div>
@@ -331,7 +362,7 @@ export default function BasketPage() {
                         <button
                           type="button"
                           onClick={() => removeItem(item.raffleId)}
-                          className="p-1.5 text-text-muted hover:text-red-600 transition-colors cursor-pointer rounded-lg hover:bg-red-50"
+                          className="p-2 text-[#A69B82] hover:text-red-400 hover:bg-red-950/30 border border-transparent hover:border-red-900/40 rounded-xl transition-all cursor-pointer"
                           aria-label={`Remove ${item.title} from basket`}
                         >
                           <svg
@@ -358,37 +389,47 @@ export default function BasketPage() {
                 <div className="pt-2">
                   <Link
                     href="/live-raffles"
-                    className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-text-brand hover:underline uppercase tracking-wider"
+                    className="inline-flex items-center gap-2 text-xs font-heading font-bold text-[#D4AF37] hover:text-[#FFF0D4] transition-colors uppercase tracking-wider"
                   >
-                    ← Continue exploring competitions
+                    <span>←</span> Continue exploring competitions
                   </Link>
                 </div>
               </div>
 
               {/* Order Summary Sidebar */}
-              <div className="lg:col-span-4 bg-surface border border-border rounded-card p-6 shadow-card sticky top-24">
-                <h3 className="font-heading font-black text-sm uppercase tracking-wider text-text-primary pb-3 border-b border-divider mb-4">
-                  Basket Summary
-                </h3>
+              <div className="lg:col-span-4 bg-[#12151F] border border-[rgba(212,175,55,0.25)] rounded-2xl p-6 shadow-[0_15px_40px_rgba(0,0,0,0.7)] sticky top-28">
+                <div className="flex items-center justify-between pb-3.5 border-b border-[rgba(212,175,55,0.18)] mb-4">
+                  <h3 className="font-heading font-black text-sm uppercase tracking-wider text-[#F4EBD9]">
+                    Basket Summary
+                  </h3>
+                  <span className="text-[10px] font-heading font-black px-2.5 py-0.5 rounded-full bg-[#181C28] border border-[rgba(212,175,55,0.3)] text-[#D4AF37]">
+                    {itemCount} {itemCount === 1 ? "DRAW" : "DRAWS"}
+                  </span>
+                </div>
 
                 <div className="flex flex-col gap-3 text-xs font-sans">
-                  <div className="flex items-center justify-between text-text-muted">
+                  <div className="flex items-center justify-between text-[#A69B82]">
                     <span>Active Competitions</span>
-                    <span className="font-semibold text-text-primary">{itemCount}</span>
+                    <span className="font-semibold text-[#F4EBD9]">{itemCount}</span>
                   </div>
-                  <div className="flex items-center justify-between text-text-muted">
+                  <div className="flex items-center justify-between text-[#A69B82]">
                     <span>Total Ticket Entries</span>
-                    <span className="font-semibold text-text-primary">{totalTickets}</span>
+                    <span className="font-semibold text-[#F4EBD9]">{totalTickets}</span>
                   </div>
-                  <div className="flex items-center justify-between text-text-muted">
-                    <span>Delivery & Shipping</span>
-                    <span className="font-bold text-[#15803d]">FREE TRACKED</span>
+                  <div className="flex items-center justify-between text-[#A69B82]">
+                    <span>Ticket Allocation</span>
+                    <span className="font-semibold text-[#D4AF37]">Instant Digital</span>
                   </div>
-                  <div className="pt-3 border-t border-divider flex items-center justify-between">
-                    <span className="font-heading font-bold text-sm text-text-primary uppercase">
+                  <div className="flex items-center justify-between text-[#A69B82]">
+                    <span>Delivery &amp; Courier</span>
+                    <span className="font-bold text-emerald-400">FREE TRACKED</span>
+                  </div>
+
+                  <div className="pt-3.5 border-t border-[rgba(212,175,55,0.18)] flex items-center justify-between">
+                    <span className="font-heading font-bold text-sm text-[#F4EBD9] uppercase tracking-wide">
                       Total Payable
                     </span>
-                    <span className="font-heading font-black text-xl text-text-brand">
+                    <span className="font-heading font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0D4] via-[#D4AF37] to-[#B39042] drop-shadow-[0_2px_10px_rgba(212,175,55,0.3)]">
                       £{totalPrice.toFixed(2)}
                     </span>
                   </div>
@@ -396,24 +437,28 @@ export default function BasketPage() {
 
                 <Link
                   href="/checkout"
-                  className="mt-6 w-full h-12 rounded-xl btn-glossy-red font-heading font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-98 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  className="btn-gold-metallic mt-6 w-full h-12 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-[0_0_15px_rgba(212,175,55,0.3)] hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 transition-all cursor-pointer"
                 >
                   <span>Proceed to Checkout</span>
                   <span>→</span>
                 </Link>
 
-                <div className="mt-4 pt-4 border-t border-divider flex flex-col gap-2 text-[10px] text-text-muted">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[#15803d] font-bold">✓</span>
-                    <span>100% fair and transparent certified draws</span>
+                <div className="mt-5 pt-5 border-t border-[rgba(212,175,55,0.15)] flex flex-col gap-2.5 text-[10px] text-[#A69B82]">
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400 font-bold text-xs">✓</span>
+                    <span>100% fair and certified transparent draws</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[#15803d] font-bold">✓</span>
-                    <span>Automated ticket number assignment</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400 font-bold text-xs">✓</span>
+                    <span>Automated random ticket number assignment</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[#15803d] font-bold">✓</span>
-                    <span>Instant win prize notifications</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400 font-bold text-xs">✓</span>
+                    <span>Instant win prize notifications &amp; live streams</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400 font-bold text-xs">✓</span>
+                    <span>256-Bit SSL Encrypted Vault Checkout</span>
                   </div>
                 </div>
               </div>

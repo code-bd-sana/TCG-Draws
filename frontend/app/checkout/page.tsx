@@ -246,10 +246,10 @@ export default function CheckoutPage() {
 
   if (!isInitialized || (isUserLoading && !user)) {
     return (
-      <div className="min-h-screen flex flex-col bg-[#f8faf6]">
+      <div className="min-h-screen flex flex-col bg-[#090A0E]">
         <WebsiteNavbar />
-        <div className="flex-1 flex items-center justify-center pt-24">
-          <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin" />
+        <div className="flex-1 flex items-center justify-center pt-28">
+          <div className="w-10 h-10 border-3 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
         </div>
         <WebsiteFooter />
       </div>
@@ -257,46 +257,80 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8faf6]">
+    <div className="min-h-screen flex flex-col bg-[#090A0E]">
       <WebsiteNavbar />
 
-      <main className="flex-1 pt-28 pb-20">
-        <div className="container-custom max-w-5xl mx-auto px-4 sm:px-6">
+      <main className="relative isolate flex-1 pt-28 pb-20 sm:pt-32 md:pb-24 overflow-hidden">
+        {/* Ambient Luxury Lighting */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#141722_1px,transparent_1px),linear-gradient(to_bottom,#141722_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_20%,#000_70%,transparent_100%)] opacity-35" />
+          <div className="absolute -top-32 left-1/4 h-[500px] w-[500px] bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] blur-[90px]" />
+          <div className="absolute top-1/2 right-10 h-[450px] w-[450px] bg-[radial-gradient(circle,rgba(163,123,36,0.12)_0%,transparent_70%)] blur-[100px]" />
+          <div className="absolute bottom-0 inset-x-0 h-28 bg-gradient-to-t from-[#090A0E] to-transparent" />
+        </div>
+
+        <div className="container-custom max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+          {/* Breadcrumb Navigation */}
+          <nav className="flex items-center gap-2 font-sans text-xs font-semibold text-[#A69B82] mb-6">
+            <Link href="/" className="hover:text-[#D4AF37] transition-colors">
+              Home
+            </Link>
+            <span>/</span>
+            <Link href="/live-raffles" className="hover:text-[#D4AF37] transition-colors">
+              Competitions
+            </Link>
+            <span>/</span>
+            <Link href="/basket" className="hover:text-[#D4AF37] transition-colors">
+              Basket
+            </Link>
+            <span>/</span>
+            <span className="text-[#F4EBD9] font-bold">Checkout</span>
+          </nav>
+
           {/* Header Title */}
-          <div className="mb-8 pb-6 border-b border-[#e2eadf]">
-            <h1 className="font-heading font-black text-2xl sm:text-3xl text-text-primary uppercase tracking-tight">
-              Checkout & Delivery Details
+          <div className="mb-8 pb-6 border-b border-[rgba(212,175,55,0.2)]">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[rgba(212,175,55,0.35)] bg-[#12151F]/90 px-3.5 py-1.5 font-sans text-[10px] font-black uppercase tracking-[0.16em] text-[#D4AF37] mb-2 shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+              SECURE PRIZE DISPATCH DETAILS
+            </span>
+            <h1 className="font-heading font-black text-3xl sm:text-4xl text-[#F4EBD9] uppercase tracking-tight">
+              CHECKOUT &amp;{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0D4] via-[#D4AF37] to-[#B39042] drop-shadow-[0_2px_12px_rgba(212,175,55,0.3)]">
+                DELIVERY DETAILS
+              </span>
             </h1>
-            <p className="font-sans text-xs text-text-muted mt-1">
+            <p className="font-sans text-xs sm:text-sm text-[#A69B82] mt-1.5">
               Provide your delivery address so we know where to ship your prizes when you win.
             </p>
           </div>
 
           {/* Unauthenticated User Notice */}
           {!user && (
-            <div className="mb-6 p-4 rounded-xl bg-[#ecf5ee] border border-[#bbf7d0] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-sans">
-              <div className="flex items-center gap-2.5 text-[#15803d]">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="w-5 h-5 shrink-0"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
-                  />
-                </svg>
+            <div className="mb-6 p-4.5 rounded-2xl bg-[#12151F] border border-[rgba(212,175,55,0.25)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-sans shadow-lg">
+              <div className="flex items-center gap-3 text-[#D6CEBC]">
+                <div className="w-8 h-8 rounded-xl bg-[#181C28] border border-[rgba(212,175,55,0.3)] flex items-center justify-center text-[#D4AF37] shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                    />
+                  </svg>
+                </div>
                 <span>
-                  Already have a Fairway Draws account? Log in to auto-fill your saved address details.
+                  Already have a <strong className="text-[#F4EBD9]">TCG Draws</strong> account? Log in to auto-fill your saved address details.
                 </span>
               </div>
               <Link
                 href="/login?redirect=/checkout"
-                className="btn-glossy-red px-4 py-1.5 rounded-lg text-white font-bold uppercase text-[10px] tracking-wider self-start sm:self-auto shrink-0 shadow-xs"
+                className="btn-gold-metallic px-4 py-2 rounded-xl text-[#090A0E] font-heading font-black uppercase text-[10px] tracking-wider self-start sm:self-auto shrink-0 shadow-sm transition-all"
               >
                 Log In
               </Link>
@@ -304,18 +338,18 @@ export default function CheckoutPage() {
           )}
 
           {serverError && (
-            <div className="mb-6 p-4 rounded-xl bg-[#fee2e2] border border-[#fecaca] text-xs font-sans text-[#991b1b]">
-              <strong>Checkout Alert:</strong> {serverError}
+            <div className="mb-6 p-4.5 rounded-2xl bg-red-950/40 border border-red-500/40 text-xs font-sans text-red-300 shadow-lg">
+              <strong className="text-red-400 font-bold">Checkout Alert:</strong> {serverError}
             </div>
           )}
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Form: Contact & Shipping */}
             <form onSubmit={handleSubmit} className="lg:col-span-7 flex flex-col gap-6">
-              {/* Contact Information */}
-              <div className="bg-surface border border-border rounded-card p-6 shadow-card flex flex-col gap-4">
-                <h2 className="font-heading font-bold text-sm uppercase tracking-wider text-text-primary pb-2 border-b border-divider flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-primary text-black flex items-center justify-center text-[10px] font-black">
+              {/* Step 1: Contact Information */}
+              <div className="bg-[#12151F] border border-[rgba(212,175,55,0.22)] rounded-3xl p-6 sm:p-8 shadow-[0_15px_40px_rgba(0,0,0,0.7)] flex flex-col gap-5">
+                <h2 className="font-heading font-black text-sm uppercase tracking-wider text-[#F4EBD9] pb-3 border-b border-[rgba(212,175,55,0.15)] flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] flex items-center justify-center text-xs font-black shadow-sm">
                     1
                   </span>
                   Contact Information
@@ -323,8 +357,8 @@ export default function CheckoutPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
-                      First Name <span className="text-red-500">*</span>
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
+                      First Name <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -332,18 +366,18 @@ export default function CheckoutPage() {
                       value={formData.firstName}
                       onChange={handleChange}
                       placeholder="First Name"
-                      className={`h-11 px-3.5 rounded-xl border bg-elevated text-xs font-sans text-text-primary outline-none focus:border-primary transition-all ${
-                        errors.firstName ? "border-red-500" : "border-border-medium"
+                      className={`h-11 px-3.5 rounded-xl border bg-[#181C28] text-xs font-sans text-[#F4EBD9] placeholder:text-[#A69B82]/50 outline-none focus:border-[#D4AF37] transition-all ${
+                        errors.firstName ? "border-red-500 bg-red-950/20" : "border-[rgba(212,175,55,0.2)]"
                       }`}
                     />
                     {errors.firstName && (
-                      <span className="text-[10px] text-red-500">{errors.firstName}</span>
+                      <span className="text-[10px] text-red-400 font-semibold">{errors.firstName}</span>
                     )}
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
-                      Last Name <span className="text-red-500">*</span>
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
+                      Last Name <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -351,18 +385,18 @@ export default function CheckoutPage() {
                       value={formData.lastName}
                       onChange={handleChange}
                       placeholder="Last Name"
-                      className={`h-11 px-3.5 rounded-xl border bg-elevated text-xs font-sans text-text-primary outline-none focus:border-primary transition-all ${
-                        errors.lastName ? "border-red-500" : "border-border-medium"
+                      className={`h-11 px-3.5 rounded-xl border bg-[#181C28] text-xs font-sans text-[#F4EBD9] placeholder:text-[#A69B82]/50 outline-none focus:border-[#D4AF37] transition-all ${
+                        errors.lastName ? "border-red-500 bg-red-950/20" : "border-[rgba(212,175,55,0.2)]"
                       }`}
                     />
                     {errors.lastName && (
-                      <span className="text-[10px] text-red-500">{errors.lastName}</span>
+                      <span className="text-[10px] text-red-400 font-semibold">{errors.lastName}</span>
                     )}
                   </div>
 
                   <div className="flex flex-col gap-1.5 sm:col-span-2">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
-                      Email Address (Ticket Confirmation) <span className="text-red-500">*</span>
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
+                      Email Address (Ticket Confirmation) <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="email"
@@ -370,18 +404,18 @@ export default function CheckoutPage() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="your.email@example.com"
-                      className={`h-11 px-3.5 rounded-xl border bg-elevated text-xs font-sans text-text-primary outline-none focus:border-primary transition-all ${
-                        errors.email ? "border-red-500" : "border-border-medium"
+                      className={`h-11 px-3.5 rounded-xl border bg-[#181C28] text-xs font-sans text-[#F4EBD9] placeholder:text-[#A69B82]/50 outline-none focus:border-[#D4AF37] transition-all ${
+                        errors.email ? "border-red-500 bg-red-950/20" : "border-[rgba(212,175,55,0.2)]"
                       }`}
                     />
                     {errors.email && (
-                      <span className="text-[10px] text-red-500">{errors.email}</span>
+                      <span className="text-[10px] text-red-400 font-semibold">{errors.email}</span>
                     )}
                   </div>
 
                   <div className="flex flex-col gap-1.5 sm:col-span-2">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
-                      Contact Phone (Delivery Notifications) <span className="text-red-500">*</span>
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
+                      Contact Phone (Delivery Notifications) <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="tel"
@@ -389,26 +423,26 @@ export default function CheckoutPage() {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="+44 7700 900123"
-                      className={`h-11 px-3.5 rounded-xl border bg-elevated text-xs font-sans text-text-primary outline-none focus:border-primary transition-all ${
-                        errors.phone ? "border-red-500" : "border-border-medium"
+                      className={`h-11 px-3.5 rounded-xl border bg-[#181C28] text-xs font-sans text-[#F4EBD9] placeholder:text-[#A69B82]/50 outline-none focus:border-[#D4AF37] transition-all ${
+                        errors.phone ? "border-red-500 bg-red-950/20" : "border-[rgba(212,175,55,0.2)]"
                       }`}
                     />
                     {errors.phone && (
-                      <span className="text-[10px] text-red-500">{errors.phone}</span>
+                      <span className="text-[10px] text-red-400 font-semibold">{errors.phone}</span>
                     )}
                   </div>
 
                   <div className="flex flex-col gap-1.5 sm:col-span-2">
                     <div className="flex items-center justify-between">
-                      <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
-                        Date of Birth (18+ Only) <span className="text-red-500">*</span>
+                      <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
+                        Date of Birth (18+ Only) <span className="text-red-400">*</span>
                       </label>
                       {formData.dateOfBirth && (
                         <span
                           className={`text-[10px] font-sans font-bold ${
                             calculateAge(formData.dateOfBirth) < 18
-                              ? "text-red-600"
-                              : "text-[#15803d]"
+                              ? "text-red-400"
+                              : "text-emerald-400"
                           }`}
                         >
                           {calculateAge(formData.dateOfBirth) < 18
@@ -432,9 +466,9 @@ export default function CheckoutPage() {
                       maxDate={new Date().toISOString().split("T")[0]}
                     />
                     {errors.dateOfBirth ? (
-                      <span className="text-[10px] text-red-500 font-bold">{errors.dateOfBirth}</span>
+                      <span className="text-[10px] text-red-400 font-bold">{errors.dateOfBirth}</span>
                     ) : (
-                      <span className="text-[10px] text-text-muted">
+                      <span className="text-[10px] text-[#A69B82]">
                         You must be 18 years or older to participate. Automatically saved to your profile.
                       </span>
                     )}
@@ -442,10 +476,10 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
-              {/* Shipping Address */}
-              <div className="bg-surface border border-border rounded-card p-6 shadow-card flex flex-col gap-4">
-                <h2 className="font-heading font-bold text-sm uppercase tracking-wider text-text-primary pb-2 border-b border-divider flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-primary text-black flex items-center justify-center text-[10px] font-black">
+              {/* Step 2: Shipping Address */}
+              <div className="bg-[#12151F] border border-[rgba(212,175,55,0.22)] rounded-3xl p-6 sm:p-8 shadow-[0_15px_40px_rgba(0,0,0,0.7)] flex flex-col gap-5">
+                <h2 className="font-heading font-black text-sm uppercase tracking-wider text-[#F4EBD9] pb-3 border-b border-[rgba(212,175,55,0.15)] flex items-center gap-3">
+                  <span className="w-6 h-6 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] flex items-center justify-center text-xs font-black shadow-sm">
                     2
                   </span>
                   Prize Shipping Address
@@ -453,8 +487,8 @@ export default function CheckoutPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5 sm:col-span-2">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
-                      Address Line 1 <span className="text-red-500">*</span>
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
+                      Address Line 1 <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -462,17 +496,17 @@ export default function CheckoutPage() {
                       value={formData.addressLine1}
                       onChange={handleChange}
                       placeholder="House number and street name"
-                      className={`h-11 px-3.5 rounded-xl border bg-elevated text-xs font-sans text-text-primary outline-none focus:border-primary transition-all ${
-                        errors.addressLine1 ? "border-red-500" : "border-border-medium"
+                      className={`h-11 px-3.5 rounded-xl border bg-[#181C28] text-xs font-sans text-[#F4EBD9] placeholder:text-[#A69B82]/50 outline-none focus:border-[#D4AF37] transition-all ${
+                        errors.addressLine1 ? "border-red-500 bg-red-950/20" : "border-[rgba(212,175,55,0.2)]"
                       }`}
                     />
                     {errors.addressLine1 && (
-                      <span className="text-[10px] text-red-500">{errors.addressLine1}</span>
+                      <span className="text-[10px] text-red-400 font-semibold">{errors.addressLine1}</span>
                     )}
                   </div>
 
                   <div className="flex flex-col gap-1.5 sm:col-span-2">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
                       Address Line 2 (Optional)
                     </label>
                     <input
@@ -481,13 +515,13 @@ export default function CheckoutPage() {
                       value={formData.addressLine2}
                       onChange={handleChange}
                       placeholder="Apartment, suite, unit, building floor"
-                      className="h-11 px-3.5 rounded-xl border border-border-medium bg-elevated text-xs font-sans text-text-primary outline-none focus:border-primary transition-all"
+                      className="h-11 px-3.5 rounded-xl border border-[rgba(212,175,55,0.2)] bg-[#181C28] text-xs font-sans text-[#F4EBD9] placeholder:text-[#A69B82]/50 outline-none focus:border-[#D4AF37] transition-all"
                     />
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
-                      Town / City <span className="text-red-500">*</span>
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
+                      Town / City <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -495,18 +529,18 @@ export default function CheckoutPage() {
                       value={formData.city}
                       onChange={handleChange}
                       placeholder="e.g. Manchester"
-                      className={`h-11 px-3.5 rounded-xl border bg-elevated text-xs font-sans text-text-primary outline-none focus:border-primary transition-all ${
-                        errors.city ? "border-red-500" : "border-border-medium"
+                      className={`h-11 px-3.5 rounded-xl border bg-[#181C28] text-xs font-sans text-[#F4EBD9] placeholder:text-[#A69B82]/50 outline-none focus:border-[#D4AF37] transition-all ${
+                        errors.city ? "border-red-500 bg-red-950/20" : "border-[rgba(212,175,55,0.2)]"
                       }`}
                     />
                     {errors.city && (
-                      <span className="text-[10px] text-red-500">{errors.city}</span>
+                      <span className="text-[10px] text-red-400 font-semibold">{errors.city}</span>
                     )}
                   </div>
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
-                      Postal Code <span className="text-red-500">*</span>
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
+                      Postal Code <span className="text-red-400">*</span>
                     </label>
                     <input
                       type="text"
@@ -514,17 +548,17 @@ export default function CheckoutPage() {
                       value={formData.postcode}
                       onChange={handleChange}
                       placeholder="e.g. M1 1AA"
-                      className={`h-11 px-3.5 rounded-xl border bg-elevated text-xs font-sans text-text-primary outline-none focus:border-primary uppercase transition-all ${
-                        errors.postcode ? "border-red-500" : "border-border-medium"
+                      className={`h-11 px-3.5 rounded-xl border bg-[#181C28] text-xs font-sans text-[#F4EBD9] placeholder:text-[#A69B82]/50 outline-none focus:border-[#D4AF37] uppercase transition-all ${
+                        errors.postcode ? "border-red-500 bg-red-950/20" : "border-[rgba(212,175,55,0.2)]"
                       }`}
                     />
                     {errors.postcode && (
-                      <span className="text-[10px] text-red-500">{errors.postcode}</span>
+                      <span className="text-[10px] text-red-400 font-semibold">{errors.postcode}</span>
                     )}
                   </div>
 
                   <div className="flex flex-col gap-1.5 sm:col-span-2">
-                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">
+                    <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-[#A69B82]">
                       Country
                     </label>
                     <input
@@ -532,21 +566,21 @@ export default function CheckoutPage() {
                       name="country"
                       value={formData.country}
                       disabled
-                      className="h-11 px-3.5 rounded-xl border border-border-medium/60 bg-elevated text-xs font-sans text-text-muted outline-none cursor-not-allowed"
+                      className="h-11 px-3.5 rounded-xl border border-[rgba(212,175,55,0.15)] bg-[#141722] text-xs font-sans text-[#A69B82] outline-none cursor-not-allowed"
                     />
                   </div>
 
                   {user && (
-                    <div className="flex items-center gap-2 pt-2 sm:col-span-2">
+                    <div className="flex items-center gap-2.5 pt-2 sm:col-span-2">
                       <input
                         type="checkbox"
                         id="saveToProfile"
                         name="saveToProfile"
                         checked={formData.saveToProfile}
                         onChange={handleChange}
-                        className="w-4 h-4 rounded text-primary focus:ring-primary accent-[#15803d] cursor-pointer"
+                        className="w-4 h-4 rounded text-[#D4AF37] focus:ring-[#D4AF37] accent-[#D4AF37] cursor-pointer"
                       />
-                      <label htmlFor="saveToProfile" className="text-xs font-sans text-text-primary cursor-pointer select-none">
+                      <label htmlFor="saveToProfile" className="text-xs font-sans text-[#F4EBD9] cursor-pointer select-none">
                         Save this shipping address to my profile for future competitions
                       </label>
                     </div>
@@ -563,49 +597,49 @@ export default function CheckoutPage() {
                     items.length === 0 ||
                     (!!formData.dateOfBirth && calculateAge(formData.dateOfBirth) < 18)
                   }
-                  className="btn-glossy-red w-full h-14 rounded-xl font-heading font-bold text-sm uppercase tracking-wider text-white shadow-md active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="btn-gold-metallic w-full h-14 rounded-xl font-heading font-black text-sm uppercase tracking-wider text-[#090A0E] shadow-[0_0_20px_rgba(212,175,55,0.35)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-[#090A0E] border-t-transparent rounded-full animate-spin" />
                       <span>Securing Your Tickets...</span>
                     </div>
                   ) : formData.dateOfBirth && calculateAge(formData.dateOfBirth) < 18 ? (
                     <span>Entry Refused (Must be 18+)</span>
                   ) : totalPrice === 0 ? (
-                    <span>Claim Free Entry</span>
+                    <span>Claim Free Entry →</span>
                   ) : (
-                    <span>Confirm & Pay — £{totalPrice.toFixed(2)}</span>
+                    <span>Confirm &amp; Pay — £{totalPrice.toFixed(2)} →</span>
                   )}
                 </button>
               </div>
             </form>
 
             {/* Right Column: Order Summary */}
-            <div className="lg:col-span-5 flex flex-col gap-6 sticky top-24">
-              <div className="bg-surface border border-border rounded-card p-6 shadow-card flex flex-col gap-4">
-                <div className="flex items-center justify-between pb-3 border-b border-divider">
-                  <h3 className="font-heading font-black text-sm uppercase tracking-wider text-text-primary">
+            <div className="lg:col-span-5 flex flex-col gap-6 sticky top-28">
+              <div className="bg-[#12151F] border border-[rgba(212,175,55,0.25)] rounded-3xl p-6 sm:p-7 shadow-[0_15px_40px_rgba(0,0,0,0.7)] flex flex-col gap-4">
+                <div className="flex items-center justify-between pb-3.5 border-b border-[rgba(212,175,55,0.18)]">
+                  <h3 className="font-heading font-black text-sm uppercase tracking-wider text-[#F4EBD9]">
                     Order Summary
                   </h3>
                   <Link
                     href="/basket"
-                    className="font-sans text-xs text-text-brand hover:underline font-bold"
+                    className="font-heading font-bold text-xs text-[#D4AF37] hover:text-[#FFF0D4] transition-colors uppercase tracking-wider"
                   >
                     Edit Basket
                   </Link>
                 </div>
 
                 {/* Items in basket */}
-                <div className="flex flex-col divide-y divide-divider max-h-[300px] overflow-y-auto">
+                <div className="flex flex-col divide-y divide-[rgba(212,175,55,0.12)] max-h-[300px] overflow-y-auto pr-1">
                   {items.map((item) => (
                     <div key={item.raffleId} className="py-3 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-accent-bg shrink-0 border border-border">
+                        <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-[#090A0E] shrink-0 border border-[rgba(212,175,55,0.25)] shadow-inner">
                           <Image
                             src={
                               item.image ||
-                              "https://placehold.co/400x300/1a230a/8cb34a?text=Competition"
+                              "https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?q=80&w=800&auto=format&fit=crop"
                             }
                             alt={item.title}
                             fill
@@ -614,15 +648,15 @@ export default function CheckoutPage() {
                           />
                         </div>
                         <div className="flex flex-col min-w-0">
-                          <span className="font-heading font-bold text-xs text-text-primary truncate">
+                          <span className="font-heading font-black text-xs text-[#F4EBD9] truncate uppercase tracking-tight">
                             {item.title}
                           </span>
-                          <span className="font-sans text-[11px] text-text-muted">
+                          <span className="font-sans text-[11px] text-[#A69B82] mt-0.5">
                             {item.quantity} × £{item.pricePerTicket.toFixed(2)}
                           </span>
                         </div>
                       </div>
-                      <span className="font-heading font-bold text-xs text-text-primary shrink-0">
+                      <span className="font-heading font-black text-xs text-[#D4AF37] shrink-0">
                         £{(item.pricePerTicket * item.quantity).toFixed(2)}
                       </span>
                     </div>
@@ -630,29 +664,33 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Pricing summary */}
-                <div className="pt-3 border-t border-divider flex flex-col gap-2">
-                  <div className="flex items-center justify-between text-xs font-sans">
-                    <span className="text-text-muted">Subtotal</span>
-                    <span className="font-semibold text-text-primary">
+                <div className="pt-3.5 border-t border-[rgba(212,175,55,0.18)] flex flex-col gap-2.5">
+                  <div className="flex items-center justify-between text-xs font-sans text-[#A69B82]">
+                    <span>Subtotal</span>
+                    <span className="font-semibold text-[#F4EBD9]">
                       £{totalPrice.toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between text-xs font-sans">
-                    <span className="text-text-muted">Transaction Fee</span>
-                    <span className="font-semibold text-[#15803d]">FREE</span>
+                  <div className="flex items-center justify-between text-xs font-sans text-[#A69B82]">
+                    <span>Transaction Fee</span>
+                    <span className="font-bold text-emerald-400">FREE</span>
                   </div>
-                  <div className="pt-3 border-t border-divider flex items-center justify-between">
-                    <span className="font-heading font-bold text-sm text-text-primary uppercase">
+                  <div className="flex items-center justify-between text-xs font-sans text-[#A69B82]">
+                    <span>Delivery &amp; Insured Shipping</span>
+                    <span className="font-bold text-emerald-400">FREE TRACKED</span>
+                  </div>
+                  <div className="pt-3.5 border-t border-[rgba(212,175,55,0.18)] flex items-center justify-between">
+                    <span className="font-heading font-bold text-sm text-[#F4EBD9] uppercase tracking-wide">
                       Total Due
                     </span>
-                    <span className="font-heading font-black text-xl text-text-brand">
+                    <span className="font-heading font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0D4] via-[#D4AF37] to-[#B39042] drop-shadow-[0_2px_10px_rgba(212,175,55,0.3)]">
                       £{totalPrice.toFixed(2)}
                     </span>
                   </div>
                 </div>
 
                 {/* Mobile visible submit button */}
-                <div className="lg:hidden pt-2">
+                <div className="lg:hidden pt-3">
                   <button
                     type="button"
                     onClick={handleSubmit}
@@ -661,29 +699,29 @@ export default function CheckoutPage() {
                       items.length === 0 ||
                       (!!formData.dateOfBirth && calculateAge(formData.dateOfBirth) < 18)
                     }
-                    className="btn-glossy-red w-full h-12 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="btn-gold-metallic w-full h-12 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-[0_0_15px_rgba(212,175,55,0.3)] active:scale-98 transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {isSubmitting
                       ? "Processing..."
                       : formData.dateOfBirth && calculateAge(formData.dateOfBirth) < 18
                       ? "Entry Refused (Must be 18+)"
                       : totalPrice === 0
-                      ? "Claim Free Entry"
-                      : `Confirm & Pay — £${totalPrice.toFixed(2)}`}
+                      ? "Claim Free Entry →"
+                      : `Confirm & Pay — £${totalPrice.toFixed(2)} →`}
                   </button>
                 </div>
 
-                <div className="pt-4 border-t border-divider text-[10px] text-text-muted flex flex-col gap-1.5">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[#15803d] font-bold">🔒</span>
+                <div className="mt-3 pt-4 border-t border-[rgba(212,175,55,0.15)] text-[10px] text-[#A69B82] flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400 font-bold text-xs">🔒</span>
                     <span>
                       {totalPrice === 0
                         ? "100% Free Entry — No Payment Gateway Required"
                         : "256-Bit SSL Encrypted & Cashflows Protected Checkout"}
                     </span>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[#15803d] font-bold">🎯</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400 font-bold text-xs">🎯</span>
                     <span>Random ticket numbers generated immediately upon receipt</span>
                   </div>
                 </div>

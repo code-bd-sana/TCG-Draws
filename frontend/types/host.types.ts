@@ -10,4 +10,6 @@ export interface VerifiedHost {
   totalReviews?: number;
   isVerified: boolean;
   isBlocked?: boolean;
+  location?: string;
+  memberSince?: number;
 }
