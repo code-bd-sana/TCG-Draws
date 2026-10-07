@@ -210,7 +210,7 @@ export default function UserDashboardPage() {
           </Link>
           <Link
             href="/live-raffles"
-            className="btn-glossy-red px-4 py-2 rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider shadow-md active:scale-98 transition-all flex items-center gap-1.5"
+            className="btn-gold-metallic px-4 py-2 rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider shadow-md active:scale-98 transition-all flex items-center gap-1.5"
           >
             <span>🎯</span> Browse Draws
           </Link>
@@ -227,8 +227,8 @@ export default function UserDashboardPage() {
           <p className="font-heading font-black text-3xl lg:text-4xl leading-tight text-text-primary">
             {isTicketsLoading ? "..." : allTickets.length}
           </p>
-          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-success-bg border border-[#BBF7D0] w-fit">
-            <span className="font-sans text-[10px] font-bold text-success-text">
+          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 w-fit">
+            <span className="font-sans text-[10px] font-bold text-primary">
               {allTickets.length > 0 ? "Lifetime entries" : "No entries yet"}
             </span>
           </div>
@@ -257,8 +257,8 @@ export default function UserDashboardPage() {
           <p className="font-heading font-black text-3xl lg:text-4xl leading-tight text-text-primary">
             {isWinnersLoading ? "..." : totalWins}
           </p>
-          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-success-bg border border-[#BBF7D0] w-fit">
-            <span className="font-sans text-[10px] font-bold text-success-text">
+          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 w-fit">
+            <span className="font-sans text-[10px] font-bold text-emerald-400">
               {instantWinsCount > 0 ? `⚡ ${instantWinsCount} Instant Win(s)` : `🏆 ${totalWins} Total Prize(s)`}
             </span>
           </div>
@@ -291,8 +291,8 @@ export default function UserDashboardPage() {
                 <span className="font-heading font-black text-2xl lg:text-3xl text-text-primary leading-none">
                   £{spendChartData.reduce((acc, curr) => acc + curr.spend, 0).toFixed(2)}
                 </span>
-                <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-success-bg border border-[#BBF7D0]">
-                  <span className="font-sans text-[11px] font-bold text-success-text">
+                <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30">
+                  <span className="font-sans text-[11px] font-bold text-primary">
                     Audited Transactions
                   </span>
                 </div>
@@ -309,7 +309,7 @@ export default function UserDashboardPage() {
                   onClick={() => setTimeframe(period)}
                   className={`px-3 py-1 rounded-lg font-heading font-bold text-xs transition-all cursor-pointer ${
                     timeframe === period
-                      ? "border border-border bg-surface text-text-brand shadow-xs"
+                      ? "border border-primary/50 bg-primary/15 text-primary shadow-xs"
                       : "border border-transparent text-text-muted hover:text-text-primary"
                   }`}
                 >
@@ -329,33 +329,33 @@ export default function UserDashboardPage() {
                 <AreaChart data={spendChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorUserSpend" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#0b4d35" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#0b4d35" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <XAxis 
                     dataKey="name" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: "#717D6E", fontSize: 11, fontFamily: "sans-serif" }} 
+                    tick={{ fill: "#8892B0", fontSize: 11, fontFamily: "sans-serif" }} 
                     dy={10}
                   />
                   <YAxis 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: "#717D6E", fontSize: 11, fontFamily: "sans-serif" }}
+                    tick={{ fill: "#8892B0", fontSize: 11, fontFamily: "sans-serif" }}
                     tickFormatter={(val) => `£${val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}`}
                   />
                   <RechartsTooltip
-                    cursor={{ stroke: "#E2EADF", strokeWidth: 1, strokeDasharray: "4 4" }}
+                    cursor={{ stroke: "#D4AF37", strokeWidth: 1, strokeDasharray: "4 4" }}
                     contentStyle={{ 
-                      backgroundColor: "#FFFFFF", 
-                      borderColor: "#E2EADF", 
+                      backgroundColor: "#12151F", 
+                      borderColor: "rgba(212, 175, 55, 0.3)", 
                       borderRadius: "12px",
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
                       fontFamily: "sans-serif"
                     }}
-                    itemStyle={{ color: "#0b4d35", fontWeight: "bold" }}
+                    itemStyle={{ color: "#D4AF37", fontWeight: "bold" }}
                     formatter={(val: any) => [
                       `£${Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 
                       "Ticket Spend"
@@ -364,7 +364,7 @@ export default function UserDashboardPage() {
                   <Area 
                     type="monotone" 
                     dataKey="spend" 
-                    stroke="#0b4d35" 
+                    stroke="#D4AF37" 
                     strokeWidth={2.5}
                     fillOpacity={1} 
                     fill="url(#colorUserSpend)" 
@@ -420,11 +420,11 @@ export default function UserDashboardPage() {
                 No active entries found
               </h4>
               <p className="font-sans text-xs text-text-muted max-w-[280px] mb-4">
-                You do not have any tickets in active draws. Browse live competitions to participate!
+                You do not have any tickets in active draws. Browse live Pokémon competitions to participate!
               </p>
               <Link
                 href="/live-raffles"
-                className="btn-glossy-red px-4 py-2 rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider shadow-sm"
+                className="btn-gold-metallic px-4 py-2 rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider shadow-sm"
               >
                 Browse Live Draws
               </Link>
@@ -442,7 +442,7 @@ export default function UserDashboardPage() {
                         src={
                           item.raffle.images?.[0] ||
                           item.raffle.mainImage ||
-                          "https://placehold.co/400x300/1a230a/8cb34a?text=Draw"
+                          "https://placehold.co/400x300/12151F/D4AF37?text=TCG+Draw"
                         }
                         alt={item.raffle.title}
                         fill
@@ -458,7 +458,7 @@ export default function UserDashboardPage() {
                         {item.raffle.title}
                       </Link>
                       <span className="font-sans text-[11px] text-text-muted truncate">
-                        Hosted by {item.raffle.host?.businessName || "Fairway Draws Host"}
+                        Hosted by {item.raffle.host?.businessName || "TCG Draws Host"}
                       </span>
                       <span className="font-sans text-[10px] text-text-muted mt-0.5">
                         Draw Date:{" "}
@@ -491,7 +491,7 @@ export default function UserDashboardPage() {
                   Recent Wins
                 </h3>
                 {instantWinsCount > 0 && (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FEF3C7] border border-[#FDE68A] text-[#D97706] font-sans font-bold text-[9px] uppercase tracking-wider">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 font-sans font-bold text-[9px] uppercase tracking-wider">
                     ⚡ {instantWinsCount} Instant Win{instantWinsCount === 1 ? "" : "s"}
                   </span>
                 )}
@@ -531,11 +531,11 @@ export default function UserDashboardPage() {
                 No wins recorded yet
               </h4>
               <p className="font-sans text-xs text-text-muted max-w-[280px] mb-4">
-                Enter active competitions for your chance to win instant prizes and premium golf equipment.
+                Enter active competitions for your chance to win instant prizes, graded PSA slabs, and booster boxes.
               </p>
               <Link
                 href="/dashboard/user/competitions"
-                className="btn-glossy-red px-4 py-2 rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider shadow-sm"
+                className="btn-gold-metallic px-4 py-2 rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider shadow-sm"
               >
                 Explore Competitions
               </Link>
@@ -553,7 +553,7 @@ export default function UserDashboardPage() {
                         src={
                           win.prizeImage ||
                           win.raffle?.mainImage ||
-                          "https://placehold.co/400x300/1a230a/8cb34a?text=Prize"
+                          "https://placehold.co/400x300/12151F/D4AF37?text=Prize"
                         }
                         alt={win.prizeName}
                         fill
@@ -567,18 +567,18 @@ export default function UserDashboardPage() {
                           {win.prizeName}
                         </span>
                         {win.winType === "INSTANT_WIN" ? (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FEF3C7] border border-[#FDE68A] text-[#D97706] font-sans font-bold text-[9px] uppercase tracking-wider">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 font-sans font-bold text-[9px] uppercase tracking-wider">
                             ⚡ Instant Win
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#DCFCE7] border border-[#BBF7D0] text-[#15803D] font-sans font-bold text-[9px] uppercase tracking-wider">
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-sans font-bold text-[9px] uppercase tracking-wider">
                             🏆 Main Draw
                           </span>
                         )}
                       </div>
 
                       <p className="font-sans text-[11px] text-text-muted truncate">
-                        {win.raffle?.title || "Fairway Draws Competition"}
+                        {win.raffle?.title || "TCG Draws Competition"}
                       </p>
 
                       <div className="flex items-center gap-2 mt-0.5 text-[10px] font-sans text-text-muted">
@@ -588,7 +588,7 @@ export default function UserDashboardPage() {
                         {win.rrpValue ? (
                           <>
                             <span>•</span>
-                            <span className="font-semibold text-[#15803d]">
+                            <span className="font-semibold text-primary">
                               Value: £{Number(win.rrpValue).toFixed(2)}
                             </span>
                           </>
@@ -604,10 +604,10 @@ export default function UserDashboardPage() {
                     <span
                       className={`px-2 py-0.5 rounded-full text-[9px] font-sans font-bold uppercase tracking-wider ${
                         win.deliveryStatus === "DELIVERED"
-                          ? "bg-green-100 text-green-700 border border-green-200"
+                          ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
                           : win.deliveryStatus === "SHIPPED"
-                          ? "bg-blue-100 text-blue-700 border border-blue-200"
-                          : "bg-amber-100 text-amber-700 border border-amber-200"
+                          ? "bg-blue-500/15 text-blue-400 border border-blue-500/30"
+                          : "bg-amber-500/15 text-amber-400 border border-amber-500/30"
                       }`}
                     >
                       {win.deliveryStatus === "DELIVERED"

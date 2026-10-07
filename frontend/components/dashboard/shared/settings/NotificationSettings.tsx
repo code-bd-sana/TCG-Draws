@@ -11,7 +11,7 @@ export default function NotificationSettings() {
     <div className="bg-surface border border-border rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card animate-fadeIn">
       <div>
         <h2 className="font-heading font-black text-xl text-text-primary uppercase tracking-tight">Notification Preferences</h2>
-        <p className="font-sans text-xs text-text-muted mt-1">Manage how and when you receive alerts from Fairway Draws.</p>
+        <p className="font-sans text-xs text-text-muted mt-1">Manage how and when you receive alerts from TCG Draws.</p>
       </div>
 
       <div className="h-px w-full bg-divider" />

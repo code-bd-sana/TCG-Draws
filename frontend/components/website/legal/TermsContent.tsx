@@ -56,20 +56,20 @@ export default function TermsContent() {
     <div className="legal-campaign w-full pt-24 pb-20">
       
       {/* Top Banner */}
-      <div className="border-b border-[#2D3C13] bg-[#111210]/60 backdrop-blur-md py-12 mb-12">
+      <div className="border-b border-[rgba(212,175,55,0.2)] bg-[#090A0E] py-16 mb-12">
         <div className="container-custom max-w-6xl mx-auto px-4">
           <div className="flex flex-col gap-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A230A] border border-[#43581E] text-[#8CB34A] text-xs font-semibold w-fit">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#181C28] border border-[rgba(212,175,55,0.3)] text-[#D4AF37] text-xs font-bold uppercase tracking-wider w-fit">
               <span>📜 Official Legal Documentation</span>
             </div>
-            <h1 className="font-heading font-extrabold text-3xl sm:text-5xl text-[#E8EDD4] tracking-tight">
-              Terms & Conditions
+            <h1 className="font-heading font-black text-3xl sm:text-5xl text-[#F4EBD9] tracking-tight uppercase">
+              Terms &amp; Conditions
             </h1>
-            <p className="font-sans text-sm sm:text-base text-[#72943A] max-w-2xl">
-              Official rules governing all prize competitions, free postal entries, eligibility, anti-money laundering policies, and fair play on Fairway Draws.
+            <p className="font-sans text-sm sm:text-base text-[#A69B82] max-w-2xl">
+              Official rules governing all prize competitions, free postal entries, eligibility, anti-money laundering policies, and fair play on TCG Draws.
             </p>
-            <div className="flex items-center gap-4 text-xs font-sans text-[#5A752A] pt-2">
-              <span>Last Updated: July 2026</span>
+            <div className="flex items-center gap-4 text-xs font-sans text-[#6E6655] pt-2">
+              <span>Last Updated: 2026</span>
               <span>•</span>
               <span>Effective Version: 2.4</span>
             </div>
@@ -83,8 +83,8 @@ export default function TermsContent() {
           
           {/* Left Table of Contents */}
           <aside className="lg:col-span-4 hidden lg:block">
-            <div className="sticky top-28 bg-[#edf5e9] border border-[#bdd3ba] rounded-2xl p-5 space-y-2 shadow-[0_10px_25px_rgba(11,77,53,0.09)]">
-              <h3 className="font-heading font-bold text-xs text-[#073826] uppercase tracking-wider mb-3 px-2">
+            <div className="sticky top-28 bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-5 space-y-2 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h3 className="font-heading font-black text-xs text-[#F4EBD9] uppercase tracking-wider mb-3 px-2">
                 Table of Contents
               </h3>
               <nav className="flex flex-col space-y-1">
@@ -93,21 +93,21 @@ export default function TermsContent() {
                     key={sec.id}
                     onClick={() => scrollTo(sec.id)}
                     className={cn(
-                      "text-left px-3 py-2 rounded-xl text-xs font-sans transition-all duration-200 truncate cursor-pointer",
+                      "text-left px-3 py-2 rounded-xl text-xs font-heading font-medium transition-all duration-200 truncate cursor-pointer",
                       activeSection === sec.id
-                        ? "bg-[#0b4d35] text-white font-semibold border-l-2 border-[#147a54] pl-3 shadow-sm"
-                        : "text-[#426256] hover:bg-[#dcebd8] hover:text-[#073826]"
+                        ? "bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] font-bold shadow-sm"
+                        : "text-[#A69B82] hover:bg-[#181C28] hover:text-[#F4EBD9]"
                     )}
                   >
                     {sec.title}
                   </button>
                 ))}
               </nav>
-              
-              <div className="pt-4 border-t border-[#bdd3ba] mt-4">
+
+              <div className="pt-4 border-t border-[rgba(212,175,55,0.15)] mt-4">
                 <Link
                   href="/contact"
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#0b4d35] hover:bg-[#073826] border border-[#0b4d35] text-white text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
+                  className="btn-gold-metallic w-full py-2.5 px-4 rounded-xl text-xs font-heading font-black flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
                   ✉️ Need Legal Help? Contact Us
                 </Link>
@@ -116,26 +116,23 @@ export default function TermsContent() {
           </aside>
 
           {/* Right Main Text Content */}
-          <main className="lg:col-span-8 space-y-12 text-sm leading-relaxed text-[#426256]">
+          <main className="lg:col-span-8 space-y-8 text-sm leading-relaxed text-[#A69B82]">
             
             {/* 1. The Promoter */}
-            <section id="promoter" className="bg-[#edf5e9] border border-[#bdd3ba] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_10px_25px_rgba(11,77,53,0.09)]">
-              <h2 className="font-heading font-bold text-xl text-[#073826] border-b border-[#bdd3ba] pb-3">
+            <section id="promoter" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
                 1. The Promoter
               </h2>
-              <p>
-                1.1. The Promoter is: <strong className="text-[#073826]">Fairway Draws Ltd — Company No. 17396815</strong> ("Fairway Draws") whose registered office is at Synergy House, Lawson Street, North Shields NE29 6TG.
+              <p className="text-[#A69B82]">
+                1.1. The Promoter is: <strong className="text-[#F4EBD9]">TCG Draws Ltd</strong> (&ldquo;TCG Draws&rdquo;) operating at synergy registered address in the United Kingdom.
               </p>
-              <p>
-                1.2. Our correspondence address is: <span className="text-[#073826] font-medium">Synergy House, Lawson Street, North Shields NE29 6TG</span>.
-              </p>
-              <p>
-                1.3. If you wish to contact us for any reason, please email us at{" "}
+              <p className="text-[#A69B82]">
+                1.2. If you wish to contact us for any reason, please email us at{" "}
                 <a
-                  href="mailto:info@fairwaydraws.com"
-                  className="text-[#0b4d35] font-semibold underline underline-offset-4 decoration-[#0b4d35]/60 hover:text-[#073826] hover:decoration-[#073826] transition-colors"
+                  href="mailto:support@tcgdraws.com"
+                  className="text-[#D4AF37] font-semibold underline underline-offset-4 decoration-[#D4AF37]/60 hover:text-[#F5E5C0] transition-colors"
                 >
-                  info@fairwaydraws.com
+                  support@tcgdraws.com
                 </a>.
               </p>
             </section>

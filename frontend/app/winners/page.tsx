@@ -7,9 +7,9 @@ import WinnersGrid from "../../components/website/winners/WinnersGrid";
 import WinnerHighlightCard from "../../components/website/winners/WinnerHighlightCard";
 
 export const metadata: Metadata = {
-  title: "Winners Gallery | Fairway Draws",
+  title: "Winners Gallery | TCG Draws",
   description:
-    "See all the completed raffle winners. Check past draw dates, verified delivered prizes, and transparency records.",
+    "See all the completed Pokémon TCG draw winners. Check past draw dates, verified delivered PSA slabs, and transparency records.",
 };
 
 /**

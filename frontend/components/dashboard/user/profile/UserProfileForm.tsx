@@ -308,7 +308,7 @@ export default function UserProfileForm() {
             <button 
               type="submit" 
               disabled={isSubmittingProfile}
-              className="btn-glossy-red h-[42px] px-8 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-white transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
+              className="btn-gold-metallic h-[42px] px-8 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-black transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
             >
               {isSubmittingProfile ? "Saving..." : "Save Profile Details"}
             </button>
@@ -352,7 +352,7 @@ export default function UserProfileForm() {
             <button 
               type="submit" 
               disabled={isSubmittingPassword}
-              className="btn-glossy-red h-[42px] px-8 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-white transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
+              className="btn-gold-metallic h-[42px] px-8 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-black transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
             >
               {isSubmittingPassword ? "Updating..." : "Update Password"}
             </button>

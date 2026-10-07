@@ -37,7 +37,7 @@ export default function DashboardSidebar({ account }: DashboardSidebarProps) {
 
       {/* Brand / Logo Area */}
       <div className="h-[88px] flex items-center justify-center border-b border-border shrink-0 w-full px-5">
-        <FairwayDrawsLogo variant="light" size="md" href="/dashboard" priority />
+        <FairwayDrawsLogo variant="dark" size="md" href="/dashboard" priority />
       </div>
 
       {/* Navigation */}

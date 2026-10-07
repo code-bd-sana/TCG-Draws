@@ -328,9 +328,9 @@ export default function UserTicketsPage() {
                       <button
                         onClick={() => handlePayOrder(order.id)}
                         disabled={!canPay || payingOrderId === order.id}
-                        className={`h-[44px] px-6 rounded-xl font-heading font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer focus:outline-none focus:ring-0 ${
+                        className={`h-[44px] px-6 rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer focus:outline-none focus:ring-0 ${
                           canPay
-                            ? "btn-glossy-red text-white hover:scale-102 active:scale-98 shadow-md"
+                            ? "btn-gold-metallic text-black hover:scale-102 active:scale-98 shadow-md"
                             : "bg-elevated border border-border text-text-muted cursor-not-allowed opacity-60"
                         }`}
                       >

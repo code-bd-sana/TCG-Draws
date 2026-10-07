@@ -42,7 +42,7 @@ export default function MobileDashboardMenu({ account, isOpen, onClose }: Mobile
       )}>
         <div className="h-[88px] flex items-center justify-between px-6 border-b border-border shrink-0">
           <div onClick={onClose}>
-            <FairwayDrawsLogo variant="light" size="sm" href="/dashboard" priority />
+            <FairwayDrawsLogo variant="dark" size="sm" href="/dashboard" priority />
           </div>
           <button
             onClick={onClose}

@@ -7,9 +7,9 @@ import PricingComparisonSection from "../../components/website/pricing/PricingCo
 import PricingFaqSection from "../../components/website/pricing/PricingFaqSection";
 
 export const metadata: Metadata = {
-  title: "Pricing & Plans | Fairway Draws",
+  title: "Pricing & Plans | TCG Draws",
   description:
-    "Choose the right hosting plan for your golf competitions. Start free or unlock advanced host dashboard access, custom branding, and priority payouts.",
+    "Choose the right hosting plan for your Pokémon card competitions. Start free or unlock advanced host dashboard access, custom branding, and priority payouts.",
 };
 
 /**

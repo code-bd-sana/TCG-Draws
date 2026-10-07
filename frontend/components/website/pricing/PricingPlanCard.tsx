@@ -2,8 +2,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PricingPlan, BillingCycle } from "../../../types/pricing.types";
-import PrimaryButton from "../shared/PrimaryButton";
-import SecondaryButton from "../shared/SecondaryButton";
 import { cn } from "../../../lib/utils";
 import { useAuthUser } from "../../../hooks/useAuthHooks";
 import { useCreateCheckoutSessionMutation } from "../../../hooks/useSubscriptionHooks";
@@ -13,13 +11,9 @@ import { toast } from "sonner";
 interface PricingPlanCardProps {
   plan: PricingPlan;
   billingCycle: BillingCycle;
-  dbPlan?: SubscriptionPlan; // Passed from backend if available
+  dbPlan?: SubscriptionPlan;
 }
 
-/**
- * Pricing plan card component matching the Figma layouts.
- * Highlights the Premium plan. Handles pricing calculations.
- */
 export default function PricingPlanCard({ plan, billingCycle, dbPlan }: PricingPlanCardProps) {
   const isYearly = billingCycle === "yearly";
   const price = isYearly && plan.yearlyPrice !== undefined ? plan.yearlyPrice : plan.monthlyPrice;
@@ -55,7 +49,7 @@ export default function PricingPlanCard({ plan, billingCycle, dbPlan }: PricingP
           setTimeout(() => {
             setLoading(false);
             setShowSuccessModal(true);
-          }, 2500); // Simulate network loading
+          }, 2500);
         } else if (data.url) {
           window.location.href = data.url;
         } else {
@@ -74,141 +68,87 @@ export default function PricingPlanCard({ plan, billingCycle, dbPlan }: PricingP
   return (
     <div
       className={cn(
-        "relative flex w-full flex-col rounded-[24px] p-8 shadow-xl transition-all duration-300 hover:-translate-y-1.5",
+        "relative flex w-full flex-col rounded-2xl p-8 shadow-[0_15px_35px_rgba(0,0,0,0.6)] transition-all duration-300 hover:-translate-y-2",
         plan.isFeatured
-          ? "border-2 border-[#0b4d35] bg-white ring-4 ring-[#0b4d35]/12 shadow-2xl"
-          : "border border-[#bdd3ba] bg-[#f8faf6] hover:border-[#0b4d35]/45 hover:shadow-2xl"
+          ? "border-2 border-[#D4AF37] bg-[#12151F] shadow-[0_0_30px_rgba(212,175,55,0.2)]"
+          : "border border-[rgba(212,175,55,0.2)] bg-[#12151F] hover:border-[#D4AF37]/50"
       )}
     >
       {/* Featured Ribbon Badge */}
       {plan.isFeatured && plan.badgeLabel && (
-        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#dc2626] text-white rounded-full px-4 py-1 shadow-md font-sans font-black text-[10px] tracking-widest uppercase flex items-center gap-1">
-          <span>🔥</span>
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] rounded-full px-4 py-1 shadow-md font-heading font-black text-[10px] tracking-widest uppercase flex items-center gap-1">
+          <span>✨</span>
           <span>{plan.badgeLabel}</span>
         </div>
       )}
 
       {/* Plan Header */}
       <div className="flex flex-col items-start mb-6">
-        <h3 className="font-heading font-black text-xl text-[#0b4d35] uppercase tracking-wide">
+        <h3 className="font-heading font-black text-xl text-[#F4EBD9] uppercase tracking-wide">
           {plan.name}
         </h3>
-        
+
         {/* Price Tag */}
         <div className="flex items-baseline gap-1.5 mt-3">
-          <span className="font-heading font-black text-4xl sm:text-5xl text-[#0b4d35] select-none tracking-tight">
+          <span className="font-heading font-black text-4xl sm:text-5xl text-[#D4AF37] select-none tracking-tight">
             £{price}
           </span>
-          <span className="font-sans text-xs font-bold text-[#5e766c] select-none">
-            {price === 0 ? " forever" : "/month"}
+          <span className="font-sans text-xs text-[#A69B82]">
+            /{billingCycle === "yearly" ? "yr" : "mo"}
           </span>
         </div>
-        
-        {isYearly && plan.monthlyPrice > 0 ? (
-          <span className="font-sans font-semibold text-[11px] text-[#16a34a] mt-1.5 select-none bg-[#f0fdf4] border border-[#bbf7d0] px-2.5 py-0.5 rounded-full">
-            £{price * 12}/yr billed annually (Save 20%)
-          </span>
-        ) : !isYearly && plan.monthlyPrice > 0 ? (
-          <span className="font-sans text-[11px] text-[#5e766c] mt-1.5 select-none">
-            Billed monthly
-          </span>
-        ) : null}
+
+        <p className="font-sans text-xs text-[#A69B82] mt-3 leading-relaxed">
+          {plan.description}
+        </p>
       </div>
 
-      {/* Commission Level Label */}
-      <div className="inline-flex items-center bg-[#0b4d35]/8 border border-[#0b4d35]/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#0b4d35] select-none w-fit mb-6">
+      {/* Commission pill */}
+      <div className="inline-flex items-center bg-[#181C28] border border-[rgba(212,175,55,0.3)] px-3.5 py-1.5 rounded-full text-xs font-heading font-bold text-[#D4AF37] select-none w-fit mb-6">
         {plan.commissionLabel}
       </div>
 
-      {/* Divider */}
-      <div className="h-px bg-divider w-full mb-6" />
-
-      {/* Feature List */}
-      <ul className="flex-1 flex flex-col gap-3.5 mb-8">
-        {plan.features.map((feature) => (
-          <li
-            key={feature.id}
-            className={cn(
-              "flex items-center gap-3 font-sans text-xs md:text-sm font-medium transition-all duration-200",
-              feature.included ? "text-[#101811]" : "text-[#5e766c]/50 line-through"
-            )}
-          >
-            {/* Check or Dash SVG icon */}
-            {feature.included ? (
-              <div className="w-5 h-5 rounded-full bg-[#0b4d35]/12 flex items-center justify-center shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={3}
-                  stroke="currentColor"
-                  className="w-3.5 h-3.5 text-[#0b4d35]"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                </svg>
-              </div>
-            ) : (
-              <div className="w-5 h-5 rounded-full bg-black/5 flex items-center justify-center shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2.5}
-                  stroke="currentColor"
-                  className="w-3.5 h-3.5 text-black/25"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
-                </svg>
-              </div>
-            )}
-            <span>{feature.label}</span>
-          </li>
-        ))}
-      </ul>
-
-      {/* CTA Action Button */}
-      <div className="mt-auto">
-        {plan.isFeatured ? (
-          <PrimaryButton 
-            className="w-full py-3 text-sm tracking-wide flex justify-center items-center gap-2" 
-            onClick={handleSubscribe} 
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : plan.ctaLabel}
-          </PrimaryButton>
-        ) : (
-          <SecondaryButton 
-            className="w-full py-3 text-sm tracking-wide flex justify-center items-center gap-2" 
-            onClick={handleSubscribe} 
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : plan.ctaLabel}
-          </SecondaryButton>
-        )}
-      </div>
-
-      {/* Success Modal */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="bg-surface border border-border p-8 rounded-[24px] shadow-glow w-[90%] max-w-md flex flex-col items-center text-center animate-in zoom-in-95 duration-300">
-            <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-8 h-8 text-primary">
+      {/* Features List */}
+      <div className="flex-grow flex flex-col gap-3.5 mb-8">
+        <span className="font-heading text-[11px] font-bold text-[#A69B82] uppercase tracking-wider">
+          What&apos;s Included:
+        </span>
+        {plan.features.map((feature, idx) => (
+          <div key={feature.id || idx} className="flex items-start gap-2.5">
+            <div className="w-5 h-5 rounded-full bg-[#181C28] border border-[rgba(212,175,55,0.3)] flex items-center justify-center shrink-0 mt-0.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={3}
+                stroke="currentColor"
+                className="w-3 h-3 text-[#D4AF37]"
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
               </svg>
             </div>
-            <h2 className="font-heading font-bold text-2xl text-text-primary mb-3">Payment Successful</h2>
-            <p className="font-sans text-sm text-text-secondary mb-8">Your subscription has been activated successfully.</p>
-            <PrimaryButton 
-              className="w-full py-3" 
-              onClick={() => {
-                window.location.href = '/dashboard/host/billing?status=success';
-              }}
-            >
-              Continue to Dashboard
-            </PrimaryButton>
+            <span className="font-sans text-xs text-[#F4EBD9] leading-tight">
+              {feature.label}
+            </span>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+
+      {/* CTA Button */}
+      <div className="mt-auto">
+        <button
+          onClick={handleSubscribe}
+          disabled={loading}
+          className={cn(
+            "w-full py-3.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer select-none",
+            plan.isFeatured
+              ? "btn-gold-metallic text-[#090A0E] shadow-md"
+              : "btn-dark-metallic text-[#F4EBD9] border border-[rgba(212,175,55,0.3)]"
+          )}
+        >
+          {loading ? "Processing..." : plan.ctaLabel || "Select Plan"}
+        </button>
+      </div>
     </div>
   );
 }

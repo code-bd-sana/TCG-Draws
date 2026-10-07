@@ -124,8 +124,8 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="relative w-full rounded-[20px] border border-[#bdd3ba] bg-[#edf5e9] p-6 shadow-[0_12px_28px_rgba(11,77,53,.12)] md:p-8">
-      <h2 className="font-heading font-bold text-lg md:text-xl text-text-primary mb-6">
+    <div className="relative w-full rounded-2xl border border-[rgba(212,175,55,0.2)] bg-[#12151F] p-6 shadow-[0_15px_35px_rgba(0,0,0,0.6)] md:p-8">
+      <h2 className="font-heading font-black text-xl md:text-2xl text-[#F4EBD9] uppercase tracking-wide mb-6">
         Send Us a Message
       </h2>
 
@@ -207,13 +207,13 @@ export default function ContactForm() {
               onChange={handleInputChange}
               disabled={isSubmitting}
               className={cn(
-                "w-full appearance-none rounded-xl border border-[#bdd3ba] bg-[#f8fbf6] px-4 py-2.5 font-sans text-xs text-text-primary outline-none transition-all duration-200 focus:border-primary focus:ring-1 focus:ring-primary/20 cursor-pointer md:text-sm",
+                "w-full appearance-none rounded-xl border border-[rgba(212,175,55,0.25)] bg-[#12151F] px-4 py-3 font-sans text-xs text-[#F4EBD9] outline-none transition-all duration-200 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/30 cursor-pointer md:text-sm",
                 errors.subject && "border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500/30",
                 isSubmitting && "opacity-50 cursor-not-allowed"
               )}
             >
               {SUBJECT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value} className="bg-surface py-2">
+                <option key={opt.value} value={opt.value} className="bg-[#12151F] text-[#F4EBD9] py-2">
                   {opt.label}
                 </option>
               ))}

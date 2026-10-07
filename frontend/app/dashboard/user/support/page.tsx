@@ -289,7 +289,7 @@ export default function UserSupportPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-glossy-red w-full h-[46px] text-white rounded-xl font-heading font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md active:scale-98 cursor-pointer disabled:opacity-60 transition-all mt-1"
+                className="btn-gold-metallic w-full h-[46px] text-black rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md active:scale-98 cursor-pointer disabled:opacity-60 transition-all mt-1"
               >
                 {isSubmitting ? (
                   <>
@@ -337,15 +337,15 @@ export default function UserSupportPage() {
                     Email Support
                   </span>
                   <a
-                    href="mailto:info@fairwaydraws.com"
+                    href="mailto:support@tcgdraws.com"
                     className="font-sans text-xs text-text-brand hover:underline truncate mt-0.5"
                   >
-                    info@fairwaydraws.com
+                    support@tcgdraws.com
                   </a>
                 </div>
               </div>
               <a
-                href="mailto:info@fairwaydraws.com"
+                href="mailto:support@tcgdraws.com"
                 className="px-3 py-1.5 rounded-lg bg-surface border border-border text-xs font-sans font-semibold text-text-primary hover:bg-elevated transition-all shrink-0"
               >
                 Email
@@ -370,7 +370,7 @@ export default function UserSupportPage() {
                 </div>
               </div>
               <a
-                href="https://wa.me/447466347548?text=Hello%20Fairway%20Draws%20Support%2C%20I%20have%20an%20inquiry%20regarding%20my%20account"
+                href="https://wa.me/447466347548?text=Hello%20TCG%20Draws%20Support%2C%20I%20have%20an%20inquiry%20regarding%20my%20account"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3.5 py-1.5 rounded-lg bg-[#25D366]/15 border border-[#25D366]/40 text-[#25D366] font-sans text-xs font-bold hover:bg-[#25D366] hover:text-white transition-all shrink-0 flex items-center gap-1.5 shadow-sm"

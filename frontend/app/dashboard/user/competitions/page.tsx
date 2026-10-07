@@ -69,9 +69,9 @@ export default function UserRafflesPage() {
             <button
               key={status}
               onClick={() => { setStatusFilter(status); setPage(1); }}
-              className={`px-4 py-1.5 rounded-full font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+              className={`px-4 py-1.5 rounded-full font-heading font-black text-xs uppercase tracking-wider transition-all cursor-pointer ${
                 statusFilter === status
-                  ? "bg-primary text-white shadow-xs"
+                  ? "bg-primary text-black shadow-xs font-black"
                   : "bg-surface border border-border text-text-muted hover:text-text-primary"
               }`}
             >
@@ -82,13 +82,13 @@ export default function UserRafflesPage() {
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 w-full">
           <div className="flex flex-wrap items-center gap-2">
-            {["All", "Drivers", "Irons", "Putters", "Experiences", "Apparel & Bags", "Accessories"].map((cat) => (
+            {["All", "Graded Slabs", "Vintage Packs", "Booster Boxes", "Alternate Arts", "Instant Wins", "Cash Prizes"].map((cat) => (
               <button
                 key={cat}
                 onClick={() => { setCategory(cat); setPage(1); }}
                 className={`px-3.5 py-1 rounded-full font-sans font-bold text-xs transition-all border cursor-pointer ${
                   category === cat
-                    ? "bg-accent-bg border-primary/40 text-text-brand"
+                    ? "bg-primary/15 border-primary/40 text-primary"
                     : "bg-elevated border-border-medium text-text-muted hover:text-text-primary"
                 }`}
               >
@@ -180,11 +180,11 @@ export default function UserRafflesPage() {
                     <div className="absolute top-4 left-4 right-4 flex justify-between items-start">
                       <div className="px-3 py-1 rounded-full bg-surface/90 backdrop-blur-sm border border-border shadow-xs">
                         <span className="font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider">
-                          {raffle.category || 'General'}
+                          {raffle.category || 'Pokemon TCG'}
                         </span>
                       </div>
                       <div className="px-3 py-1 rounded-full bg-surface/90 backdrop-blur-sm border border-border shadow-xs">
-                        <span className="font-heading font-black text-xs text-text-brand">
+                        <span className="font-heading font-black text-xs text-primary">
                           £{Number(raffle.pricePerTicket).toFixed(2)}/tkt
                         </span>
                       </div>
@@ -218,8 +218,8 @@ export default function UserRafflesPage() {
                       </div>
                       
                       {isLive && (
-                        <div className="px-2.5 py-0.5 rounded-full bg-success-bg border border-[#BBF7D0]">
-                          <span className="font-sans font-bold text-[10px] text-success-text uppercase tracking-wide">Live</span>
+                        <div className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                          <span className="font-sans font-bold text-[10px] text-emerald-400 uppercase tracking-wide">Live</span>
                         </div>
                       )}
                     </div>
@@ -227,7 +227,7 @@ export default function UserRafflesPage() {
                     <div className="mt-2 w-full">
                       {isLive ? (
                         <Link href={`/live-raffles/${raffle.slug}`} className="w-full">
-                          <button className="btn-glossy-red w-full h-[38px] rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider shadow-sm flex items-center justify-center cursor-pointer">
+                          <button className="btn-gold-metallic w-full h-[38px] rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider shadow-sm flex items-center justify-center cursor-pointer">
                             Buy Tickets
                           </button>
                         </Link>

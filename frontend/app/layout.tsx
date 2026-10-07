@@ -15,9 +15,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Fairway Draws | Premium Golf Gear Competitions',
+  title: 'TCG Draws | Premium Pokémon TCG Competitions & Graded Slabs',
   description:
-    'Win premium golf gear for less. Enter draws from just £1 per ticket. Transparent, fair, and secure prize draws.',
+    'Win PSA & BGS Gem Mint 10 Pokémon slabs, vintage booster packs, and modern grails. Transparent, verified, and secure prize draws from £1.',
 };
 
 export default function RootLayout({

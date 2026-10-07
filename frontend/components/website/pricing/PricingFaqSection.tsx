@@ -5,8 +5,7 @@ import { PRICING_FAQ } from "../../../data/pricing/pricing-faq.data";
 import AccordionItem from "../shared/AccordionItem";
 
 /**
- * Pricing Page FAQ Section using the shared AccordionItem component.
- * Allows expansion of one question at a time.
+ * Pricing Page FAQ Section using dark obsidian theme.
  */
 export default function PricingFaqSection() {
   const [openId, setOpenId] = useState<string | null>(null);
@@ -16,16 +15,14 @@ export default function PricingFaqSection() {
   };
 
   return (
-    <section id="faq" className="w-full border-b border-[#bcd5b8] bg-[#dcebd8] py-20">
+    <section id="faq" className="w-full border-b border-[rgba(212,175,55,0.2)] bg-[#090A0E] py-20">
       <div className="container-custom max-w-3xl flex flex-col items-center">
-        
-        {/* Title Heading */}
-        <h2 className="font-heading font-bold text-2xl md:text-4xl text-text-primary text-center mb-10 tracking-tight">
+        <h2 className="font-heading font-black text-2xl md:text-4xl text-[#F4EBD9] uppercase text-center mb-10 tracking-tight">
           Frequently Asked Questions
         </h2>
 
         {/* Accordions Wrapper */}
-        <div className="flex w-full flex-col gap-1 rounded-[18px] border border-[#bdd3ba] bg-[#edf5e9] p-6 shadow-[0_12px_28px_rgba(11,77,53,.1)] md:p-8">
+        <div className="flex w-full flex-col gap-3 rounded-2xl border border-[rgba(212,175,55,0.2)] bg-[#12151F] p-6 shadow-[0_15px_35px_rgba(0,0,0,0.6)] md:p-8">
           {PRICING_FAQ.map((faq) => (
             <AccordionItem
               key={faq.id}
@@ -36,7 +33,6 @@ export default function PricingFaqSection() {
             />
           ))}
         </div>
-
       </div>
     </section>
   );

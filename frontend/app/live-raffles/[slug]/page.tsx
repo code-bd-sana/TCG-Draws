@@ -115,8 +115,8 @@ async function getRaffle(slug: string): Promise<RaffleDetail | undefined> {
       isFeatured: false,
       hostId: draw.hostId || draw.host?.id,
       hostUserId: draw.host?.userId || draw.host?.user?.id,
-      hostName: draw.host?.businessName?.trim() || (draw.host?.user ? `${draw.host.user.firstName || ''} ${draw.host.user.lastName || ''}`.trim() : "Fairway Draws Host"),
-      hostLogo: draw.host?.user?.avatarUrl || draw.host?.businessName?.trim()?.[0] || draw.host?.user?.firstName?.[0] || "FD",
+      hostName: draw.host?.businessName?.trim() || (draw.host?.user ? `${draw.host.user.firstName || ''} ${draw.host.user.lastName || ''}`.trim() : "TCG Draws Host"),
+      hostLogo: draw.host?.user?.avatarUrl || draw.host?.businessName?.trim()?.[0] || draw.host?.user?.firstName?.[0] || "TCG",
       hostSlug: draw.host?.slug || draw.host?.id,
       hostDrawsCount: 1,
       hostVerified: true,
@@ -132,8 +132,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const raffle = await getRaffle(slug);
   return {
-    title: raffle ? `${raffle.title} | Fairway Draws` : "Competition Not Found | Fairway Draws",
-    description: raffle?.description || "Browse and enter active premium golf draws.",
+    title: raffle ? `${raffle.title} | TCG Draws` : "Competition Not Found | TCG Draws",
+    description: raffle?.description || "Browse and enter active premium Pokémon TCG draws.",
   };
 }
 
@@ -183,7 +183,7 @@ export default async function LiveRaffleDetailPage({ params }: PageProps) {
       {/* Sticky top navbar */}
       <WebsiteNavbar />
 
-      <main className="min-h-screen flex flex-col bg-[#cfdfcb] pt-20 md:pt-[68px]">
+      <main className="min-h-screen flex flex-col bg-[#090A0E] pt-20 md:pt-[68px]">
         {/* Main Details Section */}
         <section className="py-10 md:py-14 flex-grow">
           <div className="container-custom">

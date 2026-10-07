@@ -7,9 +7,9 @@ import ContactForm from "../../components/website/contact/ContactForm";
 import ContactInfoCards from "../../components/website/contact/ContactInfoCards";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Fairway Draws",
+  title: "Contact Us | TCG Draws",
   description:
-    "Have questions about draw competitions, hosting fees, or verification? Send us a message and our support crew will reach out within 24 hours.",
+    "Have questions about Pokémon card draws, breaker hosting, or order delivery? Send us a message and our support team will reach out within 24 hours.",
 };
 
 /**
@@ -22,13 +22,13 @@ export default function ContactPage() {
       {/* Sticky top navbar */}
       <WebsiteNavbar />
 
-      <main className="min-h-screen flex flex-col bg-bg">
+      <main className="min-h-screen flex flex-col bg-[#090A0E]">
         {/* Page Hero subheaders */}
         <ContactHero />
 
         {/* Form and Support Info section */}
-        <section className="relative w-full bg-[#cfdfcb] py-16 before:absolute before:inset-0 before:bg-[radial-gradient(#0b4d3520_1px,transparent_1px)] before:bg-[size:28px_28px] md:py-24">
-          <div className="container-custom relative max-w-6xl">
+        <section className="relative w-full bg-[#090A0E] py-16 md:py-24">
+          <div className="container-custom relative max-w-6xl z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12">
               
               {/* Left Column: Contact Form */}

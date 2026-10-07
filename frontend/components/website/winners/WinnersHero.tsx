@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { raffleService } from "../../../services/raffle.service";
 
-/** Renders live winner statistics in the public campaign visual system. */
+/**
+ * TCG Draws Luxury Pokémon Winners Hero Section.
+ * Obsidian textures, gold aura accents, and live winner statistics.
+ */
 export default function WinnersHero() {
   const [stats, setStats] = useState({ prizesAwarded: "£0", totalWinners: 0, verifiedDraws: "0" });
 
@@ -21,24 +23,53 @@ export default function WinnersHero() {
   }, []);
 
   const metrics = [
-    ["🏆", stats.prizesAwarded, "Prizes awarded"],
-    ["★", `${stats.totalWinners.toLocaleString()}`, "Happy winners"],
-    ["✓", stats.verifiedDraws, "Verified draws"],
+    ["🏆", stats.prizesAwarded, "Prizes Awarded"],
+    ["★", `${stats.totalWinners.toLocaleString()}`, "Happy Winners"],
+    ["✓", stats.verifiedDraws, "Verified Draws"],
   ];
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-[#174f36] bg-[#073826] pt-28 pb-12 sm:pt-32 md:pb-14">
-      <Image src="/hero-banner.jpg" alt="Golf course and Fairway Draws bag" fill priority className="-z-20 object-cover object-[68%_center] opacity-90" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#032b1d]/95 via-[#06452f]/72 to-[#073826]/18" />
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#f8faf6]/82 to-transparent" />
-      <div className="container-custom relative flex flex-col items-center text-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#073826]/85 px-4 py-2 font-sans text-[10px] font-black tracking-[.16em] text-white uppercase shadow-lg backdrop-blur-sm">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#dc2626]" /> Hall of fame
-        </span>
-        <h1 className="mt-5 font-heading text-4xl font-black leading-[.9] tracking-[-.055em] text-white uppercase [text-shadow:0_5px_18px_rgba(0,0,0,.3)] sm:text-5xl md:text-6xl">Celebrating every<br />winning moment</h1>
-        <p className="mt-5 max-w-2xl rounded-2xl border border-white/15 bg-[#042d1e]/58 p-3.5 font-sans text-sm font-medium leading-relaxed text-white/85 shadow-xl backdrop-blur-sm sm:text-base">Real golfers, exceptional prizes, and independently verifiable draws. Meet the Fairway Draws winners&apos; circle.</p>
-        <div className="mt-8 grid w-full max-w-4xl grid-cols-3 divide-x divide-white/20 overflow-hidden rounded-2xl border border-white/20 bg-[#063d29]/88 shadow-2xl backdrop-blur-md">
-          {metrics.map(([icon, value, label]) => <div key={label} className="px-2 py-4 text-center sm:px-5"><div className="mb-1 text-base text-[#ef4444]">{icon}</div><div className="font-heading text-lg font-black tracking-tight text-white sm:text-2xl">{value}</div><div className="mt-0.5 font-sans text-[8px] font-bold tracking-wider text-white/70 uppercase sm:text-[10px]">{label}</div></div>)}
+    <section className="relative isolate overflow-hidden border-b border-[rgba(212,175,55,0.2)] bg-[#090A0E] pt-28 pb-14 sm:pt-32 md:pb-16">
+      {/* Dark Luxury Ambient Background */}
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#141722_1px,transparent_1px),linear-gradient(to_bottom,#141722_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] opacity-35" />
+        <div className="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] blur-[90px]" />
+        <div className="absolute top-1/2 right-10 w-[450px] h-[450px] bg-[radial-gradient(circle,rgba(163,123,36,0.12)_0%,transparent_70%)] blur-[100px]" />
+        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-[#090A0E] to-transparent" />
+      </div>
+
+      <div className="container-custom relative flex flex-col items-center text-center z-10">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[rgba(212,175,55,0.35)] bg-[#12151F]/90 px-4 py-2 font-sans text-[10px] font-black uppercase tracking-[0.18em] text-[#F4EBD9] shadow-[0_0_20px_rgba(212,175,55,0.1)] backdrop-blur-md">
+          <span className="h-2 w-2 rounded-full bg-[#D4AF37] animate-pulse shadow-[0_0_8px_#D4AF37]" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0D4] via-[#D4AF37] to-[#F5E5C0]">
+            HALL OF FAME &amp; PROOF OF WINS
+          </span>
+        </div>
+
+        <h1 className="mt-2 font-heading text-4xl sm:text-5xl md:text-6xl font-black leading-[0.95] tracking-[-0.04em] text-[#F4EBD9] uppercase">
+          CELEBRATING EVERY{" "}
+          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0D4] via-[#D4AF37] to-[#B39042] drop-shadow-[0_2px_15px_rgba(212,175,55,0.3)]">
+            WINNING POKÉMON GRAIL
+          </span>
+        </h1>
+
+        <p className="mt-4 max-w-2xl rounded-2xl border border-[rgba(212,175,55,0.2)] bg-[#12151F]/70 p-4 font-sans text-xs sm:text-sm leading-relaxed text-[#D6CEBC] shadow-lg backdrop-blur-md">
+          Real collectors, authenticated PSA 10 slabs, vintage booster boxes, and independently verifiable live draws. Meet the TCG Draws winners&apos; circle.
+        </p>
+
+        {/* Stats metrics box */}
+        <div className="mt-8 grid w-full max-w-3xl grid-cols-3 divide-x divide-[rgba(212,175,55,0.15)] overflow-hidden rounded-2xl border border-[rgba(212,175,55,0.25)] bg-[#12151F]/80 shadow-[0_15px_35px_rgba(0,0,0,0.6)] backdrop-blur-md">
+          {metrics.map(([icon, value, label]) => (
+            <div key={label} className="px-3 py-4 sm:py-5 text-center transition-colors hover:bg-[rgba(212,175,55,0.04)]">
+              <div className="mb-1 text-sm text-[#D4AF37]">{icon}</div>
+              <div className="font-heading text-lg sm:text-2xl font-black tracking-tight text-[#F4EBD9]">
+                {value}
+              </div>
+              <div className="mt-0.5 font-sans text-[8px] sm:text-[10px] font-bold tracking-wider text-[#A69B82] uppercase">
+                {label}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

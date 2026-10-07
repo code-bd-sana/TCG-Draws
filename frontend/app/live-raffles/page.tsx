@@ -6,9 +6,9 @@ import LiveRafflesHero from "../../components/website/live-raffles/LiveRafflesHe
 import LiveRaffleGrid from "../../components/website/live-raffles/LiveRaffleGrid";
 
 export const metadata: Metadata = {
-  title: "Live Competitions | Fairway Draws",
+  title: "Live Competitions | TCG Draws",
   description:
-    "Browse and enter active premium golf competitions. Tickets from £1, transparent draws, and prizes worth winning.",
+    "Browse and enter active premium Pokémon TCG competitions. Tickets from £1, transparent draws, PSA & BGS slabs, and vintage booster boxes.",
 };
 
 /**

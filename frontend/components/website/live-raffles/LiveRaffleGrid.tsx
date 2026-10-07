@@ -9,37 +9,6 @@ import LiveRafflesFilterBar from "./LiveRafflesFilterBar";
 import LiveRafflesEmptyState from "./LiveRafflesEmptyState";
 import LiveRafflesPagination from "./LiveRafflesPagination";
 
-// Utility helper to convert mock duration strings (like "2h 15m", "3d 8h") into minutes for sorting
-const parseDurationToMinutes = (durationStr: string): number => {
-  const cleanStr = durationStr.toLowerCase().trim();
-  let totalMinutes = 0;
-
-  // Check for days (e.g., "5d")
-  const dayMatch = cleanStr.match(/(\d+)\s*d/);
-  if (dayMatch) {
-    totalMinutes += parseInt(dayMatch[1], 10) * 24 * 60;
-  }
-
-  // Check for hours (e.g., "4h")
-  const hourMatch = cleanStr.match(/(\d+)\s*h/);
-  if (hourMatch) {
-    totalMinutes += parseInt(hourMatch[1], 10) * 60;
-  }
-
-  // Check for minutes (e.g., "30m")
-  const minuteMatch = cleanStr.match(/(\d+)\s*m/);
-  if (minuteMatch) {
-    totalMinutes += parseInt(minuteMatch[1], 10);
-  }
-
-  // Fallback if formatting doesn't match standard patterns
-  if (totalMinutes === 0) {
-    totalMinutes = 999999;
-  }
-
-  return totalMinutes;
-};
-
 export default function LiveRaffleGrid() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -72,7 +41,7 @@ export default function LiveRaffleGrid() {
     );
     if (matchBySlug) return matchBySlug.name;
 
-    // 3. Match singular/plural (e.g. Putters -> Putter, Irons -> Iron Sets)
+    // 3. Match singular/plural
     const singular = act.endsWith("s") ? act.slice(0, -1) : act;
     const matchBySingular = dbCategories.find(
       (c) =>
@@ -115,7 +84,7 @@ export default function LiveRaffleGrid() {
   const { data: rafflesResponse, isLoading } = usePublicRaffles({
     search: searchQuery,
     page: currentPage,
-    limit: 6,
+    limit: 9,
     category: resolvedCategory,
     sort: sortBy,
   });
@@ -131,8 +100,11 @@ export default function LiveRaffleGrid() {
   };
 
   return (
-    <section className="relative flex-grow bg-[#cfdfcb] py-12 before:absolute before:inset-0 before:bg-[radial-gradient(#0b4d3520_1px,transparent_1px)] before:bg-[size:28px_28px]">
-      <div className="container-custom relative">
+    <section className="relative flex-grow bg-[#090A0E] py-14">
+      {/* Background Subtle Gradient & Grid Texture */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(rgba(212,175,55,0.03)_1px,transparent_1px)] bg-[size:32px_32px] opacity-70" />
+
+      <div className="container-custom relative z-10">
         {/* Filter controls bar */}
         <LiveRafflesFilterBar
           activeCategory={activeCategory}
@@ -146,9 +118,14 @@ export default function LiveRaffleGrid() {
         />
 
         {/* Content Area */}
-        <div className="mt-10 min-h-[400px]">
+        <div className="mt-10 min-h-[450px]">
           {isLoading ? (
-            <div className="flex justify-center items-center h-[400px] text-primary">Loading live competitions...</div>
+            <div className="flex flex-col justify-center items-center h-[400px] gap-4 text-[#A69B82]">
+              <div className="animate-spin h-10 w-10 border-4 border-[#D4AF37] border-t-transparent rounded-full" />
+              <p className="font-heading text-xs uppercase tracking-widest text-[#D4AF37]">
+                Loading Pokémon Competitions...
+              </p>
+            </div>
           ) : filteredRaffles.length > 0 ? (
             <div
               className={

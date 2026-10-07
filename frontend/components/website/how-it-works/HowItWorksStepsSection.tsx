@@ -6,7 +6,7 @@ import { cn } from "../../../lib/utils";
 
 /**
  * Interactive steps section allowing toggling between Entrant and Host guides.
- * Renders a responsive vertical timeline with circles and connecting vertical lines.
+ * Renders a responsive vertical timeline with obsidian cards and golden badges.
  */
 export default function HowItWorksStepsSection() {
   const [activeTab, setActiveTab] = useState<"entrants" | "hosts">("entrants");
@@ -14,18 +14,21 @@ export default function HowItWorksStepsSection() {
   const steps = activeTab === "entrants" ? entrantSteps : hostSteps;
 
   return (
-    <section className="relative bg-[#cfdfcb] py-16 before:absolute before:inset-0 before:bg-[radial-gradient(#0b4d3520_1px,transparent_1px)] before:bg-[size:28px_28px] md:py-24">
-      <div className="container-custom relative">
+    <section className="relative bg-[#090A0E] py-16 md:py-24">
+      {/* Background Subtle Gradient & Grid Texture */}
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(rgba(212,175,55,0.03)_1px,transparent_1px)] bg-[size:32px_32px] opacity-70" />
+
+      <div className="container-custom relative z-10">
         {/* Tab Swapper Segment Capsule */}
         <div className="flex justify-center mb-16">
-          <div className="flex items-center gap-1.5 rounded-full border border-[#0b4d35]/20 bg-[#e8f2e5] p-1.5 shadow-[0_8px_18px_rgba(11,77,53,.12)] select-none">
+          <div className="flex items-center gap-1.5 rounded-2xl border border-[rgba(212,175,55,0.25)] bg-[#12151F] p-1.5 shadow-[0_8px_20px_rgba(0,0,0,0.6)] select-none">
             <button
               onClick={() => setActiveTab("entrants")}
               className={cn(
-                "px-6 py-2.5 rounded-full font-heading text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer",
+                "px-6 py-3 rounded-xl font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer",
                 activeTab === "entrants"
-                  ? "bg-primary text-primary-text shadow-md"
-                  : "text-[#426256] hover:text-[#0b4d35]"
+                  ? "bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] shadow-[0_0_15px_rgba(212,175,55,0.35)]"
+                  : "text-[#A69B82] hover:text-[#F4EBD9]"
               )}
             >
               I Want to Enter Draws
@@ -33,10 +36,10 @@ export default function HowItWorksStepsSection() {
             <button
               onClick={() => setActiveTab("hosts")}
               className={cn(
-                "px-6 py-2.5 rounded-full font-heading text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer",
+                "px-6 py-3 rounded-xl font-heading text-xs font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer",
                 activeTab === "hosts"
-                  ? "bg-primary text-primary-text shadow-md"
-                  : "text-[#426256] hover:text-[#0b4d35]"
+                  ? "bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] shadow-[0_0_15px_rgba(212,175,55,0.35)]"
+                  : "text-[#A69B82] hover:text-[#F4EBD9]"
               )}
             >
               I Want to Host Draws
@@ -45,10 +48,10 @@ export default function HowItWorksStepsSection() {
         </div>
 
         {/* Timeline Layout */}
-        <div className="max-w-5xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="relative pl-14 sm:pl-20">
-            {/* Connecting Vertical Green Line */}
-            <div className="absolute bottom-[28px] left-[27px] top-[28px] w-px bg-[#0b4d35]/25 sm:left-[27px]" />
+            {/* Connecting Vertical Gold Line */}
+            <div className="absolute bottom-[28px] left-[27px] top-[28px] w-px bg-[rgba(212,175,55,0.2)] sm:left-[27px]" />
 
             {/* List of Timeline Steps */}
             <div className="flex flex-col gap-8 sm:gap-10">
@@ -58,16 +61,16 @@ export default function HowItWorksStepsSection() {
                   className="relative flex flex-col sm:flex-row gap-4 sm:gap-6 items-start group"
                 >
                   {/* Circular Number Indicator */}
-                  <div className="absolute left-[-56px] z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#0b4d35]/25 bg-[#ecf5ee] font-heading text-lg font-black text-[#0b4d35] shadow-md select-none transition-colors duration-300 group-hover:border-primary sm:left-[-80px]">
+                  <div className="absolute left-[-56px] z-10 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-[rgba(212,175,55,0.35)] bg-[#181C28] font-heading text-lg font-black text-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.15)] select-none transition-all duration-300 group-hover:border-[#D4AF37] sm:left-[-80px]">
                     {String(step.stepNumber).padStart(2, "0")}
                   </div>
 
                   {/* Step Description Card */}
-                  <div className="w-full rounded-[20px] border border-[#bdd3ba] bg-[#f0f6ed] p-6 shadow-[0_10px_25px_rgba(11,77,53,.09)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0b4d35]/40 hover:shadow-[0_18px_32px_rgba(11,77,53,.16)] sm:p-8">
-                    <h3 className="font-heading font-semibold text-lg md:text-xl text-text-primary mb-2">
+                  <div className="w-full rounded-2xl border border-[rgba(212,175,55,0.2)] bg-[#12151F] p-6 shadow-[0_10px_30px_rgba(0,0,0,0.7)] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-[#D4AF37]/50 group-hover:shadow-[0_15px_35px_rgba(212,175,55,0.15)] sm:p-8">
+                    <h3 className="font-heading font-black text-lg md:text-xl text-[#F4EBD9] mb-2 group-hover:text-[#D4AF37] transition-colors">
                       {step.title}
                     </h3>
-                    <p className="font-sans text-xs md:text-sm text-text-muted leading-relaxed max-w-[933px]">
+                    <p className="font-sans text-xs md:text-sm text-[#A69B82] leading-relaxed max-w-[933px]">
                       {step.description}
                     </p>
                   </div>

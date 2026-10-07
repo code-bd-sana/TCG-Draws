@@ -76,7 +76,7 @@ export default function CompetitionDetailsModal({
   const remainingTickets = Math.max(raffle.totalTickets - raffle.ticketsSold, 0);
   const winChance = raffle.totalTickets > 0 ? ((ticketsEntered / raffle.totalTickets) * 100).toFixed(1) : "0";
 
-  const hostName = raffle.host?.businessName || (raffle.host?.user ? `${raffle.host.user.firstName} ${raffle.host.user.lastName}` : "Fairway Draws Host");
+  const hostName = raffle.host?.businessName || (raffle.host?.user ? `${raffle.host.user.firstName} ${raffle.host.user.lastName}` : "TCG Draws Host");
 
   const modalContent = (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-black/50 backdrop-blur-sm animate-fadeIn">
@@ -186,7 +186,7 @@ export default function CompetitionDetailsModal({
               {[
                 "Certified Random Draw", 
                 "Fully Insured Shipping", 
-                "Premium Golf Gear", 
+                "Authentic Pokémon Slabs", 
                 `Price per Ticket: £${Number(raffle.pricePerTicket).toFixed(2)}`
               ].map((feature) => (
                 <div key={feature} className="bg-elevated border border-border-medium rounded-xl p-3 flex items-center gap-2">

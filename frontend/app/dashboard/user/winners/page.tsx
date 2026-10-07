@@ -43,7 +43,7 @@ export default function UserWinnersPage() {
         </div>
         <Link
           href="/dashboard/user/competitions"
-          className="btn-glossy-red px-5 py-2.5 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-98 transition-all flex items-center gap-2"
+          className="btn-gold-metallic px-5 py-2.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-black shadow-md active:scale-98 transition-all flex items-center gap-2"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -198,7 +198,7 @@ export default function UserWinnersPage() {
           </p>
           <Link
             href="/dashboard/user/competitions"
-            className="btn-glossy-red px-6 py-3 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-98 transition-all"
+            className="btn-gold-metallic px-6 py-3 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-black shadow-md active:scale-98 transition-all"
           >
             Explore Live Competitions
           </Link>

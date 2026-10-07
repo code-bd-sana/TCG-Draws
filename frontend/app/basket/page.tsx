@@ -192,19 +192,19 @@ export default function BasketPage() {
   } = useBasket();
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f8faf6]">
+    <div className="min-h-screen flex flex-col bg-[#090A0E]">
       <WebsiteNavbar />
 
       <main className="flex-1 pt-28 pb-20">
         <div className="container-custom max-w-5xl mx-auto px-4 sm:px-6">
           {/* Header Title */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[#e2eadf]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-[rgba(212,175,55,0.2)]">
             <div>
-              <h1 className="font-heading font-black text-2xl sm:text-3xl text-text-primary uppercase tracking-tight">
+              <h1 className="font-heading font-black text-2xl sm:text-3xl text-[#F4EBD9] uppercase tracking-tight">
                 Your Basket
               </h1>
-              <p className="font-sans text-xs text-text-muted mt-1">
-                Review your competition entries before proceeding to secure checkout.
+              <p className="font-sans text-xs text-[#A69B82] mt-1">
+                Review your Pokémon card competition entries before proceeding to secure checkout.
               </p>
             </div>
 
@@ -212,7 +212,7 @@ export default function BasketPage() {
               <button
                 type="button"
                 onClick={clearBasket}
-                className="self-start sm:self-auto text-xs font-sans text-red-600 hover:text-red-700 underline transition-colors cursor-pointer"
+                className="self-start sm:self-auto text-xs font-sans text-red-400 hover:text-red-300 underline transition-colors cursor-pointer"
               >
                 Clear Entire Basket
               </button>
@@ -220,14 +220,14 @@ export default function BasketPage() {
           </div>
 
           {!isInitialized ? (
-            <div className="bg-surface border border-border rounded-card p-12 text-center shadow-card">
-              <div className="w-8 h-8 border-3 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-              <p className="font-sans text-xs text-text-muted">Loading your basket...</p>
+            <div className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-12 text-center shadow-2xl">
+              <div className="w-8 h-8 border-3 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+              <p className="font-sans text-xs text-[#A69B82]">Loading your basket...</p>
             </div>
           ) : items.length === 0 ? (
             /* Empty State */
-            <div className="bg-surface border border-border rounded-card p-12 text-center shadow-card flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-[#ecf5ee] flex items-center justify-center text-[#15803d] mb-4">
+            <div className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-12 text-center shadow-2xl flex flex-col items-center">
+              <div className="w-16 h-16 rounded-2xl bg-[#181C28] border border-[rgba(212,175,55,0.25)] flex items-center justify-center text-[#D4AF37] mb-4">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -243,17 +243,17 @@ export default function BasketPage() {
                   />
                 </svg>
               </div>
-              <h2 className="font-heading font-bold text-lg text-text-primary uppercase tracking-wider mb-2">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase tracking-wider mb-2">
                 Your basket is empty
               </h2>
-              <p className="font-sans text-xs text-text-muted max-w-md mb-6">
-                You haven&apos;t added any competition entries yet. Browse active draws and win premium golf gear!
+              <p className="font-sans text-xs text-[#A69B82] max-w-md mb-6">
+                You haven&apos;t added any competition entries yet. Browse active draws and win PSA 10 slabs &amp; vintage packs!
               </p>
               <Link
                 href="/live-raffles"
-                className="btn-glossy-red px-6 py-3 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-98 transition-all"
+                className="btn-gold-metallic px-8 py-3.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-md transition-all"
               >
-                Browse Live Draws
+                Browse Live Draws →
               </Link>
             </div>
           ) : (

@@ -45,27 +45,24 @@ export default function CookieContent() {
   };
 
   return (
-    <div className="cookie-policy w-full overflow-hidden bg-[#cfdfcb] pt-20 pb-20">
-      
+    <div className="cookie-policy w-full overflow-hidden bg-[#090A0E] pt-20 pb-20">
       {/* Top Banner */}
-      <div className="relative isolate overflow-hidden border-b border-[#0b4d35]/30 py-16 sm:py-20 mb-12">
-        <Image src="/hero-banner.jpg" alt="Golf course" fill priority className="z-0 object-cover object-center" />
-        <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#032b1d]/95 via-[#075236]/85 to-[#073826]/50" />
+      <div className="relative isolate overflow-hidden border-b border-[rgba(212,175,55,0.2)] bg-[#090A0E] py-16 sm:py-20 mb-12">
         <div className="container-custom relative z-10 max-w-6xl mx-auto px-4">
           <div className="flex max-w-2xl flex-col gap-4">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-[#0b4d35]/70 px-4 py-2 text-xs font-semibold tracking-[0.12em] text-white w-fit">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[rgba(212,175,55,0.35)] bg-[#12151F] px-4 py-2 text-xs font-semibold tracking-[0.12em] text-[#D4AF37] w-fit">
               <span>🍪 Cookie Transparency</span>
             </div>
-            <h1 className="font-heading font-extrabold text-4xl sm:text-6xl text-white tracking-tight">
+            <h1 className="font-heading font-black text-4xl sm:text-6xl text-[#F4EBD9] tracking-tight uppercase">
               Cookie Policy
             </h1>
-            <p className="rounded-2xl border border-white/20 bg-white/10 p-4 font-sans text-sm sm:text-base leading-relaxed text-white/90 max-w-2xl backdrop-blur-sm">
-              This policy details what cookies are, how Fairway Draws uses them, the categories of cookies deployed, and how to manage your cookie preferences.
+            <p className="rounded-2xl border border-[rgba(212,175,55,0.2)] bg-[#12151F]/70 p-4 font-sans text-sm sm:text-base leading-relaxed text-[#D6CEBC] max-w-2xl backdrop-blur-sm">
+              This policy details what cookies are, how TCG Draws uses them, the categories of cookies deployed, and how to manage your cookie preferences.
             </p>
-            <div className="flex items-center gap-4 text-xs font-sans font-medium text-white/75 pt-1">
-              <span>Last Updated: April 2026</span>
+            <div className="flex items-center gap-4 text-xs font-sans font-medium text-[#6E6655] pt-1">
+              <span>Last Updated: 2026</span>
               <span>•</span>
-              <span>Applies to Domain: fairwaydraws.com</span>
+              <span>Applies to Domain: tcgdraws.com</span>
             </div>
           </div>
         </div>

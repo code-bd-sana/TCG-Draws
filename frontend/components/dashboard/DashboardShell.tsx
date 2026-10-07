@@ -35,7 +35,7 @@ export default function DashboardShell({ account, children }: DashboardShellProp
   const subtitle = `${portalName} / ${title}`;
 
   return (
-    <div className="min-h-screen bg-[#F8FAF6] text-text-primary flex flex-col lg:flex-row w-full overflow-hidden">
+    <div className="min-h-screen bg-[#090A0E] text-text-primary flex flex-col lg:flex-row w-full overflow-hidden">
       
       {/* Desktop Sidebar (hidden on mobile/tablet) */}
       <DashboardSidebar account={account} />
