@@ -172,7 +172,7 @@ export default function OrderDetailsModal({
                 onClose();
                 onOpenRefund(order);
               }}
-              className="btn-glossy-red flex-1 h-11 rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-98 cursor-pointer"
+              className="flex-1 h-11 rounded-xl bg-red-600 hover:bg-red-700 text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-98 cursor-pointer"
             >
               Refund Order
             </button>

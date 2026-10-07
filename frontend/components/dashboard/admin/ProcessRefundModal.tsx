@@ -92,7 +92,7 @@ export default function ProcessRefundModal({ isOpen, onClose, order }: ProcessRe
           <button 
             onClick={handleRefund}
             disabled={isPending}
-            className="btn-glossy-red w-full h-11 rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center mt-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md active:scale-98 cursor-pointer"
+            className="w-full h-11 rounded-xl bg-red-600 hover:bg-red-700 text-white font-heading font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center mt-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-md active:scale-98 cursor-pointer"
           >
             {isPending ? "Processing Refund..." : "Confirm & Process Refund"}
           </button>

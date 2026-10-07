@@ -22,9 +22,9 @@ export default function ConfirmBlockModal({
   if (!isOpen) return null;
 
   const actionText = isBlocked ? "Unblock" : "Block";
-  const actionColor = isBlocked ? "text-[#15803D]" : "text-[#DC2626]";
-  const buttonBg = isBlocked ? "bg-[#DCFCE7] hover:bg-[#BBF7D0] border-[#BBF7D0]" : "btn-glossy-red text-white";
-  const buttonText = isBlocked ? "text-[#15803D] font-bold" : "text-white font-bold";
+  const actionColor = isBlocked ? "text-emerald-400" : "text-red-400";
+  const buttonBg = isBlocked ? "bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40" : "bg-red-600 hover:bg-red-700 text-white border border-red-500/40 shadow-md";
+  const buttonText = isBlocked ? "text-emerald-300 font-bold" : "text-white font-bold";
 
   return (
     <>

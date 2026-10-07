@@ -693,7 +693,7 @@ export default function ReviewCompetitionModal({
                 onReject(competition.id, competition.title);
               }}
               disabled={isApproving}
-              className="btn-glossy-red flex-1 sm:flex-none h-10 px-6 rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md active:scale-98"
+              className="flex-1 sm:flex-none h-10 px-6 rounded-xl bg-red-600/20 text-red-400 border border-red-500/40 hover:bg-red-600 hover:text-white font-heading font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm active:scale-98"
             >
               Reject & Request Changes
             </button>
@@ -702,7 +702,7 @@ export default function ReviewCompetitionModal({
               type="button"
               onClick={() => onApprove(competition.id)}
               disabled={isApproving}
-              className="flex-1 sm:flex-none h-10 px-6 rounded-xl bg-primary hover:bg-primary/90 text-white font-heading font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md active:scale-98 flex items-center justify-center gap-2"
+              className="btn-gold-metallic flex-1 sm:flex-none h-10 px-6 rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-md active:scale-98 flex items-center justify-center gap-2"
             >
               {isApproving ? (
                 <>

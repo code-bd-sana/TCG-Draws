@@ -60,14 +60,14 @@ export default function DashboardSidebar({ account }: DashboardSidebarProps) {
               className={cn(
                 "flex items-center gap-[12px] h-[42px] pl-[16px] pr-[16px] rounded-[10px] transition-all duration-200 group font-sans w-full",
                 isActive
-                  ? "bg-accent-bg border-l-4 border-primary text-text-brand font-bold shadow-xs"
-                  : "bg-transparent border-l-4 border-transparent text-text-muted hover:text-text-primary hover:bg-elevated"
+                  ? "bg-primary/15 border-l-4 border-primary text-primary font-bold shadow-xs"
+                  : "bg-transparent border-l-4 border-transparent text-[#D1D5DB] hover:text-white hover:bg-elevated/80"
               )}
             >
-              <item.icon className={cn("w-5 h-5 shrink-0 transition-colors", isActive ? "text-primary" : "text-text-muted group-hover:text-text-primary")} />
+              <item.icon className={cn("w-5 h-5 shrink-0 transition-colors", isActive ? "text-primary" : "text-[#9CA3AF] group-hover:text-primary")} />
               <span className={cn(
-                "text-[14px] font-medium leading-[normal] truncate",
-                isActive ? "text-text-brand font-bold" : "text-text-muted group-hover:text-text-primary"
+                "text-[14px] leading-[normal] truncate",
+                isActive ? "text-primary font-bold" : "text-[#D1D5DB] font-medium group-hover:text-white"
               )}>
                 {item.label}
               </span>
@@ -78,7 +78,7 @@ export default function DashboardSidebar({ account }: DashboardSidebarProps) {
                 ) : (
                   <span className={cn(
                     "ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center shadow-xs",
-                    isActive ? "bg-primary text-white" : "bg-elevated text-text-brand border border-border-medium"
+                    isActive ? "bg-primary text-black font-black" : "bg-elevated text-primary border border-primary/30"
                   )}>
                     {displayBadge}
                   </span>

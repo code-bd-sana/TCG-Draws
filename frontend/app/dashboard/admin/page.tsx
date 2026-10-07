@@ -152,29 +152,29 @@ export default function AdminDashboardPage() {
                 <AreaChart data={revenueData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#0b4d35" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#0b4d35" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.35}/>
+                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
                   <XAxis 
                     dataKey="name" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#717D6E', fontSize: 10, fontFamily: 'sans-serif' }}
+                    tick={{ fill: '#9E9585', fontSize: 10, fontFamily: 'sans-serif' }}
                     dy={10}
                   />
                   <YAxis 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#717D6E', fontSize: 10, fontFamily: 'sans-serif' }}
+                    tick={{ fill: '#9E9585', fontSize: 10, fontFamily: 'sans-serif' }}
                     tickFormatter={(val) => `£${val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}`}
                   />
                   <RechartsTooltip 
-                    contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E2EADF', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
-                    itemStyle={{ color: '#101811', fontWeight: 600 }}
+                    contentStyle={{ backgroundColor: '#12151F', borderColor: 'rgba(212, 175, 55, 0.3)', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}
+                    itemStyle={{ color: '#D4AF37', fontWeight: 700 }}
                     formatter={(val: any) => [`£${Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 'Revenue']}
                   />
-                  <Area type="monotone" dataKey="value" stroke="#0b4d35" strokeWidth={2.5} fillOpacity={1} fill="url(#colorValue)" />
+                  <Area type="monotone" dataKey="value" stroke="#D4AF37" strokeWidth={2.5} fillOpacity={1} fill="url(#colorValue)" />
                 </AreaChart>
               </ResponsiveContainer>
             )}
@@ -238,7 +238,7 @@ export default function AdminDashboardPage() {
                 <span className="font-sans font-semibold text-xs text-text-muted">Users</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#8cb34a]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#E5C158]" />
                 <span className="font-sans font-semibold text-xs text-text-muted">Hosts</span>
               </div>
             </div>
@@ -260,21 +260,21 @@ export default function AdminDashboardPage() {
                     dataKey="name" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#717D6E', fontSize: 10, fontFamily: 'sans-serif' }}
+                    tick={{ fill: '#9E9585', fontSize: 10, fontFamily: 'sans-serif' }}
                     dy={10}
                   />
                   <YAxis 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#717D6E', fontSize: 10, fontFamily: 'sans-serif' }}
+                    tick={{ fill: '#9E9585', fontSize: 10, fontFamily: 'sans-serif' }}
                   />
                   <RechartsTooltip 
-                    contentStyle={{ backgroundColor: '#FFFFFF', borderColor: '#E2EADF', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}
-                    itemStyle={{ color: '#101811', fontWeight: 600 }}
-                    cursor={{ fill: '#F1F5EE' }}
+                    contentStyle={{ backgroundColor: '#12151F', borderColor: 'rgba(212, 175, 55, 0.3)', borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}
+                    itemStyle={{ color: '#D4AF37', fontWeight: 600 }}
+                    cursor={{ fill: 'rgba(212, 175, 55, 0.05)' }}
                   />
-                  <Bar dataKey="Users" fill="#0b4d35" radius={[6, 6, 0, 0]} barSize={16} />
-                  <Bar dataKey="Hosts" fill="#8cb34a" radius={[6, 6, 0, 0]} barSize={16} />
+                  <Bar dataKey="Users" fill="#D4AF37" radius={[6, 6, 0, 0]} barSize={16} />
+                  <Bar dataKey="Hosts" fill="#E5C158" radius={[6, 6, 0, 0]} barSize={16} />
                 </BarChart>
               </ResponsiveContainer>
             )}

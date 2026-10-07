@@ -191,7 +191,7 @@ export default function DrawOverviewTab({ draw }: DrawOverviewTabProps) {
                 {draw.prizeName || draw.title}
               </span>
               <span className="text-text-muted text-[11px] truncate">
-                {draw.description || "Standard Fairway Competition"}
+                {draw.description || "Standard TCG Competition"}
               </span>
             </div>
 

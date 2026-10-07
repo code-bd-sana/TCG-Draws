@@ -188,7 +188,7 @@ export default function ConfirmPayoutModal({
             <button 
               onClick={() => handleConfirm("APPROVED")}
               disabled={updateStatusMutation.isPending}
-              className="px-6 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer active:scale-98 disabled:opacity-50"
+              className="btn-gold-metallic px-6 py-2.5 rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer active:scale-98 disabled:opacity-50"
             >
               {updateStatusMutation.isPending ? "Processing Payout..." : `Approve & Transfer £${netAmount.toFixed(2)}`}
             </button>
@@ -198,7 +198,7 @@ export default function ConfirmPayoutModal({
             <button 
               onClick={() => handleConfirm("REJECTED")}
               disabled={updateStatusMutation.isPending}
-              className="btn-glossy-red px-6 py-2.5 rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer active:scale-98 disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer active:scale-98 disabled:opacity-50"
             >
               {updateStatusMutation.isPending ? "Processing Rejection..." : "Reject & Refund Host Wallet"}
             </button>

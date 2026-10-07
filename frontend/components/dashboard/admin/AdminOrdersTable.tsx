@@ -119,7 +119,7 @@ export default function AdminOrdersTable() {
                       {order.status === "Paid" && (
                         <button 
                           onClick={() => handleRefund(order)}
-                          className="btn-glossy-red text-white font-heading font-bold text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-lg transition-all shadow-xs cursor-pointer active:scale-98"
+                          className="bg-red-500/15 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white font-heading font-bold text-[11px] uppercase tracking-wider px-2.5 py-1 rounded-lg transition-all shadow-xs cursor-pointer active:scale-98"
                         >
                           Refund
                         </button>

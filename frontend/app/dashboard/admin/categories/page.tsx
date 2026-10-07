@@ -321,7 +321,7 @@ export default function AdminCategoriesPage() {
                   value={currentCategory.name || ''}
                   onChange={(e) => setCurrentCategory({ ...currentCategory, name: e.target.value })}
                   className='w-full h-11 px-4 bg-elevated border border-border-medium rounded-xl text-text-primary font-sans text-xs placeholder:text-text-muted outline-none focus:border-primary transition-colors'
-                  placeholder='e.g. Golf Clubs'
+                  placeholder='e.g. Graded Slabs'
                 />
               </div>
 
@@ -334,7 +334,7 @@ export default function AdminCategoriesPage() {
                   value={currentCategory.slug || ''}
                   onChange={(e) => setCurrentCategory({ ...currentCategory, slug: e.target.value })}
                   className='w-full h-11 px-4 bg-elevated border border-border-medium rounded-xl text-text-primary font-sans text-xs placeholder:text-text-muted outline-none focus:border-primary transition-colors'
-                  placeholder='e.g. golf-clubs'
+                  placeholder='e.g. graded-slabs'
                 />
               </div>
 
@@ -406,7 +406,7 @@ export default function AdminCategoriesPage() {
                             ) as HTMLInputElement;
                             if (el) el.value = '';
                           }}
-                          className='btn-glossy-red h-8 px-3 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer shadow-md'
+                          className='px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer shadow-md'
                         >
                           Remove Image
                         </button>

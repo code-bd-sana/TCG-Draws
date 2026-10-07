@@ -114,13 +114,13 @@ export default function WithdrawalsTable({ withdrawals: propWithdrawals, isLoadi
                         <>
                           <button 
                             onClick={() => handleAction(payout, "APPROVE")}
-                            className="h-7 px-3 rounded-lg bg-primary hover:bg-primary/90 text-white font-heading font-bold text-[11px] uppercase tracking-wider shadow-xs transition-all cursor-pointer active:scale-98"
+                            className="btn-gold-metallic h-7 px-3 rounded-lg text-black font-heading font-black text-[11px] uppercase tracking-wider shadow-xs transition-all cursor-pointer active:scale-98"
                           >
                             Approve
                           </button>
                           <button 
                             onClick={() => handleAction(payout, "REJECT")}
-                            className="btn-glossy-red h-7 px-3 rounded-lg text-white font-heading font-bold text-[11px] uppercase tracking-wider shadow-xs transition-all cursor-pointer active:scale-98"
+                            className="h-7 px-3 rounded-lg bg-red-500/15 text-red-400 border border-red-500/30 hover:bg-red-600 hover:text-white font-heading font-bold text-[11px] uppercase tracking-wider shadow-xs transition-all cursor-pointer active:scale-98"
                           >
                             Reject
                           </button>

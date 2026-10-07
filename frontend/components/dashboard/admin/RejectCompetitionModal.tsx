@@ -123,7 +123,7 @@ export default function RejectCompetitionModal({
             <button
               type="submit"
               disabled={rejectMutation.isPending}
-              className="btn-glossy-red flex-1 h-11 rounded-xl text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-98 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+              className="flex-1 h-11 rounded-xl bg-red-600 hover:bg-red-700 text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-98 cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {rejectMutation.isPending ? (
                 <>
