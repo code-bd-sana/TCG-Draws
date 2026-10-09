@@ -1452,21 +1452,28 @@ export class RafflesService {
   }
 
   async getPublicWinnerStats() {
-    const totalWinners = await this.prisma.winner.count();
+    const [mainDrawWinners, instantWinners, verifiedDraws, endedRaffles] =
+      await Promise.all([
+        this.prisma.winner.count({
+          where: { winType: 'MAIN_DRAW' },
+        }),
+        this.prisma.winner.count({
+          where: { winType: 'INSTANT_WIN' },
+        }),
+        this.prisma.raffle.count({
+          where: { status: 'ENDED' },
+        }),
+        this.prisma.raffle.findMany({
+          where: { status: 'ENDED' },
+          select: {
+            mainPrizeValue: true,
+            totalTickets: true,
+            pricePerTicket: true,
+          },
+        }),
+      ]);
 
-    // For "Verified Draws", we can count raffles with status 'ENDED' or 'COMPLETED'
-    // Since 'ENDED' is the status in the enum
-    const verifiedDraws = await this.prisma.raffle.count({
-      where: { status: 'ENDED' },
-    });
-
-    // For "Prizes Awarded" value, since we don't have a specific monetary value field,
-    // we'll calculate the total potential revenue of all ENDED draws as a proxy,
-    // or we can sum totalTickets * pricePerTicket of ENDED draws.
-    const endedRaffles = await this.prisma.raffle.findMany({
-      where: { status: 'ENDED' },
-      select: { mainPrizeValue: true, totalTickets: true, pricePerTicket: true },
-    });
+    const totalWinners = mainDrawWinners + instantWinners;
 
     let totalValue = 0;
     endedRaffles.forEach((r) => {
@@ -1487,6 +1494,8 @@ export class RafflesService {
     return {
       prizesAwarded: formattedValue,
       totalWinners,
+      mainDrawWinners,
+      instantWinners,
       verifiedDraws: `${verifiedDraws.toLocaleString('en-GB')}`,
     };
   }

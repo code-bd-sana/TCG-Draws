@@ -116,7 +116,13 @@ export const raffleService = {
     return response.data;
   },
 
-  async getPublicWinnerStats(): Promise<{ prizesAwarded: string; totalWinners: number; verifiedDraws: string }> {
+  async getPublicWinnerStats(): Promise<{
+    prizesAwarded: string;
+    totalWinners: number;
+    mainDrawWinners: number;
+    instantWinners: number;
+    verifiedDraws: string;
+  }> {
     const response = await api.get('/raffles/public/winner-stats');
     return response.data;
   },

@@ -2,19 +2,32 @@
 
 import React, { useEffect, useState } from "react";
 import { raffleService } from "../../../services/raffle.service";
+import { cn } from "../../../lib/utils";
 
 /**
  * TCG Draws Luxury Pokémon Winners Hero Section.
  * Obsidian textures, gold aura accents, and live winner statistics.
  */
 export default function WinnersHero() {
-  const [stats, setStats] = useState({ prizesAwarded: "£0", totalWinners: 0, verifiedDraws: "0" });
+  const [stats, setStats] = useState({
+    prizesAwarded: "£0",
+    totalWinners: 0,
+    mainDrawWinners: 0,
+    instantWinners: 0,
+  });
 
   useEffect(() => {
     async function loadStats() {
       try {
         const data = await raffleService.getPublicWinnerStats();
-        if (data) setStats(data);
+        if (data) {
+          setStats({
+            prizesAwarded: data.prizesAwarded || "£0",
+            totalWinners: Number(data.totalWinners) || 0,
+            mainDrawWinners: Number(data.mainDrawWinners) || 0,
+            instantWinners: Number(data.instantWinners) || 0,
+          });
+        }
       } catch (error) {
         console.error("Failed to load winner stats", error);
       }
@@ -23,9 +36,10 @@ export default function WinnersHero() {
   }, []);
 
   const metrics = [
-    ["🏆", stats.prizesAwarded, "Prizes Awarded"],
-    ["★", `${stats.totalWinners.toLocaleString()}`, "Happy Winners"],
-    ["✓", stats.verifiedDraws, "Verified Draws"],
+    { icon: "🏆", value: stats.prizesAwarded, label: "Prizes Awarded" },
+    { icon: "★", value: stats.totalWinners.toLocaleString(), label: "Total Winners" },
+    { icon: "🎯", value: stats.mainDrawWinners.toLocaleString(), label: "Main Draw Winners" },
+    { icon: "⚡", value: stats.instantWinners.toLocaleString(), label: "Instant Winners" },
   ];
 
   return (
@@ -57,16 +71,24 @@ export default function WinnersHero() {
           Real collectors, authenticated PSA 10 slabs, vintage booster boxes, and independently verifiable live draws. Meet the TCG Draws winners&apos; circle.
         </p>
 
-        {/* Stats metrics box */}
-        <div className="mt-8 grid w-full max-w-3xl grid-cols-3 divide-x divide-[rgba(212,175,55,0.15)] overflow-hidden rounded-2xl border border-[rgba(212,175,55,0.25)] bg-[#12151F]/80 shadow-[0_15px_35px_rgba(0,0,0,0.6)] backdrop-blur-md">
-          {metrics.map(([icon, value, label]) => (
-            <div key={label} className="px-3 py-4 sm:py-5 text-center transition-colors hover:bg-[rgba(212,175,55,0.04)]">
-              <div className="mb-1 text-sm text-[#D4AF37]">{icon}</div>
+        {/* Stats metrics box - Exactly 4 boxes in a single row on desktop, responsive 2x2 grid on mobile */}
+        <div className="mt-8 grid w-full max-w-4xl grid-cols-2 sm:grid-cols-4 overflow-hidden rounded-2xl border border-[rgba(212,175,55,0.25)] bg-[#12151F]/80 shadow-[0_15px_35px_rgba(0,0,0,0.6)] backdrop-blur-md">
+          {metrics.map((item, idx) => (
+            <div
+              key={item.label}
+              className={cn(
+                "px-3 py-4 sm:py-5 text-center transition-colors hover:bg-[rgba(212,175,55,0.04)]",
+                idx < 2 ? "border-b border-[rgba(212,175,55,0.15)] sm:border-b-0" : "",
+                idx % 2 === 0 ? "border-r border-[rgba(212,175,55,0.15)] sm:border-r-0" : "",
+                idx > 0 ? "sm:border-l sm:border-[rgba(212,175,55,0.15)]" : ""
+              )}
+            >
+              <div className="mb-1 text-sm text-[#D4AF37]">{item.icon}</div>
               <div className="font-heading text-lg sm:text-2xl font-black tracking-tight text-[#F4EBD9]">
-                {value}
+                {item.value}
               </div>
               <div className="mt-0.5 font-sans text-[8px] sm:text-[10px] font-bold tracking-wider text-[#A69B82] uppercase">
-                {label}
+                {item.label}
               </div>
             </div>
           ))}
