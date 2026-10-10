@@ -16,11 +16,13 @@ import { TicketsModule } from './tickets/tickets.module';
 import { AdminModule } from './admin/admin.module';
 import { CategoriesModule } from './categories/categories.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
     PrismaModule,
     NotificationsModule,
+    ReviewsModule,
     MailModule,
     AuthModule,
     UsersModule,

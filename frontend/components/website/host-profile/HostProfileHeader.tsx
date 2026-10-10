@@ -9,7 +9,7 @@ interface HostProfileHeaderProps {
   category?: string;
   isVerified: boolean;
   drawsHosted: number;
-  rating: number;
+  rating?: number | null;
   totalReviews?: number;
   memberSince: number | string;
   location?: string;
@@ -22,7 +22,7 @@ export default function HostProfileHeader({
   category = "Pro Shop",
   isVerified = true,
   drawsHosted = 0,
-  rating = 5.0,
+  rating = null,
   totalReviews = 0,
   memberSince = 2024,
   location = "United Kingdom",
@@ -125,7 +125,9 @@ export default function HostProfileHeader({
               <div className="flex items-center gap-2 rounded-xl border border-[rgba(212,175,55,0.2)] bg-[#181C28]/90 px-3.5 py-1.5 shadow-sm">
                 <span className="text-[#D4AF37] text-sm">★</span>
                 <span className="font-sans text-xs font-semibold text-[#F4EBD9]">
-                  {Number(rating).toFixed(1)} Rating {totalReviews > 0 ? `(${totalReviews} reviews)` : ""}
+                  {totalReviews > 0 && rating !== null
+                    ? `${Number(rating).toFixed(1)} Host Rating (${totalReviews} Reviews)`
+                    : "No reviews yet"}
                 </span>
               </div>
 

@@ -6,11 +6,13 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { useMyWinnersQuery } from "@/hooks/useUserHooks";
 import { UserWinner } from "@/services/user.service";
+import WinnerReviewModal from "@/components/reviews/WinnerReviewModal";
 
 export default function UserWinnersPage() {
-  const { data: winners, isLoading, isError } = useMyWinnersQuery();
+  const { data: winners, isLoading, isError, refetch } = useMyWinnersQuery();
   const [filter, setFilter] = useState<"ALL" | "INSTANT_WIN" | "MAIN_DRAW">("ALL");
   const [search, setSearch] = useState("");
+  const [reviewModalWinner, setReviewModalWinner] = useState<UserWinner | null>(null);
 
   const allWinners = winners || [];
 
@@ -337,11 +339,49 @@ export default function UserWinnersPage() {
                         : "Claim Processing"}
                     </div>
                   </div>
+
+                  {/* Verified Review Section */}
+                  <div className="pt-2 border-t border-divider flex items-center justify-between">
+                    {win.review ? (
+                      <div className="flex items-center justify-between w-full">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.35)] text-[#D4AF37] font-heading font-black text-xs">
+                          Reviewed ★{win.review.rating}
+                        </span>
+                        <button
+                          onClick={() => setReviewModalWinner(win)}
+                          className="font-sans text-xs text-[#A69B82] hover:text-[#D4AF37] font-bold underline cursor-pointer transition-colors"
+                        >
+                          Edit Review
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setReviewModalWinner(win)}
+                        className="btn-gold-metallic w-full py-2 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-black shadow-sm hover:scale-[1.02] active:scale-98 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <span>★</span> Leave Review
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
+      )}
+
+      {/* Review Modal */}
+      {reviewModalWinner && (
+        <WinnerReviewModal
+          isOpen={!!reviewModalWinner}
+          onClose={() => setReviewModalWinner(null)}
+          winnerId={reviewModalWinner.id}
+          prizeName={reviewModalWinner.prizeName}
+          competitionTitle={reviewModalWinner.raffle.title}
+          hostName={reviewModalWinner.raffle.hostBusinessName}
+          existingReview={reviewModalWinner.review}
+          onSuccess={() => refetch()}
+        />
       )}
     </div>
   );

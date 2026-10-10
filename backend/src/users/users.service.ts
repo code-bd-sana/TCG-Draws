@@ -214,6 +214,7 @@ export class UsersService {
             createdAt: true,
           },
         },
+        review: true,
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -260,8 +261,18 @@ export class UsersService {
           slug: w.raffle.slug,
           mainImage: w.raffle.mainImage,
           hostBusinessName: w.raffle.host?.businessName || 'Host',
+          hostId: w.raffle.hostId,
           status: w.raffle.status,
         },
+        review: w.review
+          ? {
+              id: w.review.id,
+              rating: w.review.rating,
+              comment: w.review.comment,
+              status: w.review.status,
+              createdAt: w.review.createdAt,
+            }
+          : null,
         instantWinDetails: instantWinDetails
           ? {
               id: instantWinDetails.id,

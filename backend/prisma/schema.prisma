@@ -29,6 +29,7 @@ model User {
   transactions Transaction[]
   winners      Winner[]
   notifications Notification[]
+  reviews      Review[]
 
   @@map("users")
   @@schema("app")
@@ -50,6 +51,7 @@ model HostProfile {
   subscriptions HostSubscription[]
   raffles       Raffle[]
   withdrawals   Withdrawal[]
+  reviews       Review[]
 
   @@map("host_profiles")
   @@schema("app")
@@ -118,6 +120,7 @@ model Raffle {
   instantWins InstantWin[]
   tickets     Ticket[]
   winners     Winner[]
+  reviews     Review[]
 
   @@map("raffles")
   @@schema("app")
@@ -191,6 +194,7 @@ model Winner {
   user   User   @relation(fields: [userId], references: [id])
   raffle Raffle @relation(fields: [raffleId], references: [id], onDelete: Cascade)
   ticket Ticket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  review Review?
 
   @@map("winners")
   @@schema("app")
@@ -246,5 +250,29 @@ model Notification {
   @@index([userId, isRead])
   @@index([userId, createdAt])
   @@map("notifications")
+  @@schema("app")
+}
+
+model Review {
+  id        String   @id @default(uuid()) @db.VarChar(255)
+  hostId    String   @map("host_id") @db.VarChar(255)
+  raffleId  String   @map("raffle_id") @db.VarChar(255)
+  winnerId  String   @unique @map("winner_id") @db.VarChar(255)
+  userId    String   @map("user_id") @db.VarChar(255)
+  rating    Int      @db.SmallInt
+  comment   String?  @db.Text
+  status    String   @default("APPROVED") @db.VarChar(50) // APPROVED, FLAGGED, HIDDEN
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  host   HostProfile @relation(fields: [hostId], references: [id])
+  raffle Raffle      @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  winner Winner      @relation(fields: [winnerId], references: [id], onDelete: Cascade)
+  user   User        @relation(fields: [userId], references: [id])
+
+  @@index([hostId, status])
+  @@index([userId])
+  @@index([raffleId])
+  @@map("reviews")
   @@schema("app")
 }

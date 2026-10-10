@@ -20,8 +20,16 @@ export interface UserWinner {
     slug: string;
     mainImage: string | null;
     hostBusinessName: string;
+    hostId?: string;
     status: string;
   };
+  review?: {
+    id: string;
+    rating: number;
+    comment: string | null;
+    status: string;
+    createdAt: string;
+  } | null;
   instantWinDetails?: {
     id: string;
     prizeName: string;

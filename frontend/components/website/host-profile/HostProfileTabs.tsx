@@ -4,25 +4,30 @@ import React, { useState } from "react";
 import Link from "next/link";
 import LiveRaffleCard from "../live-raffles/LiveRaffleCard";
 import { Draw } from "../../../types/draw.types";
-import { HostReview } from "../../../types/review.types";
+import { HostReview, HostReviewStats, HostReviewItem } from "../../../types/review.types";
+import HostReviewsTab from "../host-reviews/HostReviewsTab";
 
 interface HostProfileTabsProps {
+  hostId?: string;
   raffles?: any[];
   name?: string;
   bio?: string;
   location?: string;
-  rating?: number;
+  rating?: number | null;
   totalReviews?: number;
-  reviews?: HostReview[];
+  stats?: HostReviewStats | null;
+  reviews?: any[];
 }
 
 export default function HostProfileTabs({
+  hostId = "",
   raffles = [],
   name = "Host",
   bio = "",
   location = "",
-  rating = 5.0,
+  rating = null,
   totalReviews = 0,
+  stats = null,
   reviews = [],
 }: HostProfileTabsProps) {
   const [activeTab, setActiveTab] = useState<"active" | "past" | "reviews" | "about">("active");
@@ -230,87 +235,13 @@ export default function HostProfileTabs({
 
         {/* REVIEWS */}
         {activeTab === "reviews" && (
-          <div className="animate-in fade-in duration-300 flex flex-col gap-6">
-            {/* Rating Summary Card */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 sm:p-8 rounded-2xl border border-[rgba(212,175,55,0.2)] bg-[#12151F] shadow-lg">
-              <div className="flex items-center gap-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#181C28] border border-[rgba(212,175,55,0.35)] flex flex-col items-center justify-center text-center shadow-inner shrink-0">
-                  <span className="font-heading font-black text-2xl sm:text-3xl text-[#D4AF37]">
-                    {Number(rating).toFixed(1)}
-                  </span>
-                  <div className="flex text-[10px] text-[#D4AF37]">★★★★★</div>
-                </div>
-                <div>
-                  <h3 className="font-heading font-black text-lg sm:text-xl text-[#F4EBD9] uppercase tracking-tight">
-                    Verified Host Rating
-                  </h3>
-                  <p className="font-sans text-xs text-[#A69B82] mt-1">
-                    Based on verified ticket buyer entries &amp; delivered prize reviews.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-2 bg-[#181C28] border border-emerald-500/35 px-4 py-2 rounded-xl text-emerald-400 font-sans text-xs font-bold">
-                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                100% Genuine Winner Feedback
-              </div>
-            </div>
-
-            {/* Reviews List */}
-            {displayedReviews.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {displayedReviews.map((rev) => (
-                  <div
-                    key={rev.id}
-                    className="flex flex-col justify-between gap-4 p-5 rounded-2xl border border-[rgba(212,175,55,0.18)] bg-[#12151F] shadow-md transition-all hover:border-[#D4AF37]/40"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-[#181C28] border border-[rgba(212,175,55,0.3)] flex items-center justify-center text-xs font-black text-[#D4AF37]">
-                            {rev.reviewerName.substring(0, 2).toUpperCase()}
-                          </div>
-                          <div>
-                            <span className="font-sans text-xs font-bold text-[#F4EBD9] block">
-                              {rev.reviewerName}
-                            </span>
-                            <span className="font-sans text-[10px] text-[#A69B82]">
-                              {rev.createdAt}
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-1 text-[#D4AF37] text-xs">
-                          {Array.from({ length: rev.rating }).map((_, i) => (
-                            <span key={i}>★</span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {rev.competitionTitle && (
-                        <div className="font-heading text-[11px] font-bold text-[#D4AF37] uppercase tracking-wide mb-1.5">
-                          Draw: {rev.competitionTitle}
-                        </div>
-                      )}
-
-                      <p className="font-sans text-xs text-[#D6CEBC] leading-relaxed">
-                        "{rev.message}"
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-1 text-[10px] font-semibold text-emerald-400 pt-2 border-t border-[rgba(212,175,55,0.1)]">
-                      <span>✓</span> Verified Ticket Entrant
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-16 px-6 text-center rounded-2xl border border-[rgba(212,175,55,0.2)] bg-[#12151F]">
-                <p className="font-sans text-xs text-[#A69B82]">
-                  No public reviews submitted yet for this host. Verified entrants can submit reviews once draws conclude.
-                </p>
-              </div>
-            )}
+          <div className="animate-in fade-in duration-300">
+            <HostReviewsTab
+              hostId={hostId}
+              hostName={name}
+              initialStats={stats}
+              initialReviews={displayedReviews}
+            />
           </div>
         )}
 

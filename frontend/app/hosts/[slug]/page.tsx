@@ -207,6 +207,11 @@ export default async function HostProfilePage({ params }: PageProps) {
           (r) => r.hostId === host.id || r.status === "approved"
         );
 
+  // Dynamic host ratings & review metrics
+  const rating = host.rating !== undefined ? host.rating : (host.averageRating !== undefined ? host.averageRating : null);
+  const totalReviews = host.totalReviews !== undefined ? host.totalReviews : (host.reviews ? host.reviews.length : 0);
+  const reviewsStats = host.reviewsStats || null;
+
   return (
     <>
       <WebsiteNavbar />
@@ -243,19 +248,21 @@ export default async function HostProfilePage({ params }: PageProps) {
               category={host.category || "Pro Shop"}
               isVerified={host.isVerified}
               drawsHosted={host.drawsHosted || host.competitionCount || 0}
-              rating={host.rating || host.averageRating || 5.0}
-              totalReviews={host.totalReviews || reviews.length || 0}
+              rating={rating}
+              totalReviews={totalReviews}
               memberSince={host.memberSince || 2024}
               location={host.location || "Manchester, UK"}
             />
 
             {/* Profile Tabs */}
             <HostProfileTabs
+              hostId={host.id}
               name={name}
               bio={host.bio}
               location={host.location || "Manchester, UK"}
-              rating={host.rating || host.averageRating || 5.0}
-              totalReviews={host.totalReviews || reviews.length || 0}
+              rating={rating}
+              totalReviews={totalReviews}
+              stats={reviewsStats}
               raffles={host.raffles || []}
               reviews={reviews}
             />
