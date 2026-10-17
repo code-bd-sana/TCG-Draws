@@ -42,7 +42,7 @@ export interface RaffleFormData {
 
 const initialData: RaffleFormData = {
   title: "",
-  category: "Golf Drivers",
+  category: "Pokémon",
   description: "",
   mainPrizeValue: "",
   totalTickets: "",
@@ -201,17 +201,17 @@ export default function CreateRaffleWizard() {
 
   if (!mySub || mySub.status !== 'ACTIVE') {
     return (
-      <div className="w-full bg-surface border border-border rounded-card p-8 md:p-12 text-center shadow-card max-w-lg mx-auto flex flex-col items-center">
-        <div className="w-14 h-14 rounded-2xl bg-[#FEE2E2] border border-[#FECACA] flex items-center justify-center text-[#DC2626] mb-5 shadow-xs shrink-0">
+      <div className="w-full bg-[#12151F] border border-[rgba(212,175,55,0.25)] rounded-2xl p-8 md:p-12 text-center shadow-[0_20px_50px_rgba(0,0,0,0.8)] max-w-lg mx-auto flex flex-col items-center">
+        <div className="w-14 h-14 rounded-2xl bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.3)] flex items-center justify-center text-[#D4AF37] mb-5 shadow-inner shrink-0">
           <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
           </svg>
         </div>
-        <h2 className="text-text-primary font-heading font-black text-xl mb-2 uppercase tracking-tight">Active Subscription Required</h2>
-        <p className="text-text-muted text-xs leading-relaxed mb-6 max-w-md">You must have an active host plan to create competitions on Fairway Draws.</p>
+        <h2 className="text-[#F4EBD9] font-heading font-black text-xl mb-2 uppercase tracking-tight">Active Subscription Required</h2>
+        <p className="text-[#A69B82] text-xs leading-relaxed mb-6 max-w-md">You must have an active host plan to create competitions on TCG Draws.</p>
         <button 
           onClick={() => router.push('/dashboard/host/billing')} 
-          className="btn-glossy-red px-6 h-11 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl shadow-md cursor-pointer transition-all active:scale-98"
+          className="btn-gold-metallic px-6 h-11 text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider rounded-xl shadow-md cursor-pointer transition-all active:scale-98"
         >
           View Host Subscription Plans
         </button>
@@ -233,31 +233,31 @@ export default function CreateRaffleWizard() {
 
   if (isLimitReached) {
     return (
-      <div className="w-full bg-surface border border-border rounded-card p-8 md:p-12 text-center shadow-card max-w-lg mx-auto flex flex-col items-center animate-fadeIn">
-        <div className="w-14 h-14 rounded-2xl bg-[#FEF3C7] border border-[#FDE68A] flex items-center justify-center text-[#D97706] mb-5 shadow-xs shrink-0">
+      <div className="w-full bg-[#12151F] border border-[rgba(212,175,55,0.25)] rounded-2xl p-8 md:p-12 text-center shadow-[0_20px_50px_rgba(0,0,0,0.8)] max-w-lg mx-auto flex flex-col items-center animate-fadeIn">
+        <div className="w-14 h-14 rounded-2xl bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.3)] flex items-center justify-center text-[#D4AF37] mb-5 shadow-inner shrink-0">
           <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m0 3.75h.007v.008H12v-.008zM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" />
           </svg>
         </div>
 
-        <h2 className="text-text-primary font-heading font-black text-xl mb-2 uppercase tracking-tight">
+        <h2 className="text-[#F4EBD9] font-heading font-black text-xl mb-2 uppercase tracking-tight">
           Active Competitions Limit Reached
         </h2>
 
-        <p className="text-text-muted text-xs leading-relaxed mb-6 max-w-md font-sans">
-          You have reached the maximum allowed active competitions (<strong className="text-text-primary">{maxAllowedRaffles}</strong>) for your <strong className="text-text-brand">{mySub.plan?.name || "Free"}</strong> plan. Please upgrade your subscription to create more competitions.
+        <p className="text-[#A69B82] text-xs leading-relaxed mb-6 max-w-md font-sans">
+          You have reached the maximum allowed active competitions (<strong className="text-[#F4EBD9]">{maxAllowedRaffles}</strong>) for your <strong className="text-[#D4AF37]">{mySub.plan?.name || "Free"}</strong> plan. Please upgrade your subscription to create more competitions.
         </p>
 
-        <div className="w-full bg-elevated border border-border-medium rounded-xl p-4 mb-6 flex items-center justify-between font-sans text-xs">
-          <span className="text-text-muted font-medium">Active Competitions:</span>
-          <span className="font-heading font-bold text-text-primary text-sm">
+        <div className="w-full bg-[#181C28] border border-[rgba(212,175,55,0.2)] rounded-xl p-4 mb-6 flex items-center justify-between font-sans text-xs">
+          <span className="text-[#A69B82] font-medium">Active Competitions:</span>
+          <span className="font-heading font-bold text-[#F4EBD9] text-sm">
             {activeCount} / {maxAllowedRaffles}
           </span>
         </div>
 
         <button 
           onClick={() => router.push('/dashboard/host/billing')} 
-          className="btn-glossy-red px-6 h-11 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl shadow-md cursor-pointer transition-all active:scale-98 flex items-center justify-center gap-2"
+          className="btn-gold-metallic px-6 h-11 text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider rounded-xl shadow-md cursor-pointer transition-all active:scale-98 flex items-center justify-center gap-2"
         >
           <span>Upgrade Subscription Plan</span>
         </button>

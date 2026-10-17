@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Category, categoryService } from '../../../../services/category.service';
 
-const AVAILABLE_ICONS = ['GolfClubs', 'Trophy', 'Shirt', 'Watch', 'ShoppingBag', 'Star', 'Tag', 'Crosshair'];
+const AVAILABLE_ICONS = ['Sparkles', 'Trophy', 'Shirt', 'Watch', 'ShoppingBag', 'Star', 'Tag', 'Crosshair'];
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);

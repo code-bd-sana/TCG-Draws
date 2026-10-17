@@ -22,8 +22,8 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
   ];
 
   const checkIcon = (
-    <div className="w-5 h-5 rounded-full bg-[#1A230A] border border-[#43581E] flex items-center justify-center shrink-0">
-      <svg className="w-3 h-3 text-[#8CB34A]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+    <div className="w-5 h-5 rounded-full bg-[rgba(212,175,55,0.15)] border border-[rgba(212,175,55,0.35)] flex items-center justify-center shrink-0">
+      <svg className="w-3 h-3 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
       </svg>
     </div>
@@ -210,7 +210,7 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
                 <div className="flex items-center gap-2 mt-0.5">
                   <span className="font-heading font-bold text-sm text-text-primary">{raffle.hostName}</span>
                   {raffle.hostVerified && (
-                    <span className="bg-[#DCFCE7] border border-[#BBF7D0] text-[#15803D] px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide">Verified</span>
+                    <span className="bg-[rgba(16,185,129,0.15)] border border-[rgba(16,185,129,0.35)] text-[#10B981] px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide">Verified</span>
                   )}
                 </div>
               </div>

@@ -126,11 +126,11 @@ export default function CreateRaffleStep6({
         <button
           onClick={onPublish}
           disabled={isSubmitting}
-          className="btn-glossy-red h-[48px] px-8 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
+          className="btn-gold-metallic h-[48px] px-8 text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
         >
           <span>{isSubmitting ? "Publishing..." : "Publish Competition"}</span>
           {!isSubmitting && (
-            <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <svg className="w-4 h-4 text-[#090A0E]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
             </svg>
           )}

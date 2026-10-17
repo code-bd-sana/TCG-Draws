@@ -23,7 +23,7 @@ export default function MobileBottomDock() {
   const dashboardHome = getDashboardHome();
 
   return (
-    <div className='fixed bottom-0 left-0 right-0 z-40 block lg:hidden bg-white/95 backdrop-blur-xl border-t border-[#E2EADF] shadow-[0_-5px_25px_rgba(11,77,53,0.1)]'>
+    <div className='fixed bottom-0 left-0 right-0 z-40 block lg:hidden bg-[#0E1017]/95 backdrop-blur-xl border-t border-[rgba(212,175,55,0.25)] shadow-[0_-5px_25px_rgba(0,0,0,0.8)]'>
       <div className='flex items-center justify-around h-16 px-2 max-w-md mx-auto'>
         {/* Tab 1: Home */}
         <Link
@@ -31,8 +31,8 @@ export default function MobileBottomDock() {
           className={cn(
             'flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-all duration-200',
             pathname === '/'
-              ? 'text-[#b91c1c] font-bold scale-105'
-              : 'text-[#5e766c] hover:text-[#0b4d35]',
+              ? 'text-[#D4AF37] font-bold scale-105 filter drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]'
+              : 'text-[#A69B82] hover:text-[#D4AF37]',
           )}
         >
           <svg
@@ -57,8 +57,8 @@ export default function MobileBottomDock() {
           className={cn(
             'flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-all duration-200',
             pathname === '/live-raffles' || pathname.startsWith('/live-raffles')
-              ? 'text-[#b91c1c] font-bold scale-105'
-              : 'text-[#5e766c] hover:text-[#0b4d35]',
+              ? 'text-[#D4AF37] font-bold scale-105 filter drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]'
+              : 'text-[#A69B82] hover:text-[#D4AF37]',
           )}
         >
           <svg
@@ -86,8 +86,8 @@ export default function MobileBottomDock() {
             className={cn(
               'w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 transform group-active:scale-95 border shadow-lg',
               isDashboardRoute
-                ? 'bg-[#ECF5EE] border-[#0b4d35]/30 text-[#0b4d35]'
-                : 'btn-glossy-red text-white border-white/20 shadow-[0_6px_20px_rgba(185,28,28,0.45)]',
+                ? 'bg-[#181C28] border-[rgba(212,175,55,0.4)] text-[#D4AF37] shadow-[0_4px_15px_rgba(0,0,0,0.6)]'
+                : 'btn-gold-metallic text-[#090A0E] border-[rgba(212,175,55,0.5)] shadow-[0_6px_20px_rgba(212,175,55,0.4)]',
             )}
           >
             <svg
@@ -100,7 +100,7 @@ export default function MobileBottomDock() {
               <path strokeLinecap='round' strokeLinejoin='round' d='M8.25 5.25v2.25m7.5-2.25v2.25M6 9.75h12M7.5 19.5h9M8.25 15.75h7.5M12 3.75c-1.036 0-1.875.84-1.875 1.875v.75h3.75v-.75C13.875 4.59 13.036 3.75 12 3.75ZM6 9.75h12l-1.125 8.25a1.5 1.5 0 0 1-1.486 1.298H8.611A1.5 1.5 0 0 1 7.125 18L6 9.75Z' />
             </svg>
           </div>
-          <span className='text-[9px] font-sans font-black uppercase tracking-wider text-[#b91c1c] mt-0.5'>
+          <span className='text-[9px] font-sans font-black uppercase tracking-wider text-[#D4AF37] mt-0.5'>
             {isDashboardRoute ? 'Public Site' : 'DASHBOARD'}
           </span>
         </Link>
@@ -111,8 +111,8 @@ export default function MobileBottomDock() {
           className={cn(
             'flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-all duration-200',
             pathname === '/winners'
-              ? 'text-[#b91c1c] font-bold scale-105'
-              : 'text-[#5e766c] hover:text-[#0b4d35]',
+              ? 'text-[#D4AF37] font-bold scale-105 filter drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]'
+              : 'text-[#A69B82] hover:text-[#D4AF37]',
           )}
         >
           <svg
@@ -137,8 +137,8 @@ export default function MobileBottomDock() {
           className={cn(
             'flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-all duration-200',
             pathname === '/dashboard/user/tickets' || pathname === '/login'
-              ? 'text-[#b91c1c] font-bold scale-105'
-              : 'text-[#5e766c] hover:text-[#0b4d35]',
+              ? 'text-[#D4AF37] font-bold scale-105 filter drop-shadow-[0_0_8px_rgba(212,175,55,0.5)]'
+              : 'text-[#A69B82] hover:text-[#D4AF37]',
           )}
         >
           <svg

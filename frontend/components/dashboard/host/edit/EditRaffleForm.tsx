@@ -14,12 +14,12 @@ interface Props {
 }
 
 const DEFAULT_CATEGORIES = [
-  "Golf Drivers",
-  "Golf Irons",
-  "Golf Putters",
-  "Golf Bags & Apparel",
-  "Rangefinders & Tech",
-  "Experiences & Bundles",
+  "Pokémon",
+  "One Piece",
+  "Yu-Gi-Oh!",
+  "Magic: The Gathering",
+  "Graded Slabs",
+  "Booster Boxes & Cases",
 ];
 
 export default function EditRaffleForm({ raffleId }: Props) {
@@ -38,7 +38,7 @@ export default function EditRaffleForm({ raffleId }: Props) {
     if (raffle) {
       setFormData({
         title: raffle.title || "",
-        category: (raffle as any).category || "Golf Drivers",
+        category: (raffle as any).category || "Pokémon",
         description: raffle.description || "",
         prizeName: raffle.prizeName || "",
         mainPrizeValue: (raffle as any).mainPrizeValue ?? "",
@@ -213,7 +213,7 @@ export default function EditRaffleForm({ raffleId }: Props) {
               </label>
               <select
                 id="category"
-                value={formData.category || (categoryOptions[0] ?? "Golf Drivers")}
+                value={formData.category || (categoryOptions[0] ?? "Pokémon")}
                 onChange={(e) => handleChange("category", e.target.value)}
                 className="w-full h-[46px] bg-bg border border-border rounded-button px-4 font-sans text-xs md:text-sm text-text-primary outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all cursor-pointer"
               >
@@ -445,7 +445,7 @@ export default function EditRaffleForm({ raffleId }: Props) {
                   name="drawType"
                   checked={!formData.isAutoDraw}
                   onChange={() => {}}
-                  className="mt-1 w-4 h-4 text-primary focus:ring-primary accent-[#0b4d35] cursor-pointer"
+                  className="mt-1 w-4 h-4 text-primary focus:ring-primary accent-[#D4AF37] cursor-pointer"
                 />
                 <div className="flex flex-col gap-0.5">
                   <div className="flex items-center gap-2">
@@ -478,7 +478,7 @@ export default function EditRaffleForm({ raffleId }: Props) {
                   name="drawType"
                   checked={formData.isAutoDraw}
                   onChange={() => {}}
-                  className="mt-1 w-4 h-4 text-primary focus:ring-primary accent-[#0b4d35] cursor-pointer"
+                  className="mt-1 w-4 h-4 text-primary focus:ring-primary accent-[#D4AF37] cursor-pointer"
                 />
                 <div className="flex flex-col gap-0.5">
                   <span className="font-heading font-bold text-xs md:text-sm text-text-primary uppercase tracking-wide">
@@ -504,7 +504,7 @@ export default function EditRaffleForm({ raffleId }: Props) {
             <button
               type="submit"
               disabled={updateMutation.isPending}
-              className="btn-glossy-red h-[46px] px-8 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 cursor-pointer"
+              className="btn-gold-metallic h-[46px] px-8 text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 cursor-pointer"
             >
               {updateMutation.isPending ? "Saving Changes..." : "Save Changes"}
             </button>

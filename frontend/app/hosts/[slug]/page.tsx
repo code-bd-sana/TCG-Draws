@@ -22,10 +22,10 @@ function resolveMockHost(slug: string) {
     const s = h.slug.toLowerCase();
     if (s === cleanSlug) return true;
     if (h.id.toLowerCase() === cleanSlug) return true;
-    // Check aliases between fairway-golf-pro-shop and fairway-pro-shop
+    // Check aliases between new slugs and legacy slugs
     if (
-      (cleanSlug === "fairway-golf-pro-shop" || cleanSlug === "fairway-pro-shop") &&
-      (s === "fairway-golf-pro-shop" || s === "fairway-pro-shop")
+      (cleanSlug === "vault-collectibles-uk" || cleanSlug === "fairway-golf-pro-shop" || cleanSlug === "fairway-pro-shop") &&
+      (s === "vault-collectibles-uk" || s === "fairway-golf-pro-shop")
     ) {
       return true;
     }
@@ -36,11 +36,11 @@ function resolveMockHost(slug: string) {
 
   if (!found) {
     // Fuzzy fallback if slug contains key host identity
-    if (cleanSlug.includes("fairway")) return verifiedHostsData[0];
-    if (cleanSlug.includes("links")) return verifiedHostsData[1];
-    if (cleanSlug.includes("custom-club")) return verifiedHostsData[2];
-    if (cleanSlug.includes("weekend")) return verifiedHostsData[3];
-    return null;
+    if (cleanSlug.includes("vault") || cleanSlug.includes("fairway")) return verifiedHostsData[0];
+    if (cleanSlug.includes("grail") || cleanSlug.includes("links")) return verifiedHostsData[1];
+    if (cleanSlug.includes("apex") || cleanSlug.includes("custom")) return verifiedHostsData[2];
+    if (cleanSlug.includes("pocket") || cleanSlug.includes("weekend")) return verifiedHostsData[3];
+    return verifiedHostsData[0];
   }
 
   return found;
@@ -111,17 +111,17 @@ export default async function HostProfilePage({ params }: PageProps) {
         description: `Official competition completed with verified ticket winner ${w.name} (${w.location}).`,
         image:
           idx === 0
-            ? "https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=800&auto=format&fit=crop"
+            ? "https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?q=80&w=800&auto=format&fit=crop"
             : idx === 1
-            ? "https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?q=80&w=800&auto=format&fit=crop"
-            : "https://images.unsplash.com/photo-1592919505780-303950717480?q=80&w=800&auto=format&fit=crop",
+            ? "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800&auto=format&fit=crop"
+            : "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=800&auto=format&fit=crop",
         ticketPrice: 2.0,
         totalTickets: 250,
         ticketsSold: 250,
         soldTickets: 250,
         endDate: w.drawDate || "Draw Closed",
         status: "ENDED",
-        category: w.category || "drivers",
+        category: w.category || "Graded Slabs",
         slug: `past-${w.id}`,
       }));
 
@@ -137,8 +137,8 @@ export default async function HostProfilePage({ params }: PageProps) {
         logo: mock.logo || "/uploads/avatars/ef6734d3d6c19d4ab982e5aa1b5bb10f6.webp",
         bio:
           mock.description ||
-          `${mock.name} is an officially verified partner on TCG Draws delivering authentic equipment competitions, audited transparent draws, and fast tracked UK delivery.`,
-        category: mock.category || "Pro Shop",
+          `${mock.name} is an officially verified partner on TCG Draws delivering authentic collectible competitions, audited transparent draws, and fast tracked UK delivery.`,
+        category: mock.category || "Card Vault",
         isVerified: true,
         isBlocked: false,
         drawsHosted: mock.competitionCount || 45,

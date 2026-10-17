@@ -45,16 +45,16 @@ export default function HowItWorksVideoSection() {
           {/* Card background 3D illustration image */}
           <Image
             src="http://localhost:3845/assets/526657551df58b8e03d621873eaa6a0575eb6137.png"
-            alt="Watch How Fairway Draws Works"
+            alt="Watch How TCG Draws Works"
             fill
             sizes="(max-width: 768px) 100vw, 1010px"
             className="object-cover opacity-80 group-hover:scale-[1.02] group-hover:opacity-95 transition-all duration-700 ease-out"
             unoptimized
           />
 
-          {/* Green play button circle overlay */}
+          {/* Gold play button circle overlay */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg transform group-hover:scale-110 group-hover:bg-primary-hover group-hover:shadow-[0_0_30px_rgba(140,179,74,0.4)] transition-all duration-300 ease-out">
+            <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg transform group-hover:scale-110 group-hover:bg-primary-hover group-hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-300 ease-out">
               {/* Play SVG Icon */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"

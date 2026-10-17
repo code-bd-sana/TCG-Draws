@@ -15,7 +15,7 @@ import NewsletterSection from '../components/website/home/NewsletterSection';
 import HomepagePaymentAndInstantWinModal from '../components/website/home/HomepagePaymentAndInstantWinModal';
 
 /**
- * Public Homepage for the Fairway Draws application.
+ * Public Homepage for the TCG Draws application.
  * Composes layout and modular sections for future scalability.
  */
 export default function Home() {

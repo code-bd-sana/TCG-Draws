@@ -79,8 +79,8 @@ export default function PrivacyContent() {
           
           {/* Left Table of Contents */}
           <aside className="lg:col-span-4 hidden lg:block">
-            <div className="sticky top-28 bg-[#161810] border border-[#2D3C13] rounded-2xl p-5 space-y-2">
-              <h3 className="font-heading font-bold text-xs text-[#8CB34A] uppercase tracking-wider mb-3 px-2">
+            <div className="sticky top-28 bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-5 space-y-2 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h3 className="font-heading font-black text-xs text-[#F4EBD9] uppercase tracking-wider mb-3 px-2">
                 Table of Contents
               </h3>
               <nav className="flex flex-col space-y-1">
@@ -89,10 +89,10 @@ export default function PrivacyContent() {
                     key={sec.id}
                     onClick={() => scrollTo(sec.id)}
                     className={cn(
-                      "text-left px-3 py-2 rounded-xl text-xs font-sans transition-all duration-200 truncate",
+                      "text-left px-3 py-2 rounded-xl text-xs font-heading font-medium transition-all duration-200 truncate cursor-pointer",
                       activeSection === sec.id
-                        ? "bg-[#1A230A] text-[#A0D056] font-semibold border-l-2 border-[#8CB34A] pl-3"
-                        : "text-[#72943A] hover:bg-[#111210] hover:text-[#E8EDD4]"
+                        ? "bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] font-bold shadow-sm"
+                        : "text-[#A69B82] hover:bg-[#181C28] hover:text-[#F4EBD9]"
                     )}
                   >
                     {sec.title}
@@ -100,10 +100,10 @@ export default function PrivacyContent() {
                 ))}
               </nav>
               
-              <div className="pt-4 border-t border-[#2D3C13] mt-4">
+              <div className="pt-4 border-t border-[rgba(212,175,55,0.15)] mt-4">
                 <Link
                   href="/contact"
-                  className="w-full py-2.5 px-4 rounded-xl bg-[#1A230A] hover:bg-[#2D3C13] border border-[#43581E] text-[#A0D056] text-xs font-semibold flex items-center justify-center gap-2 transition-colors"
+                  className="btn-gold-metallic w-full py-2.5 px-4 rounded-xl text-xs font-heading font-black flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
                   ✉️ Contact Data Privacy Manager
                 </Link>
@@ -112,45 +112,45 @@ export default function PrivacyContent() {
           </aside>
 
           {/* Right Main Text Content */}
-          <main className="lg:col-span-8 space-y-12 text-sm leading-relaxed text-[#B3B8AA]">
+          <main className="lg:col-span-8 space-y-8 text-sm leading-relaxed text-[#C8BFAD]">
             
             {/* 1. Introduction & Controller */}
-            <section id="introduction" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
-                1. Introduction & Data Controller
+            <section id="introduction" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
+                1. Introduction &amp; Data Controller
               </h2>
               <p>
-                Welcome to the <strong className="text-[#E8EDD4]">Fairway Draws</strong> Privacy Policy.
+                Welcome to the <strong className="text-[#F4EBD9]">TCG Draws</strong> Privacy Policy.
               </p>
               <p>
-                Fairway Draws respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, process, and safeguard your personal data when you visit our website (regardless of where you access it from) and outlines your privacy rights under UK GDPR.
+                TCG Draws respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, process, and safeguard your personal data when you visit our website (regardless of where you access it from) and outlines your privacy rights under UK GDPR.
               </p>
-              <div className="bg-[#111210] border border-[#2D3C13] rounded-xl p-5 space-y-2 mt-4">
-                <h3 className="font-heading font-bold text-sm text-[#A0D056]">Data Controller & Privacy Contact</h3>
-                <p className="text-xs text-[#E8EDD4]">
-                  Legal Entity Name: <strong>Fairway Draws Ltd</strong>
+              <div className="bg-[#181C28] border border-[rgba(212,175,55,0.25)] rounded-xl p-5 space-y-2 mt-4">
+                <h3 className="font-heading font-black text-sm text-[#D4AF37] uppercase tracking-wide">Data Controller &amp; Privacy Contact</h3>
+                <p className="text-xs text-[#F4EBD9]">
+                  Legal Entity Name: <strong>TCG Draws Ltd</strong>
                 </p>
-                <p className="text-xs text-[#B3B8AA]">
-                  Data Privacy Manager: <strong>L McManus</strong>
+                <p className="text-xs text-[#A69B82]">
+                  Data Privacy Manager: <strong>Compliance Department</strong>
                 </p>
-                <p className="text-xs text-[#B3B8AA]">
+                <p className="text-xs text-[#A69B82]">
                   Correspondence Address: Synergy House, Lawson Street, North Shields NE29 6TG
                 </p>
-                <p className="text-xs text-[#B3B8AA]">
-                  Phone: <a href="tel:+447466347548" className="text-[#8CB34A] hover:underline">+44 (0) 7466 347548</a>
+                <p className="text-xs text-[#A69B82]">
+                  Phone: <a href="tel:+447466347548" className="text-[#D4AF37] hover:underline">+44 (0) 7466 347548</a>
                 </p>
-                <p className="text-xs text-[#B3B8AA]">
-                  Email: <a href="mailto:privacy@fairwaydraws.com" className="text-[#8CB34A] hover:underline">privacy@fairwaydraws.com</a> / <a href="mailto:info@fairwaydraws.com" className="text-[#8CB34A] hover:underline">info@fairwaydraws.com</a>
+                <p className="text-xs text-[#A69B82]">
+                  Email: <a href="mailto:privacy@tcgdraws.com" className="text-[#D4AF37] hover:underline">privacy@tcgdraws.com</a> / <a href="mailto:support@tcgdraws.com" className="text-[#D4AF37] hover:underline">support@tcgdraws.com</a>
                 </p>
               </div>
-              <p className="text-xs text-[#72943A]">
+              <p className="text-xs text-[#E5C158]">
                 Note: This website is not intended for children, and we do not knowingly collect personal data relating to individuals under 18 years of age.
               </p>
             </section>
 
             {/* 2. The Data We Collect */}
-            <section id="data-we-collect" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
+            <section id="data-we-collect" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
                 2. The Data We Collect About You
               </h2>
               <p>
@@ -158,42 +158,42 @@ export default function PrivacyContent() {
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056] uppercase">Identity Data</h4>
-                  <p className="text-xs text-[#B3B8AA] mt-1">First name, last name, username (or similar identifier), date of birth.</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37] uppercase">Identity Data</h4>
+                  <p className="text-xs text-[#A69B82] mt-1">First name, last name, username (or similar identifier), date of birth.</p>
                 </div>
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056] uppercase">Contact Data</h4>
-                  <p className="text-xs text-[#B3B8AA] mt-1">Billing address, delivery address, email address, telephone number.</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37] uppercase">Contact Data</h4>
+                  <p className="text-xs text-[#A69B82] mt-1">Billing address, delivery address, email address, telephone number.</p>
                 </div>
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056] uppercase">Financial Data</h4>
-                  <p className="text-xs text-[#B3B8AA] mt-1">We do not store full credit card data. Payments are processed by independent PCI-DSS compliant providers (Stripe, PayPal, Cashflows).</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37] uppercase">Financial Data</h4>
+                  <p className="text-xs text-[#A69B82] mt-1">We do not store full credit card data. Payments are processed by independent PCI-DSS compliant providers (Stripe, Cashflows).</p>
                 </div>
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056] uppercase">Technical Data</h4>
-                  <p className="text-xs text-[#B3B8AA] mt-1">IP address, login data, browser type/version, time zone, location, platform technology.</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37] uppercase">Technical Data</h4>
+                  <p className="text-xs text-[#A69B82] mt-1">IP address, login data, browser type/version, time zone, location, platform technology.</p>
                 </div>
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056] uppercase">Transaction & Profile Data</h4>
-                  <p className="text-xs text-[#B3B8AA] mt-1">Order history, purchased tickets, competition entries, wins claimed, account preferences.</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37] uppercase">Transaction &amp; Profile Data</h4>
+                  <p className="text-xs text-[#A69B82] mt-1">Order history, purchased tickets, competition entries, wins claimed, account preferences.</p>
                 </div>
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056] uppercase">Marketing & Usage Data</h4>
-                  <p className="text-xs text-[#B3B8AA] mt-1">Communication preferences, website interaction metrics, marketing opt-ins.</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37] uppercase">Marketing &amp; Usage Data</h4>
+                  <p className="text-xs text-[#A69B82] mt-1">Communication preferences, website interaction metrics, marketing opt-ins.</p>
                 </div>
               </div>
             </section>
 
             {/* 3. Prize Draws & Competitions */}
-            <section id="prize-draws-data" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
-                3. Prize Draws & Competition Processing
+            <section id="prize-draws-data" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
+                3. Prize Draws &amp; Competition Processing
               </h2>
               <p>
                 We collect the minimum personal data necessary to allow you to participate in competitions and administer draw entries. If you win a major prize or instant win:
               </p>
-              <ul className="list-disc list-inside space-y-2 text-xs text-[#E8EDD4] pl-2">
+              <ul className="list-disc list-inside space-y-2 text-xs text-[#F4EBD9] pl-2">
                 <li>We will verify your identity, age (18+), and UK residency before delivering your prize.</li>
                 <li>If the prize involves a cash transfer, we verify your nominated UK bank account details.</li>
                 <li>Failure to provide required verification data may prevent prize fulfillment in accordance with competition rules.</li>
@@ -201,58 +201,58 @@ export default function PrivacyContent() {
             </section>
 
             {/* 4. Marketing Choices */}
-            <section id="marketing-choices" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
-                4. Marketing & Communication Preferences
+            <section id="marketing-choices" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
+                4. Marketing &amp; Communication Preferences
               </h2>
               <p>
-                You will receive marketing communications from Fairway Draws if you have requested information, purchased tickets, entered a competition, or explicitly subscribed to our newsletter.
+                You will receive marketing communications from TCG Draws if you have requested information, purchased tickets, entered a competition, or explicitly subscribed to our newsletter.
               </p>
               <p>
-                <strong className="text-[#E8EDD4]">Opting Out:</strong> You can unsubscribe from marketing communications at any time by clicking the "Unsubscribe" link in any promotional email or contacting us directly at <a href="mailto:info@fairwaydraws.com" className="text-[#8CB34A] underline">info@fairwaydraws.com</a>. Opting out of marketing does not affect essential transaction emails (e.g. ticket purchase receipts or winner notifications).
+                <strong className="text-[#F4EBD9]">Opting Out:</strong> You can unsubscribe from marketing communications at any time by clicking the "Unsubscribe" link in any promotional email or contacting us directly at <a href="mailto:support@tcgdraws.com" className="text-[#D4AF37] underline">support@tcgdraws.com</a>. Opting out of marketing does not affect essential transaction emails (e.g. ticket purchase receipts or winner notifications).
               </p>
             </section>
 
             {/* 5. Cookies & Analytics */}
-            <section id="cookies-analytics" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
-                5. Cookies & Tracking Technologies
+            <section id="cookies-analytics" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
+                5. Cookies &amp; Tracking Technologies
               </h2>
               <p>
-                We use cookies and analytical tracking technologies (such as session cookies, TAG4ARM tracking via All Response Media Ltd, and Mailchimp integration) to optimize campaign performance and site security.
+                We use cookies and analytical tracking technologies (such as session cookies, performance telemetry, and transactional systems) to optimize platform performance and site security.
               </p>
               <p>
                 For complete details on cookie categories, purposes, and how to manage your browser settings, please visit our dedicated{" "}
-                <Link href="/cookie-policy" className="text-[#8CB34A] font-semibold underline">
+                <Link href="/cookie-policy" className="text-[#D4AF37] font-semibold underline">
                   Cookie Policy
                 </Link>.
               </p>
             </section>
 
             {/* 6. Disclosure & 7. International */}
-            <section id="disclosure" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
-                6. Disclosure & International Data Transfers
+            <section id="disclosure" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
+                6. Disclosure &amp; International Data Transfers
               </h2>
               <p>
                 We may share your personal data with trusted third parties who assist our business operations:
               </p>
-              <ul className="list-disc list-inside space-y-1.5 text-xs text-[#B3B8AA] pl-2">
-                <li>Payment Processors (Stripe, PayPal, Cashflows)</li>
-                <li>Marketing & Messaging Services (Text Global Limited, Mailchimp)</li>
-                <li>Campaign Optimization & Analytics (All Response Media Ltd / TAG4ARM)</li>
+              <ul className="list-disc list-inside space-y-1.5 text-xs text-[#A69B82] pl-2">
+                <li>Payment Processors (Stripe, Cashflows)</li>
+                <li>Delivery &amp; Courier Logistics Partners (Royal Mail, DPD, DHL)</li>
+                <li>Security &amp; Fraud Prevention Services</li>
                 <li>Professional Advisers, Auditors, Insurers, and Legal Counsel</li>
-                <li>Regulators & Authorities (HMRC, Advertising Standards Authority - ASA)</li>
+                <li>Regulators &amp; Authorities (HMRC, Advertising Standards Authority - ASA)</li>
               </ul>
-              <p id="international-transfers" className="pt-3 text-xs text-[#72943A]">
+              <p id="international-transfers" className="pt-3 text-xs text-[#E5C158]">
                 When third-party providers operate outside the UK, we enforce approved international transfer safeguards (such as UK Standard Contractual Clauses) to ensure your data receives the exact same protection.
               </p>
             </section>
 
             {/* 8. Data Security & Retention */}
-            <section id="security-retention" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
-                8. Data Security & Retention
+            <section id="security-retention" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
+                8. Data Security &amp; Retention
               </h2>
               <p>
                 We implement robust technical and organizational security measures (256-bit SSL encryption, restricted administrative access, rate limiting) to prevent unauthorized access or data loss.
@@ -263,12 +263,12 @@ export default function PrivacyContent() {
             </section>
 
             {/* 9. Your Legal Rights */}
-            <section id="your-legal-rights" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
+            <section id="your-legal-rights" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
                 9. Your Legal Rights Under UK GDPR
               </h2>
               <p>Under UK Data Protection law, you have the right to:</p>
-              <ul className="list-disc list-inside space-y-2 text-xs text-[#E8EDD4] pl-2">
+              <ul className="list-disc list-inside space-y-2 text-xs text-[#F4EBD9] pl-2">
                 <li><strong>Request Access:</strong> Receive a copy of the personal data we hold about you.</li>
                 <li><strong>Request Correction:</strong> Have any incomplete or inaccurate data corrected.</li>
                 <li><strong>Request Erasure:</strong> Ask us to delete personal data where there is no good reason for us continuing to process it.</li>
@@ -276,29 +276,29 @@ export default function PrivacyContent() {
                 <li><strong>Request Restriction:</strong> Suspend processing of your personal data under specific scenarios.</li>
                 <li><strong>Data Portability:</strong> Request transfer of your data in a structured, machine-readable format.</li>
               </ul>
-              <p className="text-xs text-[#72943A] pt-2">
-                To exercise any of your rights, contact our Data Privacy Manager at <a href="mailto:privacy@fairwaydraws.com" className="text-[#8CB34A] underline">privacy@fairwaydraws.com</a>. We aim to respond within 30 days.
+              <p className="text-xs text-[#E5C158] pt-2">
+                To exercise any of your rights, contact our Data Privacy Manager at <a href="mailto:privacy@tcgdraws.com" className="text-[#D4AF37] underline">privacy@tcgdraws.com</a>. We aim to respond within 30 days.
               </p>
             </section>
 
             {/* 10. Lawful Bases */}
-            <section id="lawful-bases" className="bg-[#161810] border border-[#2D3C13] rounded-2xl p-6 sm:p-8 space-y-4">
-              <h2 className="font-heading font-bold text-xl text-[#E8EDD4] border-b border-[#2D3C13] pb-3">
+            <section id="lawful-bases" className="bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-2xl p-6 sm:p-8 space-y-4 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
+              <h2 className="font-heading font-black text-xl text-[#F4EBD9] uppercase border-b border-[rgba(212,175,55,0.2)] pb-3">
                 10. Lawful Bases for Processing
               </h2>
               <p>We process your data relying on one or more of the following legal grounds:</p>
               <div className="space-y-3 pt-1">
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056]">1. Performance of Contract</h4>
-                  <p className="text-xs text-[#B3B8AA]">Processing necessary to fulfill ticket orders, competition entry contracts, and prize distributions.</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37]">1. Performance of Contract</h4>
+                  <p className="text-xs text-[#A69B82]">Processing necessary to fulfill ticket orders, competition entry contracts, and prize distributions.</p>
                 </div>
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056]">2. Legitimate Interests</h4>
-                  <p className="text-xs text-[#B3B8AA]">Necessary for our business interests in fraud prevention, network security, and platform improvement.</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37]">2. Legitimate Interests</h4>
+                  <p className="text-xs text-[#A69B82]">Necessary for our business interests in fraud prevention, network security, and platform improvement.</p>
                 </div>
-                <div className="bg-[#111210] p-4 rounded-xl border border-[#2D3C13]">
-                  <h4 className="font-heading font-bold text-xs text-[#A0D056]">3. Legal Obligation</h4>
-                  <p className="text-xs text-[#B3B8AA]">Compliance with UK tax, anti-money laundering (AML), and Advertising Standards Authority (ASA) obligations.</p>
+                <div className="bg-[#181C28] p-4 rounded-xl border border-[rgba(212,175,55,0.15)]">
+                  <h4 className="font-heading font-bold text-xs text-[#D4AF37]">3. Legal Obligation</h4>
+                  <p className="text-xs text-[#A69B82]">Compliance with UK tax, anti-money laundering (AML), and Advertising Standards Authority (ASA) obligations.</p>
                 </div>
               </div>
             </section>

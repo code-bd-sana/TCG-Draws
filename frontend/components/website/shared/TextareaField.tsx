@@ -15,7 +15,7 @@ interface TextareaFieldProps {
 }
 
 /**
- * Reusable form textarea element matching the Fairway Draws styling system.
+ * Reusable form textarea element matching the TCG Draws styling system.
  */
 export default function TextareaField({
   label,

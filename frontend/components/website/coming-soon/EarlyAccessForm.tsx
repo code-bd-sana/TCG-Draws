@@ -5,8 +5,8 @@ import InputField from "../shared/InputField";
 import { cn } from "../../../lib/utils";
 
 /**
- * Premium Early Access Lead Form — Fairway Draws.
- * Clean white card with gold-green CTA, role selector toggle, and VIP success state.
+ * Premium Early Access Lead Form — TCG Draws.
+ * Art-Deco dark obsidian card with metallic gold button, role toggle, and success state.
  */
 export default function EarlyAccessForm() {
   const [fullName, setFullName] = useState("");
@@ -52,22 +52,24 @@ export default function EarlyAccessForm() {
   if (isSuccess) {
     return (
       <div className="w-full max-w-lg mx-auto">
-        <div className="bg-white border border-[#0b4d35]/20 rounded-[24px] p-10 shadow-xl text-center">
+        <div className="art-deco-card rounded-2xl p-8 sm:p-10 text-center shadow-[0_15px_35px_rgba(0,0,0,0.7)] border border-[rgba(212,175,55,0.25)] flex flex-col items-center">
           {/* Checkmark */}
-          <div className="w-16 h-16 rounded-full bg-emerald-50 border-2 border-[#0b4d35]/30 flex items-center justify-center mx-auto mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-8 h-8 text-[#0b4d35]">
+          <div className="w-16 h-16 rounded-full bg-[rgba(16,185,129,0.15)] border border-[#10B981] text-[#34D399] flex items-center justify-center mb-5 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-8 h-8">
               <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
             </svg>
           </div>
-          <h3 className="font-serif text-2xl font-black text-[#0b4d35] mb-2">You&apos;re on the VIP List!</h3>
-          <p className="font-sans text-sm text-[#334e43] leading-relaxed max-w-sm mx-auto mb-6">
-            Your early-access pass is saved. Watch your inbox for exclusive launch day tokens and first-entry privileges.
+          <h3 className="font-heading text-2xl font-black text-[#F4EBD9] uppercase tracking-tight mb-2">
+            You&apos;re on the VIP List!
+          </h3>
+          <p className="font-sans text-sm text-[#C8BFAD] leading-relaxed max-w-sm mx-auto mb-6">
+            Your founding pass has been secured. Watch your inbox for exclusive launch day credits and early access to holy grail booster boxes.
           </p>
-          <div className="h-px bg-gradient-to-r from-transparent via-[#0b4d35]/20 to-transparent mb-6" />
+          <div className="h-px w-full bg-gradient-to-r from-transparent via-[rgba(212,175,55,0.25)] to-transparent mb-6" />
           <button
             type="button"
             onClick={() => setIsSuccess(false)}
-            className="text-xs font-bold text-[#5e766c] hover:text-[#0b4d35] transition-colors uppercase tracking-wider"
+            className="text-xs font-heading font-bold text-[#D4AF37] hover:text-[#F5E5C0] transition-colors uppercase tracking-wider cursor-pointer"
           >
             ← Register Another Email
           </button>
@@ -78,18 +80,18 @@ export default function EarlyAccessForm() {
 
   return (
     <div className="w-full max-w-lg mx-auto">
-      <div className="bg-white border border-[#0b4d35]/20 rounded-[24px] p-8 sm:p-10 shadow-xl">
+      <div className="art-deco-card rounded-2xl p-8 sm:p-10 shadow-[0_15px_35px_rgba(0,0,0,0.7)] border border-[rgba(212,175,55,0.25)]">
 
         {/* Header */}
         <div className="text-center mb-7">
-          <div className="inline-block px-3 py-1 rounded-full bg-[#0b4d35]/8 border border-[#0b4d35]/15 text-[#0b4d35] text-[10px] font-bold uppercase tracking-widest mb-3">
+          <div className="inline-block px-3.5 py-1 rounded-full bg-[#181C28] border border-[rgba(212,175,55,0.3)] text-[#D4AF37] text-[10px] font-heading font-black uppercase tracking-widest mb-3">
             Founding Members Only
           </div>
-          <h3 className="font-serif text-2xl sm:text-3xl font-black text-[#0b4d35]">
+          <h3 className="font-heading text-2xl sm:text-3xl font-black text-[#F4EBD9] uppercase tracking-tight">
             Secure Early Access
           </h3>
-          <p className="font-sans text-sm text-[#5e766c] mt-2">
-            Join <strong className="text-[#0b4d35]">1,200+ golfers</strong> on the official waitlist.
+          <p className="font-sans text-xs sm:text-sm text-[#A69B82] mt-2">
+            Join <strong className="text-[#D4AF37]">1,850+ collectors &amp; shops</strong> on the official waitlist.
           </p>
         </div>
 
@@ -97,7 +99,7 @@ export default function EarlyAccessForm() {
 
           {/* General Error */}
           {generalError && (
-            <div className="bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl p-3.5 text-center font-semibold">
+            <div className="bg-red-950/40 border border-red-500/40 text-red-200 text-xs rounded-xl p-3.5 text-center font-semibold">
               ⚠️ {generalError}
             </div>
           )}
@@ -107,7 +109,7 @@ export default function EarlyAccessForm() {
             label="Full Name"
             id="fullName"
             name="fullName"
-            placeholder="e.g. Rory McIlroy"
+            placeholder="e.g. Ash Ketchum"
             value={fullName}
             onChange={(e) => { setFullName(e.target.value); if (nameError) setNameError(""); }}
             error={nameError}
@@ -119,7 +121,7 @@ export default function EarlyAccessForm() {
             id="email"
             name="email"
             type="email"
-            placeholder="rory@example.com"
+            placeholder="collector@example.com"
             value={email}
             onChange={(e) => { setEmail(e.target.value); if (emailError) setEmailError(""); }}
             error={emailError}
@@ -129,10 +131,10 @@ export default function EarlyAccessForm() {
 
           {/* Role Selector */}
           <div className="flex flex-col gap-2">
-            <label className="font-sans text-xs font-bold text-[#334e43] uppercase tracking-wider">
+            <label className="font-heading text-xs font-bold text-[#F4EBD9] uppercase tracking-wider">
               I want to:
             </label>
-            <div className="grid grid-cols-2 gap-3 p-1.5 bg-[#F1F5EE] rounded-2xl">
+            <div className="grid grid-cols-2 gap-3 p-1.5 bg-[#0C0E14] border border-[rgba(212,175,55,0.2)] rounded-xl">
               {(["CUSTOMER", "HOST"] as const).map((r) => (
                 <button
                   key={r}
@@ -140,13 +142,13 @@ export default function EarlyAccessForm() {
                   onClick={() => setRole(r)}
                   disabled={isSubmitting}
                   className={cn(
-                    "py-3 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer disabled:opacity-50",
+                    "py-2.5 px-3 rounded-lg text-xs font-heading font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer disabled:opacity-50",
                     role === r
-                      ? "bg-[#0b4d35] text-white shadow-md"
-                      : "text-[#5e766c] hover:text-[#0b4d35]"
+                      ? "bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] shadow-sm"
+                      : "text-[#A69B82] hover:text-[#F4EBD9]"
                   )}
                 >
-                  {r === "CUSTOMER" ? "⛳ Enter Draws (Player)" : "🏆 Host Draws (Club)"}
+                  {r === "CUSTOMER" ? "🃏 Enter Draws (Player)" : "🏪 Host Draws (Shop)"}
                 </button>
               ))}
             </div>
@@ -156,7 +158,7 @@ export default function EarlyAccessForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 mt-1 bg-[#0b4d35] hover:bg-[#073826] active:scale-[0.98] text-white font-sans text-sm font-black tracking-[0.12em] uppercase rounded-2xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 cursor-pointer disabled:opacity-60"
+            className="btn-gold-metallic w-full py-4 mt-2 rounded-xl text-xs font-heading font-black tracking-[0.14em] uppercase transition-all duration-200 shadow-md flex items-center justify-center gap-3 cursor-pointer disabled:opacity-60"
           >
             {isSubmitting ? (
               <>
@@ -168,16 +170,16 @@ export default function EarlyAccessForm() {
               </>
             ) : (
               <>
-                Join VIP Waitlist
-                <span className="text-[#dc2626] text-lg font-black">→</span>
+                <span>Join VIP Waitlist</span>
+                <span>&rarr;</span>
               </>
             )}
           </button>
 
           {/* Trust row */}
           <div className="flex items-center justify-center gap-4 pt-1">
-            {["🔒 100% Private", "✅ Zero Spam", "🎯 Instant Entry"].map((item) => (
-              <span key={item} className="text-[10px] font-semibold text-[#5e766c]">{item}</span>
+            {["🔒 100% Private", "✅ Zero Spam", "🎯 First Access"].map((item) => (
+              <span key={item} className="text-[10px] font-sans font-medium text-[#8C8472]">{item}</span>
             ))}
           </div>
         </form>

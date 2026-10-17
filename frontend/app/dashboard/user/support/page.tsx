@@ -138,18 +138,18 @@ export default function UserSupportPage() {
 
           {/* Success State Notification */}
           {isSuccess && (
-            <div className="p-5 rounded-xl bg-[#DCFCE7] border border-[#BBF7D0] text-[#15803D] flex flex-col gap-2 animate-in fade-in duration-200">
-              <div className="flex items-center gap-2 font-heading font-bold text-sm">
+            <div className="p-5 rounded-xl bg-[rgba(16,185,129,0.12)] border border-[rgba(16,185,129,0.3)] text-[#34D399] flex flex-col gap-2 animate-in fade-in duration-200">
+              <div className="flex items-center gap-2 font-heading font-black text-sm text-[#34D399]">
                 <span>✅ Support Ticket Dispatched!</span>
               </div>
-              <p className="font-sans text-xs leading-relaxed text-[#166534]">
-                Your support ticket has been sent to our customer care team at <strong>info@fairwaydraws.com</strong>.
-                We have also queued a confirmation response to <strong>{email}</strong>.
+              <p className="font-sans text-xs leading-relaxed text-[#C8BFAD]">
+                Your support ticket has been sent to our customer care team at <strong className="text-[#F4EBD9]">support@tcgdraws.com</strong>.
+                We have also queued a confirmation response to <strong className="text-[#F4EBD9]">{email}</strong>.
               </p>
               <button
                 type="button"
                 onClick={() => setIsSuccess(false)}
-                className="mt-2 w-fit px-4 py-1.5 bg-[#15803D] hover:bg-[#166534] text-white text-xs font-heading font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer"
+                className="mt-2 w-fit px-4 py-2 btn-gold-metallic text-xs font-heading font-black uppercase tracking-wider rounded-lg transition-all cursor-pointer"
               >
                 Send Another Ticket
               </button>

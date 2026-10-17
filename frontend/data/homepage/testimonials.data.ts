@@ -4,9 +4,9 @@ export const testimonialsData: Testimonial[] = [
   {
     id: "test-1",
     name: "David K.",
-    role: "Player & Winner",
+    role: "Collector & Winner",
     rating: 5,
-    quote: "Outstanding service! I won a TaylorMade Qi10 Driver within my first three entries. The delivery process was smooth, and the club arrived in perfect condition. Super pleased!",
+    quote: "Outstanding service! I won a PSA 10 1st Edition Charizard within my first three entries. The delivery was tracked and the slab arrived in a tamper-proof vault box. Super pleased!",
     location: "Bristol, UK",
   },
   {
@@ -14,7 +14,7 @@ export const testimonialsData: Testimonial[] = [
     name: "Alex M.",
     role: "Verified Host",
     rating: 5,
-    quote: "As a golf pro shop owner, hosting draws on this platform has been incredible. I set the ticket price, and Fairway Draws handles the payments and ticketing. Payout was fast and secure.",
+    quote: "As a collectible card shop owner and breaker, hosting draws on this platform has been incredible. I set the ticket price, and TCG Draws handles the payments and ticketing. Payout was fast and secure.",
     location: "Cardiff, UK",
   },
   {

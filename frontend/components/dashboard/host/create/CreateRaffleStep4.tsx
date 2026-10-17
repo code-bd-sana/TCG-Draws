@@ -126,7 +126,7 @@ export default function CreateRaffleStep4({ formData, updateForm, onNext, onPrev
           <input 
             type="checkbox" 
             disabled={isFreePlan}
-            className="w-5 h-5 rounded border-border-medium text-primary focus:ring-primary accent-[#0b4d35] disabled:cursor-not-allowed cursor-pointer"
+            className="w-5 h-5 rounded border-border-medium text-primary focus:ring-primary accent-[#D4AF37] disabled:cursor-not-allowed cursor-pointer"
             checked={isFreePlan ? false : formData.hasInstantWins}
             onChange={handleToggle}
           />
@@ -235,7 +235,7 @@ export default function CreateRaffleStep4({ formData, updateForm, onNext, onPrev
         <button
           onClick={onNext}
           disabled={!isValid}
-          className="btn-glossy-red w-full sm:w-auto h-[46px] px-8 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="btn-gold-metallic w-full sm:w-auto h-[46px] px-8 text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <span>Next Step →</span>
         </button>

@@ -103,7 +103,7 @@ export default function CreateRaffleStep5({ formData, updateForm, onNext, onPrev
                   name="drawType"
                   checked={!formData.isAutoDraw}
                   onChange={() => updateForm({ isAutoDraw: false, autoDrawDate: false, autoDrawSoldOut: false })}
-                  className="mt-0.5 w-4 h-4 text-primary focus:ring-primary accent-[#0b4d35] cursor-pointer"
+                  className="mt-0.5 w-4 h-4 text-primary focus:ring-primary accent-[#D4AF37] cursor-pointer"
                 />
                 <div className="flex flex-col gap-0.5">
                   <div className="flex items-center gap-2">
@@ -126,7 +126,7 @@ export default function CreateRaffleStep5({ formData, updateForm, onNext, onPrev
                   name="drawType"
                   checked={formData.isAutoDraw}
                   onChange={() => updateForm({ isAutoDraw: true, autoDrawDate: true, autoDrawSoldOut: true })}
-                  className="mt-0.5 w-4 h-4 text-primary focus:ring-primary accent-[#0b4d35] cursor-pointer"
+                  className="mt-0.5 w-4 h-4 text-primary focus:ring-primary accent-[#D4AF37] cursor-pointer"
                 />
                 <div className="flex flex-col gap-0.5">
                   <span className="font-heading font-bold text-sm text-text-primary uppercase">
@@ -153,7 +153,7 @@ export default function CreateRaffleStep5({ formData, updateForm, onNext, onPrev
         <button
           onClick={onNext}
           disabled={!formData.startDate || !formData.endDate}
-          className="btn-glossy-red h-[46px] px-8 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="btn-gold-metallic h-[46px] px-8 text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <span>Next Step →</span>
         </button>

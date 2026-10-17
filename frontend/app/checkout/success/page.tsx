@@ -139,16 +139,16 @@ function CheckoutSuccessContent() {
           <p className="font-sans text-xs text-text-muted mb-6">{error}</p>
           <Link
             href="/basket"
-            className="btn-glossy-red px-6 py-2.5 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-white shadow-md"
+            className="btn-gold-metallic px-6 py-2.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-md"
           >
             Return to Basket
           </Link>
         </div>
       ) : (
         /* Order Confirmed View */
-        <div className="bg-surface border border-border rounded-card p-6 sm:p-10 shadow-card flex flex-col items-center text-center animate-fadeIn">
+        <div className="art-deco-card rounded-2xl p-6 sm:p-10 shadow-[0_15px_35px_rgba(0,0,0,0.7)] border border-[rgba(212,175,55,0.25)] flex flex-col items-center text-center animate-fadeIn">
           {/* Green checkmark badge */}
-          <div className="w-16 h-16 rounded-full bg-[#dcfce7] border border-[#bbf7d0] text-[#15803d] flex items-center justify-center mb-4 shadow-sm">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[rgba(16,185,129,0.15)] border border-[#10B981] text-[#34D399] flex items-center justify-center mb-5 shadow-[0_0_25px_rgba(16,185,129,0.3)]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -244,7 +244,7 @@ function CheckoutSuccessContent() {
           <div className="flex flex-col sm:flex-row items-center gap-3 w-full justify-center">
             <Link
               href="/dashboard/user/tickets"
-              className="btn-glossy-red w-full sm:w-auto px-8 py-3 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-white shadow-md active:scale-98 transition-all flex items-center justify-center gap-2"
+              className="btn-gold-metallic w-full sm:w-auto px-8 py-3.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-md active:scale-98 transition-all flex items-center justify-center gap-2"
             >
               <span>View In My Tickets</span>
               <span>→</span>
@@ -252,7 +252,7 @@ function CheckoutSuccessContent() {
 
             <Link
               href="/live-raffles"
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-surface border border-border hover:bg-elevated text-text-primary font-heading font-bold text-xs uppercase tracking-wider transition-all text-center"
+              className="btn-dark-metallic w-full sm:w-auto px-6 py-3.5 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-[#F4EBD9] transition-all text-center"
             >
               Explore More Draws
             </Link>

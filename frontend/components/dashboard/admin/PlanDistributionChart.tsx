@@ -5,10 +5,11 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useAdminSubscriptionStats } from "../../../hooks/useSubscriptionHooks";
 
 const COLORS = [
-  "#0b4d35", // Deep Forest Green
-  "#15803D", // Vibrant Green
-  "#8CB34A", // Light Sage
-  "#D97706", // Amber
+  "#D4AF37", // Primary Gold
+  "#F5E5C0", // Bright Gold
+  "#997A35", // Antique Gold
+  "#38BDF8", // Cyan Accent
+  "#10B981", // Emerald
   "#64748B", // Slate
 ];
 

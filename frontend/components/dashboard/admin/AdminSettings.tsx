@@ -7,74 +7,74 @@ export default function AdminSettings() {
     <div className="flex flex-col gap-8 w-full max-w-[800px] animate-fadeIn">
       
       {/* Profile Settings */}
-      <div className="bg-[#161810] border border-[#2D3C13] rounded-[16px] p-8 flex flex-col gap-6">
+      <div className="bg-[#12151F] border border-[rgba(212,175,55,0.25)] rounded-2xl p-8 flex flex-col gap-6 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
         <div>
-          <h2 className="font-heading font-medium text-[18px] text-[#E8EDD4]">Profile Details</h2>
-          <p className="font-sans text-[13px] text-[#72943A] mt-1">Update your basic profile information.</p>
+          <h2 className="font-heading font-black text-lg text-[#F4EBD9] uppercase tracking-wide">Profile Details</h2>
+          <p className="font-sans text-xs text-[#A69B82] mt-1">Update your administrative profile information.</p>
         </div>
         
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
-            <label className="font-sans font-medium text-[13px] text-[#A0D056]">Full Name</label>
+            <label className="font-sans font-bold text-xs uppercase tracking-wider text-[#D4AF37]">Full Name</label>
             <input 
               type="text" 
               defaultValue="Admin Sarah K." 
-              className="w-full h-[44px] bg-[#111210] border border-[#2D3C13] rounded-[8px] px-4 text-[14px] text-[#E8EDD4] outline-none focus:border-[#43581E] transition-colors"
+              className="w-full h-11 bg-[#181C28] border border-[rgba(212,175,55,0.2)] rounded-xl px-4 text-sm text-[#F4EBD9] outline-none focus:border-[#D4AF37] transition-all"
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="font-sans font-medium text-[13px] text-[#A0D056]">Email Address</label>
+            <label className="font-sans font-bold text-xs uppercase tracking-wider text-[#D4AF37]">Email Address</label>
             <input 
               type="email" 
-              defaultValue="admin@fairwaydraws.co.uk" 
-              className="w-full h-[44px] bg-[#111210] border border-[#2D3C13] rounded-[8px] px-4 text-[14px] text-[#E8EDD4] outline-none focus:border-[#43581E] transition-colors"
+              defaultValue="admin@tcgdraws.com" 
+              className="w-full h-11 bg-[#181C28] border border-[rgba(212,175,55,0.2)] rounded-xl px-4 text-sm text-[#F4EBD9] outline-none focus:border-[#D4AF37] transition-all"
             />
           </div>
         </div>
         
-        <div className="flex justify-end mt-2">
-          <button className="h-[40px] px-6 rounded-[8px] bg-[#8CB34A] hover:bg-[#A0D056] text-[#0D0D0B] font-heading font-medium text-[13px] transition-colors">
+        <div className="flex justify-end mt-2 pt-4 border-t border-[rgba(212,175,55,0.15)]">
+          <button className="btn-gold-metallic h-11 px-8 rounded-xl text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-98 cursor-pointer">
             Save Changes
           </button>
         </div>
       </div>
 
       {/* Password Change */}
-      <div className="bg-[#161810] border border-[#2D3C13] rounded-[16px] p-8 flex flex-col gap-6">
+      <div className="bg-[#12151F] border border-[rgba(212,175,55,0.25)] rounded-2xl p-8 flex flex-col gap-6 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
         <div>
-          <h2 className="font-heading font-medium text-[18px] text-[#E8EDD4]">Change Password</h2>
-          <p className="font-sans text-[13px] text-[#72943A] mt-1">Ensure your account is using a long, random password to stay secure.</p>
+          <h2 className="font-heading font-black text-lg text-[#F4EBD9] uppercase tracking-wide">Change Password</h2>
+          <p className="font-sans text-xs text-[#A69B82] mt-1">Ensure your admin account uses a strong, random password for platform security.</p>
         </div>
         
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-2">
-            <label className="font-sans font-medium text-[13px] text-[#A0D056]">Current Password</label>
+            <label className="font-sans font-bold text-xs uppercase tracking-wider text-[#D4AF37]">Current Password</label>
             <input 
               type="password" 
-              placeholder="••••••••" 
-              className="w-full h-[44px] bg-[#111210] border border-[#2D3C13] rounded-[8px] px-4 text-[14px] text-[#E8EDD4] outline-none focus:border-[#43581E] transition-colors"
+              placeholder="••••••••••••" 
+              className="w-full h-11 bg-[#181C28] border border-[rgba(212,175,55,0.2)] rounded-xl px-4 text-sm text-[#F4EBD9] placeholder:text-[#6B7280] outline-none focus:border-[#D4AF37] transition-all"
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="font-sans font-medium text-[13px] text-[#A0D056]">New Password</label>
+            <label className="font-sans font-bold text-xs uppercase tracking-wider text-[#D4AF37]">New Password</label>
             <input 
               type="password" 
-              placeholder="••••••••" 
-              className="w-full h-[44px] bg-[#111210] border border-[#2D3C13] rounded-[8px] px-4 text-[14px] text-[#E8EDD4] outline-none focus:border-[#43581E] transition-colors"
+              placeholder="••••••••••••" 
+              className="w-full h-11 bg-[#181C28] border border-[rgba(212,175,55,0.2)] rounded-xl px-4 text-sm text-[#F4EBD9] placeholder:text-[#6B7280] outline-none focus:border-[#D4AF37] transition-all"
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label className="font-sans font-medium text-[13px] text-[#A0D056]">Confirm New Password</label>
+            <label className="font-sans font-bold text-xs uppercase tracking-wider text-[#D4AF37]">Confirm New Password</label>
             <input 
               type="password" 
-              placeholder="••••••••" 
-              className="w-full h-[44px] bg-[#111210] border border-[#2D3C13] rounded-[8px] px-4 text-[14px] text-[#E8EDD4] outline-none focus:border-[#43581E] transition-colors"
+              placeholder="••••••••••••" 
+              className="w-full h-11 bg-[#181C28] border border-[rgba(212,175,55,0.2)] rounded-xl px-4 text-sm text-[#F4EBD9] placeholder:text-[#6B7280] outline-none focus:border-[#D4AF37] transition-all"
             />
           </div>
         </div>
         
-        <div className="flex justify-end mt-2">
-          <button className="h-[40px] px-6 rounded-[8px] bg-transparent border border-[#8CB34A] hover:bg-[#8CB34A]/10 text-[#8CB34A] font-heading font-medium text-[13px] transition-colors">
+        <div className="flex justify-end mt-2 pt-4 border-t border-[rgba(212,175,55,0.15)]">
+          <button className="btn-dark-metallic border border-[rgba(212,175,55,0.3)] hover:border-[#D4AF37] h-11 px-8 rounded-xl text-[#D4AF37] font-heading font-black text-xs uppercase tracking-wider shadow-md transition-all active:scale-98 cursor-pointer">
             Update Password
           </button>
         </div>

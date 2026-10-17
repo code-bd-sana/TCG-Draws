@@ -61,18 +61,18 @@ async function getRaffle(slug: string): Promise<RaffleDetail | undefined> {
 
     const catStr =
       typeof draw.category === "object" && draw.category !== null
-        ? (draw.category.name || draw.category.slug || "Drivers")
-        : (typeof draw.category === "string" ? draw.category : "Drivers");
+        ? (draw.category.name || draw.category.slug || "Graded Slabs")
+        : (typeof draw.category === "string" ? draw.category : "Graded Slabs");
 
     return {
       id: draw.id,
-      title: draw.title || "Golf Competition",
+      title: draw.title || "TCG Competition",
       slug: draw.slug || draw.id,
       category: catStr,
       status: isPast ? "ended" : (draw.status === "ACTIVE" ? "live" : "ending_soon"),
       images: Array.isArray(draw.images) && draw.images.length > 0
         ? draw.images
-        : [draw.mainImage || "https://placehold.co/800x600/1a230a/8cb34a?text=No+Image"],
+        : [draw.mainImage || "https://placehold.co/800x600/12151F/D4AF37?text=TCG+Collectible"],
       ticketPrice: Number(draw.pricePerTicket || 0),
       worthPrice: worth,
       totalPoolValue: totalPool,
@@ -87,7 +87,7 @@ async function getRaffle(slug: string): Promise<RaffleDetail | undefined> {
       remainingTickets: Math.max(Number(draw.totalTickets || 0) - Number(draw.ticketsSold || 0), 0),
       drawEndDate: draw.endDate ? formatUkDateTime(draw.endDate) : "Closing Soon",
       endDate: draw.endDate,
-      description: draw.description || `Enter this premium draw for a chance to win the ${draw.title || 'competition'}! Premium gear, fast shipping, and live draw.`,
+      description: draw.description || `Enter this premium draw for a chance to win the ${draw.title || 'competition'}! Certified authentic collectibles, tamper-proof packaging, fast insured shipping, and live verified draw.`,
       highlights: [
         `Main Prize: ${draw.prizeName || draw.title || 'Competition Prize'}`,
         `Ticket Price: £${Number(draw.pricePerTicket || 0).toFixed(2)}`,
@@ -103,7 +103,7 @@ async function getRaffle(slug: string): Promise<RaffleDetail | undefined> {
         "All winners will be contacted by email within 48 hours of the draw.",
         "Prizes are non-transferable and no cash alternative is offered.",
         "By entering you agree to be bound by these terms and conditions.",
-        "Free postal entry: send your name and address on a postcard to: Fairway Draws, PO Box 99, Manchester, M1 1AA."
+        "Free postal entry: send your name and address on a postcard to: TCG Draws Ltd, PO Box 99, Manchester, M1 1AA."
       ],
       instantWinPrizes: Array.isArray(draw.instantWins) ? draw.instantWins.map((iw: any) => ({
         id: iw.id,

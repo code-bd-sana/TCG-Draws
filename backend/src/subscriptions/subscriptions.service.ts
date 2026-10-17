@@ -140,6 +140,7 @@ export class SubscriptionsService {
           });
         }
       }
+
     }
 
     return this.prisma.transaction.findMany({

@@ -48,7 +48,7 @@ export default function ReportsAnalyticsDashboard() {
             onClick={() => setTimeFilter(filter)}
             className={`px-4 py-1.5 rounded-full font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
               timeFilter === filter
-                ? "bg-primary text-white shadow-xs border border-primary"
+                ? "bg-primary text-[#090A0E] font-black shadow-xs border border-primary"
                 : "bg-surface border border-border text-text-muted hover:text-text-primary"
             }`}
           >
@@ -71,26 +71,26 @@ export default function ReportsAnalyticsDashboard() {
                 <LineChart data={revenueData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-                      <stop offset="0%" stopColor="#0B4D35" />
-                      <stop offset="100%" stopColor="#15803D" />
+                      <stop offset="0%" stopColor="#F5E5C0" />
+                      <stop offset="100%" stopColor="#D4AF37" />
                     </linearGradient>
                   </defs>
                   <XAxis 
                     dataKey="name" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#64748B', fontSize: 11, fontFamily: 'inherit' }} 
+                    tick={{ fill: '#A69B82', fontSize: 11, fontFamily: 'inherit' }} 
                     dy={10}
                   />
                   <YAxis hide />
-                  <Tooltip content={<CustomTooltip prefix="£" />} cursor={{ stroke: '#E2EADF', strokeWidth: 1 }} />
+                  <Tooltip content={<CustomTooltip prefix="£" />} cursor={{ stroke: 'rgba(212,175,55,0.4)', strokeWidth: 1 }} />
                   <Line 
                     type="monotone" 
                     dataKey="value" 
                     stroke="url(#lineGradient)" 
                     strokeWidth={2.5} 
                     dot={false}
-                    activeDot={{ r: 6, fill: '#0B4D35', stroke: '#FFFFFF', strokeWidth: 2 }} 
+                    activeDot={{ r: 6, fill: '#D4AF37', stroke: '#090A0E', strokeWidth: 2 }} 
                   />
                 </LineChart>
               </ResponsiveContainer>
@@ -177,27 +177,27 @@ export default function ReportsAnalyticsDashboard() {
                 <AreaChart data={userGrowthData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#0B4D35" stopOpacity={0.25} />
-                      <stop offset="95%" stopColor="#0B4D35" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.35} />
+                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <XAxis 
                     dataKey="name" 
                     axisLine={false} 
                     tickLine={false} 
-                    tick={{ fill: '#64748B', fontSize: 11, fontFamily: 'inherit' }} 
+                    tick={{ fill: '#A69B82', fontSize: 11, fontFamily: 'inherit' }} 
                     dy={10}
                   />
                   <YAxis hide />
-                  <Tooltip content={<CustomTooltip prefix="users: " />} cursor={{ stroke: '#E2EADF', strokeWidth: 1 }} />
+                  <Tooltip content={<CustomTooltip prefix="users: " />} cursor={{ stroke: 'rgba(212,175,55,0.4)', strokeWidth: 1 }} />
                   <Area 
                     type="monotone" 
                     dataKey="users" 
-                    stroke="#0B4D35" 
+                    stroke="#D4AF37" 
                     strokeWidth={2}
                     fillOpacity={1} 
                     fill="url(#areaGradient)" 
-                    activeDot={{ r: 6, fill: '#0B4D35', stroke: '#FFFFFF', strokeWidth: 2 }} 
+                    activeDot={{ r: 6, fill: '#D4AF37', stroke: '#090A0E', strokeWidth: 2 }} 
                   />
                 </AreaChart>
               </ResponsiveContainer>

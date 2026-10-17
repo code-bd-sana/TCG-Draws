@@ -9,12 +9,12 @@ interface Props {
 }
 
 const DEFAULT_CATEGORIES = [
-  "Golf Drivers",
-  "Golf Irons",
-  "Golf Putters",
-  "Golf Bags & Apparel",
-  "Rangefinders & Tech",
-  "Experiences & Bundles",
+  "Pokémon",
+  "One Piece",
+  "Yu-Gi-Oh!",
+  "Magic: The Gathering",
+  "Graded Slabs",
+  "Booster Boxes & Cases",
 ];
 
 export default function CreateRaffleStep1({ formData, updateForm, onNext }: Props) {
@@ -51,7 +51,7 @@ export default function CreateRaffleStep1({ formData, updateForm, onNext }: Prop
             type="text"
             value={formData.title}
             onChange={(e) => updateForm({ title: e.target.value })}
-            placeholder="e.g. TaylorMade Qi10 LS Driver or Titleist Scotty Cameron Putter"
+            placeholder="e.g. 1st Edition Shadowless Charizard Holo PSA 10 or OP-05 Manga Luffy"
             className="h-[48px] px-4 bg-elevated border border-border-medium rounded-xl font-sans font-medium text-sm text-text-primary placeholder:text-text-muted outline-none focus:border-primary focus:bg-surface transition-all"
           />
         </div>
@@ -93,7 +93,7 @@ export default function CreateRaffleStep1({ formData, updateForm, onNext }: Prop
           <textarea
             value={formData.description}
             onChange={(e) => updateForm({ description: e.target.value })}
-            placeholder="Describe the prize specs, condition, warranty, and rules..."
+            placeholder="Describe the card grade, cert number, condition, authenticity guarantee, and delivery rules..."
             className="h-[140px] p-4 bg-elevated border border-border-medium rounded-xl font-sans font-medium text-sm text-text-primary placeholder:text-text-muted outline-none focus:border-primary focus:bg-surface transition-all resize-none"
           />
         </div>
@@ -104,7 +104,7 @@ export default function CreateRaffleStep1({ formData, updateForm, onNext }: Prop
         <button
           onClick={onNext}
           disabled={!formData.title.trim()}
-          className="btn-glossy-red h-[46px] px-8 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="btn-gold-metallic h-[46px] px-8 text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <span>Next Step →</span>
         </button>

@@ -36,7 +36,7 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages,
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="flex items-center justify-center w-9 h-9 rounded-full bg-surface border border-[#bdd3ba] text-[#0b4d35] hover:bg-[#0b4d35] hover:text-white hover:border-[#0b4d35] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-surface disabled:hover:text-[#0b4d35] disabled:hover:border-[#bdd3ba] transition-all duration-200 shadow-xs cursor-pointer"
+        className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#12151F] border border-[rgba(212,175,55,0.25)] text-[#A69B82] hover:border-[#D4AF37] hover:text-[#D4AF37] hover:bg-[#181C28] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#12151F] disabled:hover:text-[#A69B82] disabled:hover:border-[rgba(212,175,55,0.25)] transition-all duration-200 shadow-sm cursor-pointer"
         aria-label="Previous page"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -50,12 +50,12 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages,
           key={index}
           onClick={() => typeof page === 'number' && onPageChange(page)}
           disabled={page === '...'}
-          className={`flex items-center justify-center w-9 h-9 rounded-full font-sans font-bold text-xs md:text-sm transition-all duration-200 ${
+          className={`flex items-center justify-center w-9 h-9 rounded-xl font-heading font-black text-xs md:text-sm transition-all duration-200 ${
             page === currentPage
-              ? 'bg-[#0b4d35] text-white border border-[#0b4d35] shadow-sm'
+              ? 'btn-gold-metallic text-[#090A0E] shadow-[0_0_15px_rgba(212,175,55,0.4)]'
               : page === '...'
-              ? 'bg-transparent text-[#0b4d35]/60 cursor-default'
-              : 'bg-surface border border-[#bdd3ba] text-[#0b4d35] hover:bg-[#0b4d35] hover:text-white hover:border-[#0b4d35] cursor-pointer'
+              ? 'bg-transparent text-[#A69B82]/50 cursor-default'
+              : 'bg-[#12151F] border border-[rgba(212,175,55,0.25)] text-[#A69B82] hover:border-[#D4AF37] hover:text-[#D4AF37] hover:bg-[#181C28] cursor-pointer'
           }`}
         >
           {page}
@@ -66,7 +66,7 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages,
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === total}
-        className="flex items-center justify-center w-9 h-9 rounded-full bg-surface border border-[#bdd3ba] text-[#0b4d35] hover:bg-[#0b4d35] hover:text-white hover:border-[#0b4d35] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-surface disabled:hover:text-[#0b4d35] disabled:hover:border-[#bdd3ba] transition-all duration-200 shadow-xs cursor-pointer"
+        className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#12151F] border border-[rgba(212,175,55,0.25)] text-[#A69B82] hover:border-[#D4AF37] hover:text-[#D4AF37] hover:bg-[#181C28] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-[#12151F] disabled:hover:text-[#A69B82] disabled:hover:border-[rgba(212,175,55,0.25)] transition-all duration-200 shadow-sm cursor-pointer"
         aria-label="Next page"
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>

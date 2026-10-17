@@ -19,29 +19,32 @@ export default function RaffleDetailsErrorBoundary({
   return (
     <>
       <WebsiteNavbar />
-      <main className="min-h-[70vh] flex items-center justify-center bg-[#cfdfcb] pt-24 pb-16 px-4">
-        <div className="bg-white border border-[#CBD8C8] rounded-2xl p-8 sm:p-12 max-w-md w-full text-center shadow-md">
-          <div className="w-16 h-16 rounded-2xl bg-[#FEE2E2] border border-[#FECACA] flex items-center justify-center text-3xl mx-auto mb-5 text-[#DC2626]">
-            ⛳
+      <main className="min-h-screen flex items-center justify-center bg-[#090A0E] pt-28 pb-20 px-4 relative overflow-hidden">
+        {/* Ambient background glow */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[rgba(212,175,55,0.08)] via-transparent to-transparent pointer-events-none blur-3xl" />
+
+        <div className="art-deco-card relative z-10 p-8 sm:p-12 max-w-md w-full text-center">
+          <div className="w-16 h-16 rounded-2xl bg-[rgba(212,175,55,0.1)] border border-[rgba(212,175,55,0.3)] flex items-center justify-center text-3xl mx-auto mb-5 text-[#D4AF37] shadow-inner">
+            🎴
           </div>
-          <h2 className="font-heading font-black text-2xl text-[#0e1e17] uppercase tracking-tight mb-2">
+          <h2 className="font-heading font-black text-2xl text-[#F4EBD9] uppercase tracking-tight mb-2">
             Competition Unavailable
           </h2>
-          <p className="font-sans text-xs sm:text-sm text-[#5e766c] leading-relaxed mb-6">
-            We couldn&apos;t load this competition details right now. It may have been removed or experienced a temporary connection issue.
+          <p className="font-sans text-xs sm:text-sm text-[#A69B82] leading-relaxed mb-6">
+            We couldn&apos;t load this competition details right now. It may have concluded, been archived, or experienced a temporary connection issue.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={() => reset()}
-              className="w-full sm:w-auto px-6 py-2.5 rounded-xl font-heading font-bold text-xs uppercase tracking-wider bg-[#0b4d35] text-white hover:bg-[#073826] transition-all cursor-pointer shadow-sm"
+              className="btn-gold-metallic w-full sm:w-auto px-6 py-2.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-md transition-all active:scale-98 cursor-pointer"
             >
               Try Again
             </button>
             <Link
               href="/live-raffles"
-              className="w-full sm:w-auto px-6 py-2.5 rounded-xl font-heading font-bold text-xs uppercase tracking-wider bg-[#f0f6ed] border border-[#CBD8C8] text-[#0e1e17] hover:bg-[#e2eadf] transition-all text-center"
+              className="btn-dark-metallic w-full sm:w-auto px-6 py-2.5 rounded-xl font-heading font-black text-xs uppercase tracking-wider border border-[rgba(212,175,55,0.3)] hover:border-[#D4AF37] text-[#D4AF37] transition-all text-center"
             >
-              Browse Competitions
+              Browse Live Draws
             </Link>
           </div>
         </div>

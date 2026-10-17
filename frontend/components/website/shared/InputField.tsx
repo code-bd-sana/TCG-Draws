@@ -15,7 +15,7 @@ interface InputFieldProps {
 }
 
 /**
- * Reusable form input element matching the Fairway Draws styling system.
+ * Reusable form input element matching the TCG Draws styling system.
  */
 export default function InputField({
   label,

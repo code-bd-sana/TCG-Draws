@@ -48,14 +48,14 @@ export default function CategoriesSection() {
           <SectionHeader
             badgeText="CATEGORIES"
             headingText="Browse by Category"
-            paragraphText="Find exactly what you are looking for by exploring our curated golf competition sections."
+            paragraphText="Find exactly what you are looking for by exploring our curated Pokémon, One Piece, and graded grail sections."
           />
           
           {/* Navigation Arrows (Desktop) */}
           <div className="hidden md:flex items-center gap-3 shrink-0 pb-2">
             <button 
               onClick={scrollLeft}
-              className="w-12 h-12 rounded-full border border-[#2D3C13] flex items-center justify-center bg-[#111210] text-[#72943A] hover:border-[#8CB34A] hover:text-[#8CB34A] transition-all duration-300 shadow-sm"
+              className="w-12 h-12 rounded-full border border-[rgba(212,175,55,0.25)] flex items-center justify-center bg-[#12151F] text-[#D4AF37] hover:border-[#D4AF37] hover:bg-[#181C28] transition-all duration-300 shadow-sm"
               aria-label="Scroll left"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -64,7 +64,7 @@ export default function CategoriesSection() {
             </button>
             <button 
               onClick={scrollRight}
-              className="w-12 h-12 rounded-full border border-[#2D3C13] flex items-center justify-center bg-[#111210] text-[#72943A] hover:border-[#8CB34A] hover:text-[#8CB34A] transition-all duration-300 shadow-sm"
+              className="w-12 h-12 rounded-full border border-[rgba(212,175,55,0.25)] flex items-center justify-center bg-[#12151F] text-[#D4AF37] hover:border-[#D4AF37] hover:bg-[#181C28] transition-all duration-300 shadow-sm"
               aria-label="Scroll right"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

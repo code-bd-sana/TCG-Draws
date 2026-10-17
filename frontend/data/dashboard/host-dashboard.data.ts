@@ -50,40 +50,40 @@ export const hostUpcomingDraws: HostUpcomingDraw[] = [
 ];
 
 export const hostRecentActivities: HostRecentActivity[] = [
-  { id: "ra-1", type: "purchase", title: "New ticket purchase", description: "Titleist T100 Iron Set", timeAgo: "2 min ago" },
-  { id: "ra-2", type: "approved", title: "Raffle approved by admin", description: "TaylorMade Qi10 Driver", timeAgo: "1h ago" },
+  { id: "ra-1", type: "purchase", title: "New ticket purchase", description: "1st Edition Charizard PSA 10", timeAgo: "2 min ago" },
+  { id: "ra-2", type: "approved", title: "Raffle approved by admin", description: "Manga Luffy OP-05", timeAgo: "1h ago" },
   { id: "ra-3", type: "payout", title: "Payout processed", description: "£840.00", timeAgo: "3h ago" },
-  { id: "ra-4", type: "joined", title: "New entrant joined", description: "Scotty Cameron Putter", timeAgo: "5h ago" },
+  { id: "ra-4", type: "joined", title: "New entrant joined", description: "LOB Blue-Eyes BGS 9.5", timeAgo: "5h ago" },
   { id: "ra-5", type: "review", title: "Host review received", description: "5 stars", timeAgo: "1d ago" }
 ];
 
 export const hostRecentCompetitions: HostCompetitionSummary[] = [
   {
     id: "comp-1",
-    title: "TaylorMade Qi10 Max Driver 10.5°",
+    title: "1st Edition Shadowless Charizard Holo PSA 10",
     status: "live",
-    image: "https://placehold.co/400x400/0b4d35/ffffff?text=Driver",
+    image: "https://placehold.co/400x400/12151F/D4AF37?text=Charizard+PSA10",
     totalTickets: 500,
     soldTickets: 320,
     revenue: 1600,
     ticketPrice: 5.00,
-    drawDate: "2024-05-15"
+    drawDate: "2026-05-15"
   },
   {
     id: "comp-2",
-    title: "Titleist T100 Iron Set (4-PW)",
+    title: "One Piece OP-05 Manga Luffy PSA 10",
     status: "live",
-    image: "https://placehold.co/400x400/0b4d35/ffffff?text=Irons",
+    image: "https://placehold.co/400x400/12151F/D4AF37?text=Manga+Luffy",
     totalTickets: 300,
     soldTickets: 125,
     revenue: 625,
     ticketPrice: 5.00,
-    drawDate: "2024-05-18"
+    drawDate: "2026-05-18"
   },
   {
     id: "comp-3",
-    title: "Scotty Cameron Phantom X 11 Putter",
-    image: "https://placehold.co/400x400/0b4d35/ffffff?text=Putter",
+    title: "Yu-Gi-Oh! LOB Blue-Eyes White Dragon BGS 9.5",
+    image: "https://placehold.co/400x400/12151F/D4AF37?text=BlueEyes+BGS",
     status: "ending-soon",
     soldTickets: 450,
     totalTickets: 500,
@@ -92,8 +92,8 @@ export const hostRecentCompetitions: HostCompetitionSummary[] = [
   },
   {
     id: "comp-4",
-    title: "Bushnell Pro X3+ Rangefinder",
-    image: "https://placehold.co/400x400/0b4d35/ffffff?text=Rangefinder",
+    title: "Pokémon Evolving Skies Sealed Booster Box",
+    image: "https://placehold.co/400x400/12151F/D4AF37?text=Booster+Box",
     status: "live",
     soldTickets: 120,
     totalTickets: 300,
@@ -102,8 +102,8 @@ export const hostRecentCompetitions: HostCompetitionSummary[] = [
   },
   {
     id: "comp-5",
-    title: "Titleist Tour Stand Bag Bundle",
-    image: "https://placehold.co/400x400/0b4d35/ffffff?text=GolfBag",
+    title: "Pokémon 151 Japanese Sealed Case (12 Boxes)",
+    image: "https://placehold.co/400x400/12151F/D4AF37?text=151+Case",
     status: "live",
     soldTickets: 250,
     totalTickets: 1000,

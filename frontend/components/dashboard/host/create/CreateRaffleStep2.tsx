@@ -151,7 +151,7 @@ export default function CreateRaffleStep2({ formData, updateForm, onNext, onPrev
               !!formData.totalTickets &&
               Number(formData.maxTickets) > Number(formData.totalTickets))
           }
-          className="btn-glossy-red h-[46px] px-8 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          className="btn-gold-metallic h-[46px] px-8 text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider rounded-xl shadow-md transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           <span>Next Step →</span>
         </button>

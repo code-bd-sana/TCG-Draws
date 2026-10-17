@@ -17,7 +17,7 @@ export interface PostalEntryRulesConfig {
 export const POSTAL_ENTRY_RULES: PostalEntryRulesConfig = {
   title: "Free Postal Entry Instructions",
   subtitle: "Under UK law (Gambling Act 2005 / ASA regulations), every prize competition provides an equal free entry route by post.",
-  promoterName: "Fairway Draws Ltd",
+  promoterName: "TCG Draws Ltd",
   promoterAddress: {
     line1: "Synergy House",
     line2: "Lawson Street",
@@ -29,7 +29,7 @@ export const POSTAL_ENTRY_RULES: PostalEntryRulesConfig = {
     "Full Legal Name",
     "Date of Birth (Must be 18+)",
     "Contact Address & Postcode",
-    "Email Address (matching your Fairway Draws account)",
+    "Email Address (matching your TCG Draws account)",
     "Telephone / Mobile Number",
     "Target Competition Title & Draw Code",
   ],
@@ -39,7 +39,7 @@ export const POSTAL_ENTRY_RULES: PostalEntryRulesConfig = {
     "Hand-delivered entries or entries sent in envelopes will not be accepted.",
     "Your postal entry must be received before the competition closing date & time.",
     "Postal entries are treated with the exact same chance of winning as paid online ticket entries.",
-    "You must have an active Fairway Draws user account registered with the matching email address.",
+    "You must have an active TCG Draws user account registered with the matching email address.",
   ],
   noticeText:
     "Placeholder Content: Final official UK Gambling Commission & ASA legal terms for postal entries will be updated here.",

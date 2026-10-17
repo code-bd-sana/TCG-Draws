@@ -9,10 +9,11 @@ interface Props {
 }
 
 export default function CategorySalesChart({ data = [] }: Props) {
-  // Use forest green & warm sage harmonious colors for pie chart
+  // Use luxury gold, amber, sapphire & emerald colors for pie chart
+  const GOLD_PALETTE = ["#D4AF37", "#F5E5C0", "#997A35", "#38BDF8", "#10B981", "#E11D48"];
   const updatedData = data.map((d, i) => ({
     ...d,
-    color: d.color || (i === 0 ? "#0b4d35" : i === 1 ? "#15803d" : i === 2 ? "#8cb34a" : "#dc2626")
+    color: d.color || GOLD_PALETTE[i % GOLD_PALETTE.length]
   }));
 
   return (
@@ -43,14 +44,14 @@ export default function CategorySalesChart({ data = [] }: Props) {
               </Pie>
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: "#FFFFFF", 
-                  borderColor: "#E2EADF", 
+                  backgroundColor: "#12151F", 
+                  borderColor: "rgba(212, 175, 55, 0.3)", 
                   borderRadius: "12px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-                  color: "#0e1e17",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.7)",
+                  color: "#F4EBD9",
                   fontFamily: "Inter"
                 }}
-                itemStyle={{ color: "#0b4d35", fontWeight: "bold" }}
+                itemStyle={{ color: "#D4AF37", fontWeight: "bold" }}
               />
             </PieChart>
           </ResponsiveContainer>

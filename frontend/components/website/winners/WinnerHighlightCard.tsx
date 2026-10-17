@@ -44,15 +44,15 @@ export default function WinnerHighlightCard() {
             <div className="shrink-0">{quoteIcon}</div>
             
             <p className="font-heading font-medium text-lg sm:text-xl md:text-2xl text-text-primary leading-relaxed">
-              &quot;I honestly didn&apos;t think I&apos;d win — but I did! The whole process was so smooth. Fairway Draws is the real deal. My new driver arrived perfectly packaged within five days of winning.&quot;
+              &quot;I honestly didn&apos;t think I&apos;d win — but I did! The whole process was so smooth. TCG Draws is the real deal. My PSA 10 Charizard arrived perfectly packaged in a tamper-proof case within three days of winning.&quot;
             </p>
 
             <div className="flex flex-col gap-1">
-              <span className="font-sans font-semibold text-sm sm:text-base text-text-brand">
+              <span className="font-sans font-semibold text-sm sm:text-base text-[#D4AF37]">
                 Aisha R. · Leeds
               </span>
-              <span className="font-sans text-xs sm:text-sm text-text-secondary">
-                Won: Premium Driver Bundle — June 2026
+              <span className="font-sans text-xs sm:text-sm text-[#A69B82]">
+                Won: 1st Edition Charizard Holo PSA 10 — June 2026
               </span>
             </div>
           </div>
