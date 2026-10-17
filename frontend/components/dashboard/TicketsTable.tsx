@@ -106,9 +106,15 @@ export default function TicketsTable({ tickets }: TicketsTableProps) {
 
                     {/* Price Paid */}
                     <div className="col-span-1">
-                      <span className="font-sans font-bold text-xs text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full inline-block">
-                        {ticket.pricePaid}
-                      </span>
+                      {ticket.pricePaid === "Admin Assigned" ? (
+                        <span className="font-sans font-bold text-[10px] text-purple-600 dark:text-purple-400 bg-purple-500/10 border border-purple-500/25 px-2 py-0.5 rounded-full inline-flex items-center gap-1 whitespace-nowrap shadow-2xs">
+                          🛡️ Admin Assigned
+                        </span>
+                      ) : (
+                        <span className="font-sans font-bold text-xs text-emerald-700 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full inline-block">
+                          {ticket.pricePaid}
+                        </span>
+                      )}
                     </div>
 
                     {/* Status */}

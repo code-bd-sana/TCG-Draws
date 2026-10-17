@@ -276,3 +276,22 @@ model Review {
   @@map("reviews")
   @@schema("app")
 }
+
+model AuditLog {
+  id              String   @id @default(uuid()) @db.VarChar(255)
+  adminId         String   @map("admin_id") @db.VarChar(255)
+  action          String   @db.VarChar(100)
+  targetRaffleId  String?  @map("target_raffle_id") @db.VarChar(255)
+  recipientUserId String?  @map("recipient_user_id") @db.VarChar(255)
+  ticketNumbers   Int[]    @map("ticket_numbers")
+  totalAmount     Decimal  @default(0.00) @map("total_amount") @db.Decimal(10, 2)
+  details         Json?
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([adminId])
+  @@index([action])
+  @@index([recipientUserId])
+  @@index([targetRaffleId])
+  @@map("audit_logs")
+  @@schema("app")
+}

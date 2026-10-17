@@ -395,6 +395,15 @@ export class TicketsService {
           },
         },
         winners: true,
+        transaction: {
+          select: {
+            id: true,
+            paymentGateway: true,
+            amount: true,
+            status: true,
+            createdAt: true,
+          },
+        },
       },
       orderBy: { createdAt: 'desc' },
     });

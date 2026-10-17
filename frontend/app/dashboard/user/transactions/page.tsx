@@ -15,7 +15,7 @@ export default function UserTransactionsPage() {
     description: t.description || "Ticket Purchase",
     amount: t.amount || "£0.00",
     rawAmount: parseFloat(String(t.amount || "0").replace(/[^0-9.-]+/g, "")) || 0,
-    paymentMethod: t.paymentMethod || "CASHFLOWS",
+    paymentMethod: t.paymentGateway || t.paymentMethod || "CASHFLOWS",
     status: (t.status || "completed").toLowerCase(),
     ticketsCount: t.ticketsCount || 0,
   }));
@@ -174,7 +174,13 @@ export default function UserTransactionsPage() {
 
                   {/* Payment Method */}
                   <div className="col-span-2 text-center font-sans font-semibold text-xs text-text-muted uppercase">
-                    {transaction.paymentMethod}
+                    {transaction.paymentMethod === 'ADMIN_MANUAL' ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/25 shadow-2xs">
+                        🛡️ Admin Assigned
+                      </span>
+                    ) : (
+                      transaction.paymentMethod
+                    )}
                   </div>
 
                   {/* Status */}
