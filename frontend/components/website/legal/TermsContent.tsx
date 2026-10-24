@@ -124,15 +124,15 @@ export default function TermsContent() {
                 1. The Promoter
               </h2>
               <p className="text-[#A69B82]">
-                1.1. The Promoter is: <strong className="text-[#F4EBD9]">TCG Draws Ltd</strong> (&ldquo;TCG Draws&rdquo;) operating at synergy registered address in the United Kingdom.
+                1.1. The Promoter is: <strong className="text-[#F4EBD9]">TCG Draws Ltd</strong> (&ldquo;TCG Draws&rdquo;), Company Number: <strong className="text-[#F4EBD9]">17508370</strong>, Part of <strong className="text-[#F4EBD9]">Host A Draw Group</strong>, operating at synergy registered address in the United Kingdom.
               </p>
               <p className="text-[#A69B82]">
                 1.2. If you wish to contact us for any reason, please email us at{" "}
                 <a
-                  href="mailto:support@tcgdraws.com"
+                  href="mailto:info@tcgdraws.com"
                   className="text-[#D4AF37] font-semibold underline underline-offset-4 decoration-[#D4AF37]/60 hover:text-[#F5E5C0] transition-colors"
                 >
-                  support@tcgdraws.com
+                  info@tcgdraws.com
                 </a>.
               </p>
             </section>
@@ -215,10 +215,10 @@ export default function TermsContent() {
               <p>
                 4.2. All Entrants will have their names and entry numbers included in an entry spreadsheet published on the Website during the live draw. If you wish to censor your name on the live spreadsheet, notify us at{" "}
                 <a
-                  href="mailto:support@tcgdraws.com"
+                  href="mailto:info@tcgdraws.com"
                   className="text-[#D4AF37] font-semibold underline underline-offset-4 decoration-[#D4AF37]/60 hover:text-[#F5E5C0] transition-colors"
                 >
-                  support@tcgdraws.com
+                  info@tcgdraws.com
                 </a>{" "}
                 at least 48 hours prior to the draw.
               </p>

@@ -63,13 +63,14 @@ export default function WithdrawalsTable({ withdrawals: propWithdrawals, isLoadi
             <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider text-center">PAYMENT METHOD</th>
             <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider text-center">REQUEST DATE</th>
             <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider text-center">STATUS</th>
+            <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider text-center">NOTES</th>
             <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider text-right">ACTIONS</th>
           </tr>
         </thead>
         <tbody>
           {withdrawals.length === 0 ? (
             <tr>
-              <td colSpan={8} className="py-12 text-center text-text-muted font-sans text-xs font-bold">
+              <td colSpan={9} className="py-12 text-center text-text-muted font-sans text-xs font-bold">
                 No withdrawal requests found.
               </td>
             </tr>
@@ -107,6 +108,24 @@ export default function WithdrawalsTable({ withdrawals: propWithdrawals, isLoadi
                     <span className={`px-3 py-1 rounded-full border font-sans text-[10px] uppercase tracking-wider ${getStatusStyle(payout.status)}`}>
                       {payout.status}
                     </span>
+                  </td>
+                  <td className="py-4 px-6 text-center max-w-[200px]">
+                    {payout.adminNotes || payout.payoutDetails?.notes ? (
+                      <div className="flex flex-col gap-0.5 text-left">
+                        {payout.adminNotes && (
+                          <span className="text-[11px] font-sans text-text-primary line-clamp-2" title={`Admin: ${payout.adminNotes}`}>
+                            <strong className="text-primary font-bold">Admin:</strong> {payout.adminNotes}
+                          </span>
+                        )}
+                        {payout.payoutDetails?.notes && (
+                          <span className="text-[11px] font-sans text-text-muted line-clamp-2" title={`Host: ${payout.payoutDetails.notes}`}>
+                            <strong className="text-[#D4AF37] font-semibold">Host:</strong> {payout.payoutDetails.notes}
+                          </span>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-text-muted/60 font-sans text-xs italic">-</span>
+                    )}
                   </td>
                   <td className="py-4 px-6 text-right">
                     <div className="flex items-center justify-end gap-2">

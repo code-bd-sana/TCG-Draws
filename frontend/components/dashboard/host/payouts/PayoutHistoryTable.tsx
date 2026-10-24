@@ -46,6 +46,9 @@ export default function PayoutHistoryTable({ history }: Props) {
                 Status
               </th>
               <th className="py-4 px-6 font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">
+                Withdrawal Notes
+              </th>
+              <th className="py-4 px-6 font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">
                 Reference ID
               </th>
             </tr>
@@ -53,7 +56,7 @@ export default function PayoutHistoryTable({ history }: Props) {
           <tbody>
             {history.length === 0 ? (
               <tr>
-                <td colSpan={7} className="py-12 text-center text-text-muted font-sans text-sm">
+                <td colSpan={8} className="py-12 text-center text-text-muted font-sans text-sm">
                   No payout transactions recorded yet.
                 </td>
               </tr>
@@ -102,6 +105,26 @@ export default function PayoutHistoryTable({ history }: Props) {
                         {item.status}
                       </span>
                     </div>
+                  </td>
+                  <td className="py-5 px-6 max-w-[240px]">
+                    {item.adminNotes || item.payoutDetails?.notes || item.notes ? (
+                      <div className="flex flex-col gap-1">
+                        {item.adminNotes && (
+                          <div className="flex items-start gap-1.5 text-xs font-sans">
+                            <span className="px-1.5 py-0.5 rounded bg-primary/20 text-primary font-bold text-[10px] shrink-0 uppercase">Admin</span>
+                            <span className="text-text-primary text-xs break-words">{item.adminNotes}</span>
+                          </div>
+                        )}
+                        {(item.payoutDetails?.notes || item.notes) && (
+                          <div className="flex items-start gap-1.5 text-xs font-sans">
+                            <span className="px-1.5 py-0.5 rounded bg-elevated border border-border-medium text-text-muted font-bold text-[10px] shrink-0 uppercase">Note</span>
+                            <span className="text-text-muted text-xs break-words">{item.payoutDetails?.notes || item.notes}</span>
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="font-sans text-xs text-text-muted/60 italic">No notes</span>
+                    )}
                   </td>
                   <td className="py-5 px-6">
                     <span className="font-sans font-medium text-xs text-text-muted font-mono">

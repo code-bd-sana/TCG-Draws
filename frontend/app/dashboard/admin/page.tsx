@@ -23,13 +23,29 @@ export default function AdminDashboardPage() {
     <div className="flex flex-col gap-6 p-6 lg:p-8 max-w-[1660px] mx-auto w-full animate-fadeIn">
       
       {/* Page Header */}
-      <div className="flex flex-col gap-1">
-        <h1 className="font-heading font-black text-2xl lg:text-3xl text-text-primary uppercase tracking-tight">
-          System Admin Overview
-        </h1>
-        <p className="font-sans text-xs text-text-muted">
-          Platform performance metrics, host verification queue, revenue breakdown, and growth analytics.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <h1 className="font-heading font-black text-2xl lg:text-3xl text-text-primary uppercase tracking-tight">
+            System Admin Overview
+          </h1>
+          <p className="font-sans text-xs text-text-muted">
+            Platform performance metrics, host verification queue, revenue breakdown, and growth analytics.
+          </p>
+        </div>
+        <div className="flex items-center gap-3 flex-wrap">
+          <Link
+            href="/dashboard/admin/ticket-assignment"
+            className="btn-gold-metallic h-9 px-4 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-black flex items-center gap-2 shadow-sm transition-all active:scale-98"
+          >
+            🎟️ Manual Ticket System
+          </Link>
+          <Link
+            href="/dashboard/admin/withdrawals"
+            className="h-9 px-4 rounded-xl border border-border bg-surface hover:bg-elevated font-heading font-bold text-xs uppercase tracking-wider text-text-primary flex items-center gap-2 shadow-xs transition-all"
+          >
+            💰 Withdrawals
+          </Link>
+        </div>
       </div>
 
       {/* Top Metrics Row */}

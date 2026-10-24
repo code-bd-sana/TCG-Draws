@@ -128,7 +128,7 @@ export default function PrivacyContent() {
               <div className="bg-[#181C28] border border-[rgba(212,175,55,0.25)] rounded-xl p-5 space-y-2 mt-4">
                 <h3 className="font-heading font-black text-sm text-[#D4AF37] uppercase tracking-wide">Data Controller &amp; Privacy Contact</h3>
                 <p className="text-xs text-[#F4EBD9]">
-                  Legal Entity Name: <strong>TCG Draws Ltd</strong>
+                  Legal Entity Name: <strong>TCG Draws Ltd</strong> (Company No. 17508370, Part of Host A Draw Group)
                 </p>
                 <p className="text-xs text-[#A69B82]">
                   Data Privacy Manager: <strong>Compliance Department</strong>
@@ -140,7 +140,7 @@ export default function PrivacyContent() {
                   Phone: <a href="tel:+447466347548" className="text-[#D4AF37] hover:underline">+44 (0) 7466 347548</a>
                 </p>
                 <p className="text-xs text-[#A69B82]">
-                  Email: <a href="mailto:privacy@tcgdraws.com" className="text-[#D4AF37] hover:underline">privacy@tcgdraws.com</a> / <a href="mailto:support@tcgdraws.com" className="text-[#D4AF37] hover:underline">support@tcgdraws.com</a>
+                  Email: <a href="mailto:info@tcgdraws.com" className="text-[#D4AF37] hover:underline">info@tcgdraws.com</a> / <a href="mailto:privacy@tcgdraws.com" className="text-[#D4AF37] hover:underline">privacy@tcgdraws.com</a>
                 </p>
               </div>
               <p className="text-xs text-[#E5C158]">

@@ -41,6 +41,12 @@ export default function ConfirmPayoutModal({
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (payout) {
+      setAdminNotes(payout.adminNotes || "");
+    }
+  }, [payout, isOpen]);
+
   if (!isOpen || !payout || !mounted) return null;
 
   const grossAmount = payout.amount || 0;
@@ -154,15 +160,34 @@ export default function ConfirmPayoutModal({
         </div>
 
         {/* Payment Account Details */}
-        <div className="bg-elevated border border-border-medium rounded-xl p-4 mb-5">
+        <div className="bg-elevated border border-border-medium rounded-xl p-4 mb-4">
           <span className="font-sans font-bold text-[10px] text-text-muted uppercase tracking-wider block mb-2">
             Payment Method: {payout.payoutMethod || 'Bank Transfer'}
           </span>
           {renderPayoutAccountInfo()}
         </div>
 
-        {/* Optional Admin Note */}
-        {actionType !== "VIEW" && (
+        {/* Host Note (if provided) */}
+        {payout.payoutDetails?.notes && (
+          <div className="bg-elevated border border-border-medium rounded-xl p-4 mb-4">
+            <span className="font-sans font-bold text-[10px] text-text-muted uppercase tracking-wider block mb-1">
+              Host Withdrawal Note / Reference
+            </span>
+            <p className="font-sans text-xs text-text-primary whitespace-pre-wrap">{payout.payoutDetails.notes}</p>
+          </div>
+        )}
+
+        {/* Admin Notes */}
+        {actionType === "VIEW" ? (
+          <div className="bg-elevated border border-border-medium rounded-xl p-4 mb-5">
+            <span className="font-sans font-bold text-[10px] text-text-muted uppercase tracking-wider block mb-1">
+              Admin Notes / Reference
+            </span>
+            <p className="font-sans text-xs text-text-primary whitespace-pre-wrap">
+              {payout.adminNotes || "No admin notes recorded for this request."}
+            </p>
+          </div>
+        ) : (
           <div className="mb-6 flex flex-col gap-1.5">
             <label className="block font-sans text-xs font-bold text-text-muted">Admin Notes / Reference (Optional)</label>
             <textarea

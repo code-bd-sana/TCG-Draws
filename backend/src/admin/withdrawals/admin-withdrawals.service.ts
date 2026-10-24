@@ -66,7 +66,7 @@ export class AdminWithdrawalsService {
       throw new NotFoundException('Withdrawal request not found');
     }
 
-    if (withdrawal.status === status) {
+    if (withdrawal.status === status && (!adminNotes || adminNotes === withdrawal.adminNotes)) {
       return withdrawal;
     }
 
@@ -87,7 +87,7 @@ export class AdminWithdrawalsService {
         where: { id },
         data: {
           status,
-          adminNotes: adminNotes || withdrawal.adminNotes,
+          adminNotes: adminNotes !== undefined ? adminNotes : withdrawal.adminNotes,
         },
       });
 

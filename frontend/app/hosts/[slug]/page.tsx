@@ -22,13 +22,6 @@ function resolveMockHost(slug: string) {
     const s = h.slug.toLowerCase();
     if (s === cleanSlug) return true;
     if (h.id.toLowerCase() === cleanSlug) return true;
-    // Check aliases between new slugs and legacy slugs
-    if (
-      (cleanSlug === "vault-collectibles-uk" || cleanSlug === "fairway-golf-pro-shop" || cleanSlug === "fairway-pro-shop") &&
-      (s === "vault-collectibles-uk" || s === "fairway-golf-pro-shop")
-    ) {
-      return true;
-    }
     // Normalized slug match
     if (s.replace(/-/g, "") === cleanSlug.replace(/-/g, "")) return true;
     return false;
@@ -36,10 +29,10 @@ function resolveMockHost(slug: string) {
 
   if (!found) {
     // Fuzzy fallback if slug contains key host identity
-    if (cleanSlug.includes("vault") || cleanSlug.includes("fairway")) return verifiedHostsData[0];
-    if (cleanSlug.includes("grail") || cleanSlug.includes("links")) return verifiedHostsData[1];
-    if (cleanSlug.includes("apex") || cleanSlug.includes("custom")) return verifiedHostsData[2];
-    if (cleanSlug.includes("pocket") || cleanSlug.includes("weekend")) return verifiedHostsData[3];
+    if (cleanSlug.includes("vault")) return verifiedHostsData[0];
+    if (cleanSlug.includes("grail")) return verifiedHostsData[1];
+    if (cleanSlug.includes("apex")) return verifiedHostsData[2];
+    if (cleanSlug.includes("pocket")) return verifiedHostsData[3];
     return verifiedHostsData[0];
   }
 

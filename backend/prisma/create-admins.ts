@@ -19,6 +19,12 @@ interface AdminAccountConfig {
 
 const adminAccounts: AdminAccountConfig[] = [
   {
+    email: 'info@tcgdraws.com',
+    firstName: 'TCG',
+    lastName: 'Admin',
+    password: process.env.INFO_ADMIN_PASSWORD || process.env.ADMIN_DEFAULT_PASSWORD || 'TCGAdmin2026!',
+  },
+  {
     email: 'jon.roberts@tcgdraws.com',
     firstName: 'Jon',
     lastName: 'Roberts',

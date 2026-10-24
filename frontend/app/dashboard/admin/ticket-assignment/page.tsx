@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import CompetitionSelector from "@/components/dashboard/admin/ticket-assignment/CompetitionSelector";
 import InstantWinVisualizer from "@/components/dashboard/admin/ticket-assignment/InstantWinVisualizer";
 import TicketNumberSelector from "@/components/dashboard/admin/ticket-assignment/TicketNumberSelector";
@@ -23,7 +24,9 @@ import {
 } from "@/services/admin-ticket-assignment.service";
 import { toast } from "sonner";
 
-export default function AdminTicketAssignmentPage() {
+function AdminTicketAssignmentContent() {
+  const searchParams = useSearchParams();
+  const urlCompId = searchParams.get("competitionId");
   const [activeTab, setActiveTab] = useState<"assign" | "history">("assign");
 
   // Workflow states
@@ -43,6 +46,15 @@ export default function AdminTicketAssignmentPage() {
   // Queries & Mutations
   const { data: competitions = [], isLoading: isCompetitionsLoading } =
     useAdminCompetitions();
+
+  useEffect(() => {
+    if (urlCompId && competitions.length > 0 && !selectedCompetitionSummary) {
+      const match = competitions.find((c) => c.id === urlCompId);
+      if (match) {
+        setSelectedCompetitionSummary(match);
+      }
+    }
+  }, [urlCompId, competitions, selectedCompetitionSummary]);
 
   const { data: fullCompetition, isLoading: isDetailsLoading } =
     useAdminCompetitionDetails(selectedCompetitionSummary?.id);
@@ -260,5 +272,19 @@ export default function AdminTicketAssignmentPage() {
         result={successResult}
       />
     </div>
+  );
+}
+
+export default function AdminTicketAssignmentPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="w-full p-12 text-center text-text-muted font-sans text-xs font-bold animate-pulse">
+          Loading ticket assignment system...
+        </div>
+      }
+    >
+      <AdminTicketAssignmentContent />
+    </Suspense>
   );
 }

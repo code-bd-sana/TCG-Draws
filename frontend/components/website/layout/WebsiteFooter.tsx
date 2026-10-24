@@ -85,7 +85,7 @@ export default function WebsiteFooter() {
         <div className="border-t border-[rgba(212,175,55,0.15)] pt-8 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 text-[10px] text-[#A69B82] leading-relaxed">
           <div className="max-w-3xl">
             <p className="mb-1.5 font-semibold text-[#F4EBD9]">
-              © {new Date().getFullYear()} {BRAND_NAME} Ltd. All rights reserved. Registered in England &amp; Wales.
+              © {new Date().getFullYear()} {BRAND_NAME} Ltd. All rights reserved. Company No. 17508370. Part of Host A Draw Group. Registered in England &amp; Wales.
             </p>
             <p>
               Prize competitions are operated in accordance with the UK Gambling Act 2005. Participation is restricted to individuals aged 18 or older resident in the United Kingdom.

@@ -56,6 +56,9 @@ export interface PayoutHistoryItem {
   method: string;
   status: "Paid" | "Processing" | "Approved" | "Rejected" | "Pending" | "Completed" | string;
   referenceId: string;
+  adminNotes?: string;
+  notes?: string;
+  payoutDetails?: any;
 }
 
 export interface HostUpcomingDraw {

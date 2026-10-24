@@ -30,6 +30,7 @@ export default function RequestWithdrawalModal({
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [sortCode, setSortCode] = useState("");
+  const [notes, setNotes] = useState("");
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -67,6 +68,7 @@ export default function RequestWithdrawalModal({
       bankName: bankName.trim(),
       accountNumber: accountNumber.trim(),
       sortCode: sortCode.trim(),
+      ...(notes.trim() ? { notes: notes.trim() } : {}),
     };
 
     withdrawMutation.mutate(
@@ -231,6 +233,17 @@ export default function RequestWithdrawalModal({
                 placeholder="e.g. 12345678 or GB82 WEST 1234 5678"
                 className="w-full h-10 px-3.5 bg-elevated border border-border-medium rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary"
                 required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-text-muted mb-1 font-sans">Withdrawal Notes / Reference (Optional)</label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="e.g. Reference for payout or specific accounting notes"
+                rows={2}
+                className="w-full p-3 bg-elevated border border-border-medium rounded-xl text-xs text-text-primary focus:outline-none focus:border-primary"
               />
             </div>
           </div>

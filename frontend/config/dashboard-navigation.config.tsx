@@ -185,7 +185,7 @@ export const dashboardNavigation: DashboardNavItem[] = [
     roles: ["admin"],
   },
   {
-    label: "Assign Tickets (Manual)",
+    label: "Manual Ticket System",
     href: "/dashboard/admin/ticket-assignment",
     icon: Icons.Competitions,
     roles: ["admin"],

@@ -243,6 +243,9 @@ export class AuthService {
       const candidateEmails = [
         `${normalizedEmail}@tcgdraws.com`,
         `${normalizedEmail}@fairwaydraws.com`,
+        ...(normalizedEmail === 'info' || normalizedEmail === 'admin'
+          ? ['info@tcgdraws.com', 'admin@gmail.com']
+          : []),
         ...(normalizedEmail === 'lewis'
           ? [
               'lewis.mcmanus@tcgdraws.com',
