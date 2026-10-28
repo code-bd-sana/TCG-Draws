@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { raffleService } from "../../../services/raffle.service";
+import { useDraggableModal } from "../../../hooks/useDraggableModal";
 
 export interface SoldTicket {
   id: string;
@@ -50,6 +51,18 @@ export default function ManualWinnerSelectModal({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [winnerResult, setWinnerResult] = useState<any | null>(null);
 
+  const {
+    modalRef,
+    isDragging,
+    isMoved,
+    dragHandleProps,
+    modalStyle,
+    resetPosition,
+  } = useDraggableModal(isOpen, {
+    resetKey: raffle?.id,
+    onClose: !isSubmitting ? onClose : undefined,
+  });
+
   // Fetch sold tickets when modal opens
   useEffect(() => {
     if (!isOpen || !raffle?.id) {
@@ -78,26 +91,21 @@ export default function ManualWinnerSelectModal({
             t.buyerName ||
             (t.user
               ? `${t.user.firstName || ""} ${t.user.lastName || ""}`.trim()
-              : "") ||
-            "Entrant",
-          userEmail: t.userEmail || t.user?.email || "N/A",
+              : "Anonymous Player"),
+          userEmail: t.userEmail || t.user?.email || "No email",
           avatarUrl: t.avatarUrl || t.user?.avatarUrl,
           createdAt: t.createdAt,
         }));
         setSoldTickets(mapped);
       })
-      .catch((err: any) => {
+      .catch((err) => {
         if (!isMounted) return;
         setErrorMessage(
-          err?.response?.data?.message ||
-            err.message ||
-            "Failed to load sold tickets for this competition."
+          err?.response?.data?.message || "Failed to fetch sold tickets."
         );
       })
       .finally(() => {
-        if (isMounted) {
-          setIsLoadingTickets(false);
-        }
+        if (isMounted) setIsLoadingTickets(false);
       });
 
     return () => {
@@ -105,48 +113,19 @@ export default function ManualWinnerSelectModal({
     };
   }, [isOpen, raffle?.id]);
 
-  // Lock scroll when modal is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
-
-  // Handle ESC key press
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen && !isSubmitting) {
-        onClose();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, isSubmitting, onClose]);
-
-  if (!isOpen) return null;
+  if (typeof window === "undefined" || !isOpen || !raffle) return null;
 
   const filteredTickets = soldTickets.filter((t) => {
-    const query = ticketSearch.toLowerCase().trim();
-    if (!query) return true;
+    if (!ticketSearch.trim()) return true;
+    const q = ticketSearch.toLowerCase().trim();
     return (
-      t.ticketNumber.toString().includes(query) ||
-      t.userName.toLowerCase().includes(query) ||
-      t.userEmail.toLowerCase().includes(query)
+      t.ticketNumber.toString().includes(q) ||
+      t.userName.toLowerCase().includes(q) ||
+      t.userEmail.toLowerCase().includes(q)
     );
   });
 
-  const handleSelectTicketFromList = (t: SoldTicket) => {
-    setSelectedTicket(t);
-    setTicketInput(t.ticketNumber.toString());
-    setErrorMessage(null);
-  };
-
-  const handleDrawWinner = async (winningTicketNum?: number) => {
+  const handleDrawWinner = async (winningTicketNum: number) => {
     setIsSubmitting(true);
     setErrorMessage(null);
     setWinnerResult(null);
@@ -163,7 +142,9 @@ export default function ManualWinnerSelectModal({
       queryClient.invalidateQueries({ queryKey: ["hostRaffles"] });
       if (onSuccess) onSuccess();
     } catch (err: any) {
-      setErrorMessage(err?.response?.data?.message || err.message || "An error occurred while drawing winner.");
+      setErrorMessage(
+        err?.response?.data?.message || err.message || "An error occurred while drawing winner."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -180,271 +161,286 @@ export default function ManualWinnerSelectModal({
   };
 
   const modalContent = (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
+    <div className="fixed inset-0 z-[9999] select-none">
       {/* Overlay Backdrop */}
       <div
-        className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/65 backdrop-blur-sm transition-opacity animate-fadeIn"
         onClick={!isSubmitting ? onClose : undefined}
       />
 
-      {/* Modal Card */}
-      <div className="relative w-full max-w-[620px] bg-surface border border-border rounded-card p-6 sm:p-8 shadow-card flex flex-col gap-6 z-10 max-h-[90vh] overflow-y-auto">
-        {/* Header Row */}
-        <div className="flex items-start justify-between border-b border-divider pb-4">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🏆</span>
-              <h3 className="font-heading font-black text-xl text-text-primary uppercase tracking-tight">
-                Winner Selection
-              </h3>
-            </div>
-            <p className="font-sans text-xs text-text-muted">
-              {raffle.title}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            disabled={isSubmitting}
-            className="p-1.5 rounded-xl text-text-muted hover:text-text-primary hover:bg-elevated transition-colors cursor-pointer"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Competition Info Badges */}
-        <div className="grid grid-cols-2 gap-3 bg-elevated border border-border-medium p-3.5 rounded-xl text-xs">
-          <div className="flex flex-col">
-            <span className="text-text-muted text-[10px] uppercase font-sans font-bold">Draw Mode</span>
-            <span className="font-heading font-bold text-xs text-text-brand mt-0.5">
-              {raffle.isAutoDraw ? "Automatic Draw" : "Manual Winner Selection"}
-            </span>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-text-muted text-[10px] uppercase font-sans font-bold">Total Sold Tickets</span>
-            <span className="font-heading font-bold text-xs text-text-primary mt-0.5">
-              {soldTickets.length || raffle.ticketsSold || 0} / {raffle.totalTickets}
-            </span>
-          </div>
-        </div>
-
-        {/* Error Message Alert */}
-        {errorMessage && (
-          <div className="p-3.5 bg-[#FEE2E2] border border-[#FECACA] rounded-xl text-xs font-sans text-[#991B1B] flex items-start gap-2">
-            <span className="shrink-0 mt-0.5">⚠️</span>
-            <span>{errorMessage}</span>
-          </div>
-        )}
-
-        {/* Winner Result Success Screen */}
-        {winnerResult ? (
-          <div className="flex flex-col gap-4 bg-accent-bg border border-primary/30 rounded-xl p-6 text-center animate-fadeIn">
-            <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center text-3xl mx-auto font-bold shadow-md">
-              🎉
-            </div>
-            <div className="flex flex-col">
-              <h4 className="font-heading font-black text-xl text-text-primary uppercase tracking-tight">
-                Main Winner Declared!
-              </h4>
-              <p className="font-sans text-xs text-text-brand mt-1 font-bold">
-                Winning Ticket #{winnerResult.ticket?.ticketNumber || ticketInput}
-              </p>
-            </div>
-
-            <div className="bg-surface border border-border p-4 rounded-xl text-left flex flex-col gap-2.5 text-xs">
-              <div className="flex justify-between items-center pb-2 border-b border-divider">
-                <span className="text-text-muted font-sans">Winner Name:</span>
-                <span className="font-heading font-bold text-text-primary text-sm">
-                  {winnerResult.user?.firstName
-                    ? `${winnerResult.user.firstName} ${winnerResult.user.lastName || ''}`.trim()
-                    : "Winner"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center pb-2 border-b border-divider">
-                <span className="text-text-muted font-sans">Winner Email:</span>
-                <span className="font-mono text-text-brand font-semibold">
-                  {winnerResult.user?.email || "N/A"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-text-muted font-sans">Prize Title:</span>
-                <span className="font-heading font-bold text-text-primary">
-                  {winnerResult.prizeName || raffle.title}
-                </span>
-              </div>
-            </div>
-
-            <button
-              onClick={onClose}
-              className="w-full h-11 bg-primary hover:bg-primary-hover text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md active:scale-98 cursor-pointer mt-2"
+      {/* Draggable Modal Window */}
+      <div
+        ref={modalRef}
+        style={modalStyle}
+        className={`fixed top-1/2 left-1/2 w-[94vw] sm:w-[90vw] max-w-[620px] max-h-[90vh] bg-surface border border-border rounded-card z-10 animate-fadeIn flex flex-col font-sans overflow-hidden transition-shadow ${
+          isDragging
+            ? "shadow-2xl ring-2 ring-primary/40 select-none cursor-grabbing"
+            : "shadow-card"
+        }`}
+      >
+        {/* Header - Drag Bar */}
+        <div
+          {...dragHandleProps}
+          title="Click and drag to move window • Double-click to re-center"
+          className={`flex items-center justify-between px-5 sm:px-6 py-3.5 border-b border-border bg-accent-bg/40 shrink-0 cursor-grab active:cursor-grabbing select-none touch-none transition-colors ${
+            isDragging ? "bg-accent-bg/70" : ""
+          }`}
+        >
+          <div className="flex items-center gap-2 min-w-0 pr-2">
+            <svg
+              className="w-4 h-4 text-text-muted opacity-70 shrink-0"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              aria-hidden="true"
             >
-              Done & Close
-            </button>
-          </div>
-        ) : (
-          <>
-            {/* Draw Mode Tabs */}
-            <div className="flex items-center gap-2 p-1 bg-elevated border border-border-medium rounded-xl">
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab("manual");
-                  setErrorMessage(null);
-                }}
-                className={`flex-1 py-2 text-xs font-heading font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
-                  activeTab === "manual"
-                    ? "bg-surface border border-border text-text-brand shadow-xs"
-                    : "text-text-muted hover:text-text-primary"
-                }`}
-              >
-                🔍 Search Buyer & Ticket Number
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab("random");
-                  setErrorMessage(null);
-                }}
-                className={`flex-1 py-2 text-xs font-heading font-bold uppercase tracking-wider rounded-lg transition-all cursor-pointer ${
-                  activeTab === "random"
-                    ? "bg-surface border border-border text-text-brand shadow-xs"
-                    : "text-text-muted hover:text-text-primary"
-                }`}
-              >
-                🎲 Certified Random Draw
-              </button>
-            </div>
-
-            {/* Tab 1: Manual Search & Input */}
-            {activeTab === "manual" && (
-              <form onSubmit={handleManualSubmit} className="flex flex-col gap-4">
-                {/* Search Box */}
-                <div className="flex flex-col gap-1.5">
-                  <label className="font-sans text-xs font-bold text-text-primary">
-                    Search Sold Tickets (by Ticket #, Name, or Email)
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Type ticket number, buyer name, or email to search..."
-                      value={ticketSearch}
-                      onChange={(e) => setTicketSearch(e.target.value)}
-                      className="w-full h-11 pl-10 pr-4 bg-elevated border border-border-medium rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:border-primary outline-none transition-colors"
-                    />
-                    <svg className="w-4 h-4 text-text-muted absolute left-3.5 top-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Sold Tickets Search Results Dropdown List */}
-                <div className="flex flex-col gap-1 bg-elevated border border-border-medium rounded-xl p-2 max-h-[190px] overflow-y-auto">
-                  {isLoadingTickets ? (
-                    <div className="py-6 text-center text-xs text-text-muted font-sans">Loading sold tickets list...</div>
-                  ) : filteredTickets.length === 0 ? (
-                    <div className="py-6 text-center text-xs text-text-muted font-sans">
-                      {soldTickets.length === 0 ? "No tickets sold yet in this competition." : "No matching tickets found for your search."}
-                    </div>
-                  ) : (
-                    filteredTickets.map((t) => {
-                      const isSelected = ticketInput === t.ticketNumber.toString();
-                      return (
-                        <button
-                          key={t.id}
-                          type="button"
-                          onClick={() => handleSelectTicketFromList(t)}
-                          className={`flex items-center justify-between p-2.5 rounded-lg text-left transition-all cursor-pointer ${
-                            isSelected
-                              ? "bg-accent-bg border border-primary text-text-brand"
-                              : "bg-surface border border-border hover:border-border-medium text-text-primary"
-                          }`}
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="font-heading font-bold text-xs bg-accent-bg border border-primary/30 text-text-brand px-2 py-1 rounded-md">
-                              Ticket #{t.ticketNumber}
-                            </span>
-                            <div className="flex flex-col">
-                              <span className="font-sans font-semibold text-xs text-text-primary">{t.userName}</span>
-                              <span className="font-sans text-[11px] text-text-muted">{t.userEmail}</span>
-                            </div>
-                          </div>
-
-                          <span className={`text-[11px] font-bold ${isSelected ? "text-text-brand" : "text-text-muted"}`}>
-                            {isSelected ? "Selected ✓" : "Select"}
-                          </span>
-                        </button>
-                      );
-                    })
-                  )}
-                </div>
-
-                {/* Direct Number Input */}
-                <div className="flex flex-col gap-1.5 pt-3 border-t border-divider">
-                  <label className="font-sans text-xs font-bold text-text-primary">
-                    Selected Winning Ticket Number
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    max={raffle.totalTickets}
-                    placeholder="e.g. 42"
-                    value={ticketInput}
-                    onChange={(e) => {
-                      setTicketInput(e.target.value);
-                      setSelectedTicket(null);
-                    }}
-                    className="h-11 px-4 bg-elevated border border-border-medium rounded-xl font-mono text-sm text-text-primary placeholder:text-text-muted focus:border-primary outline-none transition-colors"
-                    required
-                  />
-                  {selectedTicket && (
-                    <span className="font-sans text-[11px] text-text-brand flex items-center gap-1 mt-0.5">
-                      ✓ Selected ticket #{selectedTicket.ticketNumber} belongs to <strong>{selectedTicket.userName}</strong> ({selectedTicket.userEmail})
-                    </span>
-                  )}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !ticketInput}
-                  className="w-full h-11 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-md active:scale-98 cursor-pointer mt-1"
-                >
-                  {isSubmitting ? (
-                    <span className="animate-pulse font-bold">Validating & Setting Winner...</span>
-                  ) : (
-                    <span>Confirm & Declare Winner</span>
-                  )}
-                </button>
-              </form>
-            )}
-
-            {/* Tab 2: Random Draw */}
-            {activeTab === "random" && (
-              <div className="flex flex-col gap-4 py-2">
-                <p className="font-sans text-xs text-text-muted leading-relaxed bg-elevated border border-border-medium p-4 rounded-xl">
-                  Clicking below will use the certified randomizer to instantly pick a winning ticket from all <strong>{soldTickets.length || raffle.ticketsSold || 0}</strong> sold tickets in this competition.
-                </p>
-
+              <path d="M7 2a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 7 14zm6-12a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 2zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 8zm0 6a2 2 0 1 0 .001 4.001A2 2 0 0 0 13 14z" />
+            </svg>
+            <div className="flex items-center gap-2 truncate">
+              <h2 className="font-heading font-black text-sm sm:text-base text-text-primary uppercase tracking-tight truncate">
+                Draw Winner Selection
+              </h2>
+              {isMoved && (
                 <button
                   type="button"
-                  onClick={() => handleDrawWinner()}
-                  disabled={isSubmitting}
-                  className="w-full h-11 bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white font-heading font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2 shadow-md active:scale-98 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    resetPosition();
+                  }}
+                  className="text-[10px] text-text-brand hover:underline font-semibold ml-1 cursor-pointer shrink-0"
                 >
-                  {isSubmitting ? (
-                    <span className="animate-pulse font-bold">Running Certified Random Draw...</span>
-                  ) : (
-                    <span>🎲 Draw Random Winner Now</span>
-                  )}
+                  (Reset)
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1 shrink-0">
+            {isMoved && (
+              <button
+                type="button"
+                onClick={resetPosition}
+                title="Reset window to center"
+                className="p-1 rounded text-text-muted hover:text-text-brand hover:bg-surface transition-colors cursor-pointer text-xs"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+              </button>
+            )}
+            <button
+              onClick={onClose}
+              disabled={isSubmitting}
+              className="text-text-muted hover:text-text-primary transition-colors p-1 rounded hover:bg-surface disabled:opacity-50 cursor-pointer"
+              aria-label="Close modal"
+            >
+              <svg className="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Modal Scrollable Body */}
+        <div className="overflow-y-auto p-5 sm:p-6 lg:p-7 flex flex-col gap-5 select-text">
+          {/* Competition Info Card */}
+          <div className="bg-elevated/40 border border-border-medium rounded-xl p-4 flex flex-col gap-2">
+            <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-text-muted">
+              Target Competition
+            </span>
+            <h4 className="font-heading font-black text-sm sm:text-base text-text-primary line-clamp-2">
+              {raffle.title}
+            </h4>
+            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-divider text-xs">
+              <div>
+                <span className="text-text-muted text-[10px] uppercase font-sans font-bold">Draw Engine</span>
+                <span className="font-heading font-bold text-xs text-text-brand block mt-0.5">
+                  {raffle.isAutoDraw ? "Automatic Provable Draw" : "Manual Winner Selection"}
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-text-muted text-[10px] uppercase font-sans font-bold">Sold Entries</span>
+                <span className="font-heading font-black text-xs text-text-primary block mt-0.5">
+                  {soldTickets.length || raffle.ticketsSold || 0} / {raffle.totalTickets}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Winner Success Announcement Card */}
+          {winnerResult && (
+            <div className="bg-emerald-500/15 border-2 border-emerald-500/40 rounded-xl p-5 flex flex-col items-center text-center gap-3 animate-scaleUp">
+              <div className="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-2xl shadow-xs">
+                🏆
+              </div>
+              <div className="flex flex-col">
+                <span className="font-heading font-black text-base sm:text-lg text-emerald-400 uppercase tracking-tight">
+                  Winner Confirmed!
+                </span>
+                <span className="font-sans text-xs text-text-muted mt-0.5">
+                  Winning Ticket:{" "}
+                  <strong className="text-text-brand font-black font-heading text-sm">
+                    #{winnerResult.ticketNumber || ticketInput}
+                  </strong>
+                </span>
+                {winnerResult.winner?.name && (
+                  <span className="font-heading font-bold text-sm text-text-primary mt-1">
+                    Winner: {winnerResult.winner.name} ({winnerResult.winner.email})
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="btn-gold-metallic px-6 py-2 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] cursor-pointer mt-1"
+              >
+                Close &amp; Update Draw
+              </button>
+            </div>
+          )}
+
+          {/* Tab Selector */}
+          {!winnerResult && (
+            <>
+              <div className="flex items-center gap-2 p-1 bg-elevated border border-border rounded-xl">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("manual")}
+                  className={`flex-1 py-2 rounded-lg font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                    activeTab === "manual"
+                      ? "bg-primary text-[#090A0E] font-black shadow-sm"
+                      : "text-text-muted hover:text-text-primary"
+                  }`}
+                >
+                  Manual Ticket Entry
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("random")}
+                  className={`flex-1 py-2 rounded-lg font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                    activeTab === "random"
+                      ? "bg-primary text-[#090A0E] font-black shadow-sm"
+                      : "text-text-muted hover:text-text-primary"
+                  }`}
+                >
+                  Sold Tickets Pool ({soldTickets.length})
                 </button>
               </div>
-            )}
-          </>
-        )}
+
+              {/* Error Message */}
+              {errorMessage && (
+                <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 font-sans text-xs font-semibold flex items-center gap-2">
+                  <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+                  </svg>
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
+              {/* Tab 1: Manual Input */}
+              {activeTab === "manual" && (
+                <form onSubmit={handleManualSubmit} className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="font-sans font-bold text-xs text-text-muted uppercase tracking-wider">
+                      Enter Drawn Winning Ticket Number
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="e.g. 42"
+                      value={ticketInput}
+                      onChange={(e) => setTicketInput(e.target.value)}
+                      disabled={isSubmitting}
+                      className="h-12 px-4 rounded-xl bg-elevated border border-border-medium focus:border-primary text-text-primary font-heading font-black text-base outline-none transition-all placeholder:text-text-muted/40"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isSubmitting || !ticketInput.trim()}
+                    className="btn-gold-metallic h-11 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-md transition-all active:scale-98 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    {isSubmitting ? (
+                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <span>Confirm &amp; Announce Winner</span>
+                    )}
+                  </button>
+                </form>
+              )}
+
+              {/* Tab 2: Sold Tickets Pool */}
+              {activeTab === "random" && (
+                <div className="flex flex-col gap-3">
+                  <div className="flex items-center justify-between gap-3">
+                    <input
+                      type="text"
+                      placeholder="Search ticket # or buyer name..."
+                      value={ticketSearch}
+                      onChange={(e) => setTicketSearch(e.target.value)}
+                      className="h-9 px-3 rounded-lg bg-elevated border border-border text-xs text-text-primary outline-none focus:border-primary w-full"
+                    />
+                  </div>
+
+                  <div className="max-h-[220px] overflow-y-auto border border-border rounded-xl divide-y divide-divider bg-elevated/30">
+                    {isLoadingTickets ? (
+                      <div className="py-8 text-center text-text-muted text-xs animate-pulse font-sans">
+                        Loading sold tickets...
+                      </div>
+                    ) : filteredTickets.length === 0 ? (
+                      <div className="py-8 text-center text-text-muted text-xs font-sans">
+                        No sold tickets match search.
+                      </div>
+                    ) : (
+                      filteredTickets.map((ticket) => (
+                        <div
+                          key={ticket.id}
+                          onClick={() => {
+                            setSelectedTicket(ticket);
+                            setTicketInput(ticket.ticketNumber.toString());
+                          }}
+                          className={`flex items-center justify-between p-2.5 text-xs cursor-pointer transition-colors ${
+                            selectedTicket?.id === ticket.id
+                              ? "bg-primary/15 border-l-4 border-primary"
+                              : "hover:bg-elevated"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <span className="font-heading font-black text-text-brand text-xs px-2 py-0.5 rounded bg-surface border border-border">
+                              #{ticket.ticketNumber}
+                            </span>
+                            <span className="font-heading font-bold text-text-primary">
+                              {ticket.userName}
+                            </span>
+                          </div>
+                          <span className="font-sans text-[11px] text-text-muted truncate max-w-[140px]">
+                            {ticket.userEmail}
+                          </span>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {selectedTicket && (
+                    <button
+                      type="button"
+                      onClick={() => handleDrawWinner(selectedTicket.ticketNumber)}
+                      disabled={isSubmitting}
+                      className="btn-gold-metallic h-11 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-md transition-all active:scale-98 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2 mt-1"
+                    >
+                      {isSubmitting ? (
+                        <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <span>Select Ticket #{selectedTicket.ticketNumber} as Winner</span>
+                      )}
+                    </button>
+                  )}
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
 
-  if (typeof window === "undefined") return null;
   return createPortal(modalContent, document.body);
 }

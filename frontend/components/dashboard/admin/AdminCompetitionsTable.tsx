@@ -162,15 +162,38 @@ export default function AdminCompetitionsTable() {
   const getStatusPill = (status: string) => {
     switch (status) {
       case "ACTIVE":
-        return <span className="px-3 py-1 rounded-full border border-[#BBF7D0] bg-[#DCFCE7] text-[#15803D] font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">Live</span>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-heading font-bold text-[10px] uppercase tracking-wider shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            Live
+          </span>
+        );
       case "PENDING_APPROVAL":
-        return <span className="px-3 py-1 rounded-full border border-[#FDE68A] bg-[#FEF3C7] text-[#D97706] font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">Pending</span>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 font-heading font-bold text-[10px] uppercase tracking-wider shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+            Pending
+          </span>
+        );
       case "CANCELLED":
-        return <span className="px-3 py-1 rounded-full border border-[#FECACA] bg-[#FEE2E2] text-[#DC2626] font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">Rejected</span>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-rose-500/30 bg-rose-500/10 text-rose-400 font-heading font-bold text-[10px] uppercase tracking-wider shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
+            Rejected
+          </span>
+        );
       case "ENDED":
-        return <span className="px-3 py-1 rounded-full border border-[#DDD6FE] bg-[#F3E8FF] text-[#7C3AED] font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">Ended</span>;
+        return (
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-400 font-heading font-bold text-[10px] uppercase tracking-wider shadow-xs">
+            Ended
+          </span>
+        );
       case "DRAFT":
-        return <span className="px-3 py-1 rounded-full border border-border bg-elevated text-text-muted font-sans font-bold text-[10px] uppercase tracking-wider shadow-xs">Draft</span>;
+        return (
+          <span className="px-3 py-1 rounded-full border border-border bg-elevated text-text-muted font-heading font-bold text-[10px] uppercase tracking-wider shadow-xs">
+            Draft
+          </span>
+        );
       default:
         return null;
     }
@@ -184,23 +207,26 @@ export default function AdminCompetitionsTable() {
         
         {/* Left: Filter Pills */}
         <div className="flex items-center gap-2 overflow-x-auto no-scrollbar lg:border-r lg:border-divider lg:pr-4 lg:mr-2">
-          {["All", "Live", "Pending", "Ended", "Rejected", "Draft"].map((filter) => (
-            <button
-              key={filter}
-              onClick={() => handleFilterChange(filter)}
-              className={`px-4 py-1.5 rounded-full text-xs font-heading font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
-                activeFilter === filter 
-                  ? 'bg-primary text-white shadow-xs border border-primary' 
-                  : 'bg-surface border border-border text-text-muted hover:text-text-primary'
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
+          {["All", "Live", "Pending", "Ended", "Rejected", "Draft"].map((filter) => {
+            const isSelected = activeFilter === filter;
+            return (
+              <button
+                key={filter}
+                onClick={() => handleFilterChange(filter)}
+                className={`px-4 py-1.5 rounded-full text-xs font-heading font-bold uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer ${
+                  isSelected 
+                    ? 'bg-primary text-[#090A0E] font-black shadow-sm' 
+                    : 'bg-surface border border-border text-text-muted hover:text-text-primary hover:bg-elevated/40'
+                }`}
+              >
+                {filter}
+              </button>
+            );
+          })}
         </div>
 
         {/* Right: Search Input */}
-        <div className="flex items-center h-10 w-full lg:w-[360px] bg-elevated border border-border-medium rounded-xl px-3 focus-within:border-primary transition-all">
+        <div className="relative flex items-center h-10 w-full lg:w-[360px] bg-elevated border border-border-medium rounded-xl px-3 focus-within:border-primary focus-within:shadow-[0_0_12px_rgba(212,175,55,0.2)] transition-all">
           <svg className="w-4 h-4 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
@@ -209,25 +235,37 @@ export default function AdminCompetitionsTable() {
             placeholder="Search by title, host name, or email..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="bg-transparent border-none outline-none text-text-primary text-xs placeholder:text-text-muted w-full ml-2 font-sans font-semibold"
+            className="bg-transparent border-none outline-none text-text-primary text-xs placeholder:text-text-muted/60 w-full ml-2 font-sans font-semibold"
           />
+          {searchTerm && (
+            <button
+              onClick={() => setSearchTerm("")}
+              className="text-text-muted hover:text-text-primary p-1 rounded transition-colors cursor-pointer"
+              title="Clear search"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
 
       {/* Table Container */}
-      <div className="w-full bg-surface border border-border rounded-card overflow-hidden overflow-x-auto shadow-card">
-        <table className="w-full min-w-[1000px] text-left border-collapse">
-          <thead>
-            <tr className="border-b border-divider bg-elevated">
-              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[25%]">TITLE / HOST</th>
-              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[12%]">CATEGORY</th>
-              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[12%] text-center">PRICE/TICKET</th>
-              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[18%]">TICKETS SOLD</th>
-              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[10%] text-center">STATUS</th>
-              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[13%] text-center">CREATED</th>
-              <th className="py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[10%] text-right">ACTIONS</th>
-            </tr>
-          </thead>
+      <div className="art-deco-card rounded-card overflow-hidden shadow-card border border-border w-full">
+        <div className="overflow-x-auto w-full">
+          <table className="w-full min-w-[1000px] text-left border-collapse">
+            <thead>
+              <tr className="border-b border-divider bg-elevated/70">
+                <th className="py-4 px-6 font-heading text-[10px] font-black text-text-muted uppercase tracking-wider w-[25%]">TITLE / HOST</th>
+                <th className="py-4 px-6 font-heading text-[10px] font-black text-text-muted uppercase tracking-wider w-[12%]">CATEGORY</th>
+                <th className="py-4 px-6 font-heading text-[10px] font-black text-text-muted uppercase tracking-wider w-[12%] text-center">PRICE/TICKET</th>
+                <th className="py-4 px-6 font-heading text-[10px] font-black text-text-muted uppercase tracking-wider w-[18%]">TICKETS SOLD</th>
+                <th className="py-4 px-6 font-heading text-[10px] font-black text-text-muted uppercase tracking-wider w-[10%] text-center">STATUS</th>
+                <th className="py-4 px-6 font-heading text-[10px] font-black text-text-muted uppercase tracking-wider w-[13%] text-center">CREATED</th>
+                <th className="py-4 px-6 font-heading text-[10px] font-black text-text-muted uppercase tracking-wider w-[10%] text-right">ACTIONS</th>
+              </tr>
+            </thead>
           <tbody>
             {isLoading && (
               Array.from({ length: 5 }).map((_, i) => (
@@ -329,7 +367,7 @@ export default function AdminCompetitionsTable() {
 
                         if (hasWinner) {
                           return (
-                            <span className="px-2.5 py-1 rounded-lg border border-[#BBF7D0] bg-[#DCFCE7] text-[#15803D] font-sans font-bold text-[10px] uppercase tracking-wider flex items-center gap-1 shrink-0 shadow-xs">
+                            <span className="px-2.5 py-1 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-sans font-bold text-[10px] uppercase tracking-wider flex items-center gap-1 shrink-0 shadow-xs">
                               <span>✓</span> Winner Selected
                             </span>
                           );
@@ -339,7 +377,7 @@ export default function AdminCompetitionsTable() {
                           return (
                             <button
                               onClick={() => setSelectedCompForWinner(comp)}
-                              className="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/90 text-white font-heading font-bold text-xs uppercase tracking-wider shadow-xs transition-all flex items-center gap-1 shrink-0 cursor-pointer active:scale-98"
+                              className="btn-gold-metallic px-3 py-1.5 rounded-lg text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider shadow-sm transition-all flex items-center gap-1 shrink-0 cursor-pointer active:scale-98"
                             >
                               <span>🏆</span>
                               <span>Select Winner</span>
@@ -410,6 +448,7 @@ export default function AdminCompetitionsTable() {
           </tbody>
         </table>
       </div>
+    </div>
 
       {/* Pagination Controls */}
       {!isLoading && raffles.length > 0 && (

@@ -1,11 +1,65 @@
-"use client";
-
 import React from "react";
+import Link from "next/link";
 import UserProfileForm from "../../../../components/dashboard/user/profile/UserProfileForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Player Profile & Shipping Address | Dashboard | TCG Draws",
+  description: "Manage your personal profile, delivery shipping address, account avatar, and security credentials.",
+};
 
 export default function UserProfilePage() {
   return (
-    <div className="flex-1 w-full animate-in fade-in zoom-in-95 duration-300">
+    <div className="relative flex flex-col gap-8 p-4 sm:p-6 lg:p-8 max-w-[1660px] mx-auto w-full animate-fadeIn font-sans">
+      {/* Background ambient lighting for luxury aesthetic */}
+      <div 
+        className="pointer-events-none absolute -top-24 right-1/4 w-[500px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--color-accent-bg)_0%,_transparent_70%)] blur-3xl opacity-60" 
+        aria-hidden="true" 
+      />
+
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-divider pb-6">
+        <div className="flex flex-col gap-2">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-xs font-sans text-text-muted">
+            <Link 
+              href="/dashboard/user" 
+              className="hover:text-text-primary transition-colors flex items-center gap-1"
+            >
+              <span>Player Hub</span>
+            </Link>
+            <span className="opacity-40">/</span>
+            <span className="text-text-brand font-semibold">Profile &amp; Delivery Address</span>
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="font-heading font-black text-2xl lg:text-3xl text-text-primary uppercase tracking-tight">
+              Player Identity &amp; Shipping Profile
+            </h1>
+            <span className="px-3 py-0.5 rounded-full bg-accent-bg border border-primary/30 text-text-brand font-heading font-bold text-[11px] uppercase tracking-wider">
+              Verified Player
+            </span>
+          </div>
+
+          <p className="font-sans text-xs sm:text-sm text-text-muted max-w-2xl leading-relaxed">
+            Configure your personal player details, registered shipping address for competition prize deliveries, public display avatar, and account authentication credentials.
+          </p>
+        </div>
+
+        {/* Live System Badge */}
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface border border-border text-xs font-sans shadow-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="font-bold text-text-primary text-[11px] tracking-wide uppercase font-heading">
+              Profile Synchronized
+            </span>
+          </div>
+        </div>
+      </div>
+
       <UserProfileForm />
     </div>
   );

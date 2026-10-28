@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useChangePasswordMutation } from "../../../../hooks/useUserHooks";
 import { extractApiError } from "../../../../lib/utils";
+import TwoFactorSetupModal from "./TwoFactorSetupModal";
+import { toast } from "sonner";
 
 export default function SecuritySettings() {
   const [formData, setFormData] = useState({
@@ -12,7 +14,7 @@ export default function SecuritySettings() {
   });
 
   const [errors, setErrors] = useState<{ form?: string; newPassword?: string; currentPassword?: string }>({});
-  const [successMsg, setSuccessMsg] = useState("");
+  const [is2FAModalOpen, setIs2FAModalOpen] = useState(false);
   
   const mutation = useChangePasswordMutation();
 
@@ -22,13 +24,24 @@ export default function SecuritySettings() {
     if (errors[name as keyof typeof errors] || errors.form) {
       setErrors((prev) => ({ ...prev, [name]: undefined, form: undefined }));
     }
-    setSuccessMsg("");
   };
+
+  const getPasswordStrength = () => {
+    const p = formData.newPassword;
+    if (!p) return 0;
+    let score = 0;
+    if (p.length >= 8) score += 1;
+    if (/[A-Z]/.test(p)) score += 1;
+    if (/[0-9]/.test(p)) score += 1;
+    if (/[^A-Za-z0-9]/.test(p)) score += 1;
+    return score;
+  };
+
+  const strength = getPasswordStrength();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    setSuccessMsg("");
 
     if (!formData.currentPassword) {
       setErrors({ currentPassword: "Current password is required" });
@@ -51,7 +64,7 @@ export default function SecuritySettings() {
         newPassword: formData.newPassword,
       });
 
-      setSuccessMsg("Password updated successfully.");
+      toast.success("Account password changed successfully!");
       setFormData({
         currentPassword: "",
         newPassword: "",
@@ -63,83 +76,146 @@ export default function SecuritySettings() {
   };
 
   return (
-    <div className="bg-surface border border-border rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card animate-fadeIn">
-      <div>
-        <h2 className="font-heading font-black text-xl text-text-primary uppercase tracking-tight">Security Settings</h2>
-        <p className="font-sans text-xs text-text-muted mt-1">Keep your account secure with a strong, unique password.</p>
+    <div className="art-deco-card rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card animate-fadeIn border border-border">
+      {/* Section Header */}
+      <div className="pb-4 border-b border-border/80">
+        <h2 className="font-heading font-black text-xl text-text-primary uppercase tracking-tight">
+          Security &amp; Authentication
+        </h2>
+        <p className="font-sans text-xs text-text-muted mt-0.5">
+          Safeguard your account credentials, manage encryption keys, and configure multi-factor authentication.
+        </p>
       </div>
 
-      <div className="h-px w-full bg-divider" />
+      {errors.form && (
+        <div className="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs rounded-xl font-sans font-semibold flex items-center gap-2">
+          <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+          </svg>
+          <span>{errors.form}</span>
+        </div>
+      )}
 
       {/* Password Change Form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <h3 className="font-heading font-bold text-base text-text-primary">Change Account Password</h3>
-        
-        {errors.form && (
-          <div className="bg-[#FEE2E2] border border-[#FECACA] text-[#DC2626] text-xs font-sans font-semibold p-3 rounded-xl">
-            ⚠️ {errors.form}
+        <div className="flex items-center justify-between">
+          <h3 className="font-heading font-bold text-sm text-text-primary uppercase tracking-wider">
+            Change Master Password
+          </h3>
+          <span className="font-mono text-[11px] text-text-muted">Min 8 characters</span>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+            Current Password
+          </label>
+          <input
+            type="password"
+            name="currentPassword"
+            value={formData.currentPassword}
+            onChange={handleInputChange}
+            placeholder="••••••••••••"
+            className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+          />
+          {errors.currentPassword && (
+            <span className="text-[11px] font-sans text-rose-400 font-semibold">{errors.currentPassword}</span>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              New Password
+            </label>
+            <input
+              type="password"
+              name="newPassword"
+              value={formData.newPassword}
+              onChange={handleInputChange}
+              placeholder="••••••••••••"
+              className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              Confirm New Password
+            </label>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              placeholder="••••••••••••"
+              className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+            />
+          </div>
+        </div>
+
+        {errors.newPassword && (
+          <span className="text-[11px] font-sans text-rose-400 font-semibold">{errors.newPassword}</span>
+        )}
+
+        {/* Strength Indicator */}
+        {formData.newPassword && (
+          <div className="flex items-center gap-2 pt-1">
+            <div className="flex-1 h-1.5 bg-elevated rounded-full overflow-hidden flex gap-1">
+              <div className={`h-full flex-1 rounded-full ${strength >= 1 ? "bg-rose-500" : "bg-neutral-800"}`} />
+              <div className={`h-full flex-1 rounded-full ${strength >= 2 ? "bg-amber-500" : "bg-neutral-800"}`} />
+              <div className={`h-full flex-1 rounded-full ${strength >= 3 ? "bg-primary" : "bg-neutral-800"}`} />
+              <div className={`h-full flex-1 rounded-full ${strength >= 4 ? "bg-emerald-400" : "bg-neutral-800"}`} />
+            </div>
+            <span className="font-mono text-[10px] text-text-muted uppercase">
+              {strength <= 1 ? "Weak" : strength === 2 ? "Fair" : strength === 3 ? "Good" : "Strong"}
+            </span>
           </div>
         )}
 
-        {successMsg && (
-          <div className="bg-[#DCFCE7] border border-[#BBF7D0] text-[#15803D] text-xs font-sans font-semibold p-3 rounded-xl">
-            ✅ {successMsg}
-          </div>
-        )}
-        
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <label className="font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">Current Password</label>
-            <input 
-              type="password" 
-              name="currentPassword"
-              value={formData.currentPassword}
-              onChange={handleInputChange}
-              placeholder="••••••••" 
-              disabled={mutation.isPending}
-              className="w-full h-11 bg-elevated border border-border-medium rounded-xl px-4 text-sm text-text-primary focus:border-primary focus:outline-none transition-all"
-            />
-            {errors.currentPassword && <span className="text-[#DC2626] text-xs font-semibold">{errors.currentPassword}</span>}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="flex flex-col gap-2">
-              <label className="font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">New Password</label>
-              <input 
-                type="password" 
-                name="newPassword"
-                value={formData.newPassword}
-                onChange={handleInputChange}
-                placeholder="••••••••" 
-                disabled={mutation.isPending}
-                className="w-full h-11 bg-elevated border border-border-medium rounded-xl px-4 text-sm text-text-primary focus:border-primary focus:outline-none transition-all"
-              />
-            </div>
-            <div className="flex flex-col gap-2">
-              <label className="font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">Confirm New Password</label>
-              <input 
-                type="password" 
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                placeholder="••••••••" 
-                disabled={mutation.isPending}
-                className="w-full h-11 bg-elevated border border-border-medium rounded-xl px-4 text-sm text-text-primary focus:border-primary focus:outline-none transition-all"
-              />
-            </div>
-          </div>
-          {errors.newPassword && <span className="text-[#DC2626] text-xs font-semibold">{errors.newPassword}</span>}
-        </div>
-        
-        <div className="flex justify-end pt-4 border-t border-divider mt-2">
-          <button 
-            type="submit" 
+        <div className="flex justify-end pt-2">
+          <button
+            type="submit"
             disabled={mutation.isPending}
-            className="btn-glossy-red h-[42px] px-8 rounded-xl bg-[#dc2626] text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
+            className="btn-gold-metallic h-10 px-6 rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-md disabled:opacity-50"
           >
-            {mutation.isPending ? "Updating..." : "Update Password"}
+            {mutation.isPending ? "Updating Password..." : "Update Password"}
           </button>
         </div>
       </form>
+
+      <div className="h-px w-full bg-border/80 my-2" />
+
+      {/* Two-Factor Authentication Card */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-xl bg-surface/70 border border-primary/20">
+        <div className="flex items-start gap-3.5">
+          <div className="w-10 h-10 rounded-xl bg-accent-bg border border-primary/30 flex items-center justify-center shrink-0 text-text-brand">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+            </svg>
+          </div>
+          <div className="flex flex-col min-w-0">
+            <span className="font-heading font-black text-sm text-text-primary">
+              Two-Factor Authentication (2FA)
+            </span>
+            <span className="font-sans text-xs text-text-muted mt-0.5">
+              Secure your account using time-based one-time passcodes (TOTP) from an authenticator app.
+            </span>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIs2FAModalOpen(true)}
+          className="btn-dark-metallic h-9 px-4 rounded-xl font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shrink-0 shadow-sm"
+        >
+          Configure 2FA
+        </button>
+      </div>
+
+      {/* Draggable 2FA Modal */}
+      <TwoFactorSetupModal
+        isOpen={is2FAModalOpen}
+        onClose={() => setIs2FAModalOpen(false)}
+      />
     </div>
   );
 }

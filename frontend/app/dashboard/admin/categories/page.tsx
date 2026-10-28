@@ -1,18 +1,28 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Category, categoryService } from '../../../../services/category.service';
-
-const AVAILABLE_ICONS = ['Sparkles', 'Trophy', 'Shirt', 'Watch', 'ShoppingBag', 'Star', 'Tag', 'Crosshair'];
+import { useEffect, useState, useMemo } from "react";
+import Link from "next/link";
+import { Category, categoryService } from "../../../../services/category.service";
+import CategoryStatsCards from "../../../../components/dashboard/admin/CategoryStatsCards";
+import CategoryFormModal from "../../../../components/dashboard/admin/CategoryFormModal";
+import ConfirmDeleteCategoryModal from "../../../../components/dashboard/admin/ConfirmDeleteCategoryModal";
+import { toast } from "sonner";
 
 export default function AdminCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [currentCategory, setCurrentCategory] = useState<Partial<Category>>({});
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [error, setError] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<Partial<Category> | null>(null);
+
+  // Delete modal state
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Filters & search
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"ALL" | "ACTIVE" | "INACTIVE">("ALL");
 
   useEffect(() => {
     fetchCategories();
@@ -22,9 +32,10 @@ export default function AdminCategoriesPage() {
     setIsLoading(true);
     try {
       const data = await categoryService.getAllCategories();
-      setCategories(data);
+      setCategories(data || []);
     } catch (err) {
-      console.error('Failed to fetch categories', err);
+      console.error("Failed to fetch categories", err);
+      toast.error("Failed to load competition categories");
     } finally {
       setIsLoading(false);
     }
@@ -32,461 +43,431 @@ export default function AdminCategoriesPage() {
 
   const openAddModal = () => {
     setIsEditMode(false);
-    setCurrentCategory({ name: '', slug: '', icon: '', image: '', isActive: true });
-    setImageFile(null);
-    setError('');
-    setIsModalOpen(true);
+    setSelectedCategory(null);
+    setIsFormModalOpen(true);
   };
 
   const openEditModal = (category: Category) => {
     setIsEditMode(true);
-    setCurrentCategory(category);
-    setImageFile(null);
-    setError('');
-    setIsModalOpen(true);
+    setSelectedCategory(category);
+    setIsFormModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const openDeleteModal = (category: Category) => {
+    setCategoryToDelete(category);
+    setIsDeleteModalOpen(true);
   };
 
-  const handleSave = async () => {
-    if (!currentCategory.name) {
-      setError('Name is required');
-      return;
-    }
-
+  const handleToggleStatus = async (category: Category) => {
     try {
-      let finalImageUrl = currentCategory.image;
-
-      if (imageFile) {
-        try {
-          const res = await categoryService.uploadImage(imageFile);
-          finalImageUrl = res.url;
-        } catch (uploadErr: any) {
-          setError(uploadErr?.response?.data?.message || 'Failed to upload image');
-          return;
-        }
-      }
-
-      const payload = { ...currentCategory, image: finalImageUrl };
-
-      if (isEditMode && currentCategory.id) {
-        await categoryService.updateCategory(currentCategory.id, payload);
-      } else {
-        await categoryService.createCategory(payload);
-      }
-      closeModal();
-      fetchCategories();
+      const updated = await categoryService.updateCategory(category.id, { isActive: !category.isActive });
+      setCategories((prev) =>
+        prev.map((c) => (c.id === category.id ? { ...c, isActive: updated.isActive } : c))
+      );
+      toast.success(
+        `Category "${category.name}" is now ${updated.isActive ? "Active (visible)" : "Inactive (hidden)"}`
+      );
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'Failed to save category');
+      console.error("Failed to toggle status", err);
+      toast.error(err?.response?.data?.message || "Failed to update category status");
     }
   };
 
-  const toggleStatus = async (category: Category) => {
+  const handleConfirmDelete = async () => {
+    if (!categoryToDelete) return;
+    setIsDeleting(true);
     try {
-      await categoryService.updateCategory(category.id, { isActive: !category.isActive });
-      fetchCategories();
-    } catch (err) {
-      console.error('Failed to toggle status', err);
+      await categoryService.deleteCategory(categoryToDelete.id);
+      setCategories((prev) => prev.filter((c) => c.id !== categoryToDelete.id));
+      toast.success(`Category "${categoryToDelete.name}" deleted successfully`);
+      setIsDeleteModalOpen(false);
+      setCategoryToDelete(null);
+    } catch (err: any) {
+      console.error("Failed to delete category", err);
+      toast.error(
+        err?.response?.data?.message || "Failed to delete category. It may be in use by active competitions."
+      );
+    } finally {
+      setIsDeleting(false);
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this category?')) {
-      try {
-        await categoryService.deleteCategory(id);
-        fetchCategories();
-      } catch (err) {
-        console.error('Failed to delete category', err);
-        alert('Failed to delete category. It might be in use.');
+  // Filtered categories
+  const filteredCategories = useMemo(() => {
+    return categories.filter((c) => {
+      // Status filter
+      if (statusFilter === "ACTIVE" && !c.isActive) return false;
+      if (statusFilter === "INACTIVE" && c.isActive) return false;
+
+      // Search query
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchName = c.name.toLowerCase().includes(q);
+        const matchSlug = c.slug.toLowerCase().includes(q);
+        const matchIcon = (c.icon || "").toLowerCase().includes(q);
+        if (!matchName && !matchSlug && !matchIcon) return false;
       }
-    }
-  };
+
+      return true;
+    });
+  }, [categories, statusFilter, searchQuery]);
 
   return (
-    <div className='flex flex-col gap-6 p-6 lg:p-8 max-w-[1660px] mx-auto w-full animate-fadeIn font-sans'>
+    <div className="relative flex flex-col gap-8 p-4 sm:p-6 lg:p-8 max-w-[1660px] mx-auto w-full animate-fadeIn font-sans">
+      {/* Background ambient lighting for luxury aesthetic */}
+      <div 
+        className="pointer-events-none absolute -top-24 right-1/4 w-[500px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--color-accent-bg)_0%,_transparent_70%)] blur-3xl opacity-60" 
+        aria-hidden="true" 
+      />
+
       {/* Page Header */}
-      <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='font-heading font-black text-2xl lg:text-3xl text-text-primary uppercase tracking-tight'>
-            Competition Categories Management
-          </h1>
-          <p className='font-sans text-xs text-text-muted'>
-            Organize public competition categories, manage homepage icons, and toggle category visibility.
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-divider pb-6">
+        <div className="flex flex-col gap-2">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-xs font-sans text-text-muted">
+            <Link 
+              href="/dashboard/admin" 
+              className="hover:text-text-primary transition-colors flex items-center gap-1"
+            >
+              <span>Admin Hub</span>
+            </Link>
+            <span className="opacity-40">/</span>
+            <span className="text-text-brand font-semibold">Competition Categories</span>
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="font-heading font-black text-2xl lg:text-3xl text-text-primary uppercase tracking-tight">
+              Competition Categories Catalog
+            </h1>
+            <span className="px-3 py-0.5 rounded-full bg-accent-bg border border-primary/30 text-text-brand font-heading font-bold text-[11px] uppercase tracking-wider">
+              Catalog Master
+            </span>
+          </div>
+
+          <p className="font-sans text-xs sm:text-sm text-text-muted max-w-2xl leading-relaxed">
+            Organize competition categories, upload card visual banners, manage homepage icon badges, and configure public visibility.
           </p>
         </div>
-        <button
-          onClick={openAddModal}
-          className='bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl font-heading font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 shadow-md cursor-pointer active:scale-98 shrink-0'
-        >
-          <svg
-            className='w-4 h-4'
-            fill='none'
-            viewBox='0 0 24 24'
-            strokeWidth={2.5}
-            stroke='currentColor'
+
+        {/* Live System Badge + Add Category Action */}
+        <div className="flex items-center gap-3 flex-wrap shrink-0">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface border border-border text-xs font-sans shadow-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="font-bold text-text-primary text-[11px] tracking-wide uppercase font-heading">
+              Catalog Active
+            </span>
+          </div>
+
+          <button
+            onClick={openAddModal}
+            className="btn-gold-metallic h-10 px-4 rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-md"
           >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
-          </svg>
-          Add New Category
-        </button>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <span>Add New Category</span>
+          </button>
+        </div>
       </div>
 
-      {/* Categories Table Container */}
-      <div className='w-full bg-surface border border-border rounded-card overflow-hidden overflow-x-auto shadow-card'>
-        <table className='w-full min-w-[900px] text-left border-collapse'>
-          <thead>
-            <tr className='border-b border-divider bg-elevated'>
-              <th className='py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider w-[70px]'>
-                IMAGE
-              </th>
-              <th className='py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider'>
-                CATEGORY NAME
-              </th>
-              <th className='py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider'>
-                SLUG
-              </th>
-              <th className='py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider'>
-                ICON
-              </th>
-              <th className='py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider'>
-                STATUS
-              </th>
-              <th className='py-3.5 px-6 font-sans text-[10px] font-bold text-text-muted uppercase tracking-wider text-right'>
-                ACTIONS
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan={6} className='py-8 text-center text-text-muted font-sans text-xs font-bold'>
-                  Loading categories...
-                </td>
+      {/* KPI Stats Cards */}
+      <CategoryStatsCards categories={categories} isLoading={isLoading} />
+
+      {/* Filter and Instant Search Bar */}
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-2">
+        {/* Instant Search Bar */}
+        <div className="relative flex-1 max-w-md">
+          <svg
+            className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search categories by name, slug, or icon..."
+            className="input-obsidian w-full h-10 pl-10 pr-9 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+          />
+          {searchQuery && (
+            <button
+              type="button"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary text-xs cursor-pointer"
+              title="Clear search"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+
+        {/* Status Filters */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar shrink-0">
+          {(
+            [
+              { id: "ALL", label: "All Categories", count: categories.length },
+              { id: "ACTIVE", label: "Active", count: categories.filter((c) => c.isActive).length },
+              { id: "INACTIVE", label: "Hidden", count: categories.filter((c) => !c.isActive).length },
+            ] as const
+          ).map((filter) => {
+            const isActive = statusFilter === filter.id;
+            return (
+              <button
+                key={filter.id}
+                onClick={() => setStatusFilter(filter.id)}
+                className={`px-3.5 py-1.5 rounded-full font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+                  isActive
+                    ? "bg-primary text-[#090A0E] font-black shadow-lg shadow-primary/20 border border-primary"
+                    : "bg-surface border border-border text-text-muted hover:text-text-primary hover:border-border-medium"
+                }`}
+              >
+                <span>{filter.label}</span>
+                <span className={`text-[10px] font-mono font-bold ${isActive ? "text-[#090A0E]" : "text-text-muted"}`}>
+                  ({filter.count})
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Categories Table Container in Luxury Art-Deco Card */}
+      <div className="art-deco-card rounded-card overflow-hidden shadow-card border border-border">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[960px] text-left border-collapse">
+            <thead>
+              <tr className="border-b border-border/80 bg-accent-bg/40">
+                <th className="py-4 px-6 font-heading font-bold text-[11px] text-text-muted uppercase tracking-wider w-[80px]">
+                  Banner
+                </th>
+                <th className="py-4 px-6 font-heading font-bold text-[11px] text-text-muted uppercase tracking-wider">
+                  Category Name
+                </th>
+                <th className="py-4 px-6 font-heading font-bold text-[11px] text-text-muted uppercase tracking-wider">
+                  Slug / URL Path
+                </th>
+                <th className="py-4 px-6 font-heading font-bold text-[11px] text-text-muted uppercase tracking-wider text-center">
+                  Icon Badge
+                </th>
+                <th className="py-4 px-6 font-heading font-bold text-[11px] text-text-muted uppercase tracking-wider text-center">
+                  Public Status
+                </th>
+                <th className="py-4 px-6 font-heading font-bold text-[11px] text-text-muted uppercase tracking-wider text-right">
+                  Actions
+                </th>
               </tr>
-            ) : categories.length === 0 ? (
-              <tr>
-                <td colSpan={6} className='py-8 text-center text-text-muted font-sans text-xs font-bold'>
-                  No categories found.
-                </td>
-              </tr>
-            ) : (
-              categories.map((category, i) => (
-                <tr
-                  key={category.id}
-                  className={`${i !== categories.length - 1 ? 'border-b border-divider' : ''} hover:bg-elevated/40 transition-colors`}
-                >
-                  <td className='py-4 px-6'>
-                    {category.image ? (
-                      <div className='w-10 h-10 rounded-lg overflow-hidden border border-border-medium shadow-xs'>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={category.image}
-                          alt={category.name}
-                          className='w-full h-full object-cover'
-                        />
-                      </div>
-                    ) : (
-                      <div className='w-10 h-10 rounded-lg bg-elevated border border-border-medium flex items-center justify-center shadow-xs'>
-                        <svg
-                          className='w-4 h-4 text-text-muted'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth={2}
-                            d='M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z'
-                          />
-                        </svg>
-                      </div>
-                    )}
-                  </td>
-                  <td className='py-4 px-6'>
-                    <span className='font-heading font-bold text-xs text-text-primary'>
-                      {category.name}
-                    </span>
-                  </td>
-                  <td className='py-4 px-6'>
-                    <span className='font-sans font-semibold text-xs text-text-muted'>{category.slug}</span>
-                  </td>
-                  <td className='py-4 px-6'>
-                    <span className='font-sans font-semibold text-xs text-text-muted'>
-                      {category.icon || '-'}
-                    </span>
-                  </td>
-                  <td className='py-4 px-6'>
-                    <button
-                      onClick={() => toggleStatus(category)}
-                      className={`px-3 py-1 inline-flex text-[10px] font-sans font-bold uppercase tracking-wider rounded-full border shadow-xs cursor-pointer ${
-                        category.isActive
-                          ? 'border-[#BBF7D0] bg-[#DCFCE7] text-[#15803D]'
-                          : 'border-[#FECACA] bg-[#FEE2E2] text-[#DC2626]'
-                      }`}
-                    >
-                      {category.isActive ? 'Active' : 'Inactive'}
-                    </button>
-                  </td>
-                  <td className='py-4 px-6 text-right'>
-                    <div className='flex items-center justify-end gap-3'>
-                      <button
-                        onClick={() => openEditModal(category)}
-                        className='text-text-muted hover:text-text-primary transition-colors cursor-pointer'
-                        title='Edit Category'
-                      >
-                        <svg
-                          className='w-4 h-4'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10'
-                          />
-                        </svg>
-                      </button>
-                      <button
-                        onClick={() => handleDelete(category.id)}
-                        className='text-[#f76b6b] hover:text-[#dc2626] transition-colors cursor-pointer'
-                        title='Delete Category'
-                      >
-                        <svg
-                          className='w-4 h-4'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0'
-                          />
-                        </svg>
-                      </button>
+            </thead>
+            <tbody className="divide-y divide-border/40 font-sans text-xs">
+              {isLoading ? (
+                <tr>
+                  <td colSpan={6} className="py-16 text-center text-text-muted">
+                    <div className="flex flex-col items-center justify-center gap-3">
+                      <svg className="animate-spin w-6 h-6 text-text-brand" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      <span className="font-heading font-bold text-xs uppercase tracking-wider">
+                        Loading competition categories...
+                      </span>
                     </div>
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <>
-          <div
-            className='fixed inset-0 z-50 bg-black/40 backdrop-blur-sm transition-opacity'
-            onClick={closeModal}
-          />
-          <div className='fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[500px] bg-surface border border-border rounded-card shadow-card z-50 animate-fadeIn flex flex-col overflow-hidden max-h-[90vh] overflow-y-auto font-sans'>
-            <div className='flex items-center justify-between p-6 border-b border-divider bg-elevated sticky top-0 z-10'>
-              <h2 className='font-heading font-black text-xl text-text-primary uppercase tracking-tight'>
-                {isEditMode ? 'Edit Category' : 'Add New Category'}
-              </h2>
-              <button
-                onClick={closeModal}
-                className='text-text-muted hover:text-text-primary transition-colors cursor-pointer'
-              >
-                <svg
-                  className='w-5 h-5'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className='p-6 space-y-4'>
-              {error && (
-                <div className='p-3 bg-[#FEE2E2] border border-[#FECACA] text-[#DC2626] text-xs rounded-xl font-sans font-semibold'>
-                  {error}
-                </div>
-              )}
-
-              <div className="flex flex-col gap-1.5">
-                <label className='block text-xs font-bold text-text-muted'>Category Name *</label>
-                <input
-                  type='text'
-                  value={currentCategory.name || ''}
-                  onChange={(e) => setCurrentCategory({ ...currentCategory, name: e.target.value })}
-                  className='w-full h-11 px-4 bg-elevated border border-border-medium rounded-xl text-text-primary font-sans text-xs placeholder:text-text-muted outline-none focus:border-primary transition-colors'
-                  placeholder='e.g. Graded Slabs'
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className='block text-xs font-bold text-text-muted'>
-                  Slug (URL Identifier)
-                </label>
-                <input
-                  type='text'
-                  value={currentCategory.slug || ''}
-                  onChange={(e) => setCurrentCategory({ ...currentCategory, slug: e.target.value })}
-                  className='w-full h-11 px-4 bg-elevated border border-border-medium rounded-xl text-text-primary font-sans text-xs placeholder:text-text-muted outline-none focus:border-primary transition-colors'
-                  placeholder='e.g. graded-slabs'
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className='block text-xs font-bold text-text-muted'>
-                  Icon Identifier
-                </label>
-                <div className='relative'>
-                  <select
-                    value={currentCategory.icon || ''}
-                    onChange={(e) =>
-                      setCurrentCategory({ ...currentCategory, icon: e.target.value })
-                    }
-                    className='w-full h-11 px-4 bg-elevated border border-border-medium rounded-xl text-text-primary font-sans text-xs outline-none focus:border-primary transition-colors appearance-none cursor-pointer'
+              ) : filteredCategories.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="py-16 text-center text-text-muted">
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <svg className="w-8 h-8 text-text-muted/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 6h.008v.008H6V6Z" />
+                      </svg>
+                      <span className="font-heading font-bold text-xs uppercase tracking-wider text-text-primary">
+                        No competition categories found
+                      </span>
+                      <p className="text-xs text-text-muted">
+                        Try adjusting your search criteria or add a new category.
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                filteredCategories.map((category) => (
+                  <tr
+                    key={category.id}
+                    className="hover:bg-accent-bg/30 transition-colors group"
                   >
-                    <option value=''>Select an icon...</option>
-                    {AVAILABLE_ICONS.map((icon) => (
-                      <option key={icon} value={icon}>
-                        {icon}
-                      </option>
-                    ))}
-                  </select>
-                  <div className='absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-text-muted'>
-                    <svg className='w-4 h-4' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth={2}
-                        d='M19 9l-7 7-7-7'
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+                    {/* Banner Image */}
+                    <td className="py-4 px-6">
+                      {category.image ? (
+                        <div className="w-12 h-10 rounded-lg overflow-hidden border border-primary/30 shadow-xs bg-surface">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={category.image}
+                            alt={category.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-10 rounded-lg bg-surface border border-border flex items-center justify-center shadow-xs">
+                          <svg
+                            className="w-4 h-4 text-text-muted"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                    </td>
 
-              {/* Image Upload Area */}
-              <div className="flex flex-col gap-1.5">
-                <label className='block text-xs font-bold text-text-muted'>
-                  Category Image Banner
-                </label>
-                <div
-                  onClick={() =>
-                    !currentCategory.image && !imageFile
-                      ? document.getElementById('categoryImageInput')?.click()
-                      : undefined
-                  }
-                  className={`w-full h-[130px] border-2 border-dashed rounded-xl flex flex-col items-center justify-center transition-all relative overflow-hidden group ${
-                    currentCategory.image || imageFile
-                      ? 'border-border-medium bg-elevated'
-                      : 'border-border-medium hover:border-primary hover:bg-elevated/70 cursor-pointer bg-elevated'
-                  }`}
-                >
-                  {currentCategory.image || imageFile ? (
-                    <>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={imageFile ? URL.createObjectURL(imageFile) : currentCategory.image!}
-                        alt='Preview'
-                        className='w-full h-full object-cover'
-                      />
-                      <div className='absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center'>
+                    {/* Name */}
+                    <td className="py-4 px-6">
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-heading font-black text-xs sm:text-sm text-text-primary group-hover:text-text-brand transition-colors">
+                          {category.name}
+                        </span>
+                        <span className="font-mono text-[10px] text-text-muted truncate max-w-[200px]">
+                          ID: {category.id.slice(0, 8)}...
+                        </span>
+                      </div>
+                    </td>
+
+                    {/* Slug */}
+                    <td className="py-4 px-6">
+                      <span className="inline-block px-2.5 py-1 rounded-md bg-surface border border-border font-mono text-xs text-text-muted">
+                        /{category.slug}
+                      </span>
+                    </td>
+
+                    {/* Icon */}
+                    <td className="py-4 px-6 text-center">
+                      {category.icon ? (
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-accent-bg border border-primary/30 text-text-brand font-mono font-bold text-[11px]">
+                          <span>✦</span>
+                          <span>{category.icon}</span>
+                        </span>
+                      ) : (
+                        <span className="text-text-muted text-xs">—</span>
+                      )}
+                    </td>
+
+                    {/* Status Toggle */}
+                    <td className="py-4 px-6 text-center">
+                      <button
+                        onClick={() => handleToggleStatus(category)}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full font-sans text-[10px] uppercase tracking-wider font-bold transition-all cursor-pointer shadow-xs ${
+                          category.isActive
+                            ? "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20"
+                            : "bg-neutral-800 border border-neutral-700 text-neutral-400 hover:bg-neutral-700/50"
+                        }`}
+                        title="Click to toggle public visibility"
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${category.isActive ? "bg-emerald-400" : "bg-neutral-400"}`}
+                        />
+                        {category.isActive ? "Active (Live)" : "Hidden"}
+                      </button>
+                    </td>
+
+                    {/* Actions */}
+                    <td className="py-4 px-6 text-right">
+                      <div className="flex items-center justify-end gap-2">
                         <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setImageFile(null);
-                            setCurrentCategory({ ...currentCategory, image: undefined });
-                            const el = document.getElementById(
-                              'categoryImageInput',
-                            ) as HTMLInputElement;
-                            if (el) el.value = '';
-                          }}
-                          className='px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-heading font-bold text-xs uppercase tracking-wider rounded-lg transition-all cursor-pointer shadow-md'
+                          onClick={() => openEditModal(category)}
+                          className="btn-dark-metallic h-8 px-3 rounded-lg font-heading font-bold text-[10px] uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5"
+                          title="Edit Category Details"
                         >
-                          Remove Image
+                          <svg
+                            className="w-3.5 h-3.5 text-text-brand"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                            />
+                          </svg>
+                          <span>Edit</span>
+                        </button>
+
+                        <button
+                          onClick={() => openDeleteModal(category)}
+                          className="btn-dark-metallic h-8 w-8 rounded-lg flex items-center justify-center text-rose-400 hover:text-rose-300 hover:border-rose-500/40 transition-all cursor-pointer"
+                          title="Delete Category"
+                        >
+                          <svg
+                            className="w-3.5 h-3.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                            />
+                          </svg>
                         </button>
                       </div>
-                    </>
-                  ) : (
-                    <>
-                      <svg
-                        className='w-6 h-6 text-text-brand mb-1.5'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          d='M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z'
-                        />
-                      </svg>
-                      <span className='font-sans font-bold text-xs text-text-primary'>
-                        Click to upload category banner
-                      </span>
-                    </>
-                  )}
-                  <input
-                    id='categoryImageInput'
-                    type='file'
-                    accept='image/*'
-                    className='hidden'
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        setImageFile(file);
-                        setCurrentCategory({
-                          ...currentCategory,
-                          image: URL.createObjectURL(file),
-                        });
-                      }
-                    }}
-                  />
-                </div>
-              </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
-              <div className='flex items-center gap-2 pt-1'>
-                <input
-                  type='checkbox'
-                  id='isActive'
-                  checked={currentCategory.isActive !== false}
-                  onChange={(e) =>
-                    setCurrentCategory({ ...currentCategory, isActive: e.target.checked })
-                  }
-                  className='h-4 w-4 rounded border-border-medium text-primary focus:ring-primary accent-primary cursor-pointer'
-                />
-                <label
-                  htmlFor='isActive'
-                  className='block text-xs font-bold text-text-primary cursor-pointer'
-                >
-                  Active (visible in public competition filters)
-                </label>
-              </div>
-            </div>
-
-            <div className='p-6 border-t border-divider bg-elevated flex justify-end gap-3 sticky bottom-0 z-10'>
-              <button
-                onClick={closeModal}
-                className='px-5 py-2.5 rounded-xl bg-surface border border-border hover:bg-elevated text-text-primary font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-xs'
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSave}
-                className='px-5 py-2.5 bg-primary hover:bg-primary/90 text-white rounded-xl font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md cursor-pointer active:scale-98'
-              >
-                Save Category
-              </button>
-            </div>
+        {/* Table Meta Footer */}
+        <div className="flex items-center justify-between px-6 py-4 border-t border-border/60 bg-accent-bg/20">
+          <div className="text-xs text-text-muted font-sans">
+            Showing <span className="font-bold text-text-primary">{filteredCategories.length}</span> of{" "}
+            <span className="font-bold text-text-primary">{categories.length}</span> total competition categories
           </div>
-        </>
-      )}
+        </div>
+      </div>
+
+      {/* Draggable Category Create / Edit Form Modal */}
+      <CategoryFormModal
+        isOpen={isFormModalOpen}
+        onClose={() => setIsFormModalOpen(false)}
+        category={selectedCategory}
+        isEditMode={isEditMode}
+        onSaveSuccess={fetchCategories}
+      />
+
+      {/* Draggable Delete Confirmation Modal */}
+      <ConfirmDeleteCategoryModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setCategoryToDelete(null);
+        }}
+        category={categoryToDelete}
+        onConfirmDelete={handleConfirmDelete}
+        isDeleting={isDeleting}
+      />
     </div>
   );
 }

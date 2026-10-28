@@ -16,6 +16,7 @@ import { useAuthUser } from "@/hooks/useAuthHooks";
 import { useMyWinnersQuery } from "@/hooks/useUserHooks";
 import { useMyTicketsQuery, useMyTransactionsQuery } from "@/hooks/useTicketHooks";
 import { UserWinner } from "@/services/user.service";
+import UserWinDetailsModal from "@/components/dashboard/user/UserWinDetailsModal";
 
 export default function UserDashboardPage() {
   const { data: user } = useAuthUser();
@@ -24,6 +25,8 @@ export default function UserDashboardPage() {
   const { data: rawTransactions, isLoading: isTransactionsLoading } = useMyTransactionsQuery();
 
   const [timeframe, setTimeframe] = useState<"7D" | "1M" | "3M" | "1Y">("1M");
+  const [selectedWin, setSelectedWin] = useState<UserWinner | null>(null);
+  const [isWinModalOpen, setIsWinModalOpen] = useState(false);
 
   const allWinners: UserWinner[] = useMemo(() => winners || [], [winners]);
   const instantWinsCount = useMemo(
@@ -189,198 +192,280 @@ export default function UserDashboardPage() {
 
   const firstName = user?.firstName || "Player";
 
+  const handleOpenWinModal = (win: UserWinner) => {
+    setSelectedWin(win);
+    setIsWinModalOpen(true);
+  };
+
   return (
-    <div className="flex flex-col gap-6 p-6 lg:p-8 max-w-[1660px] mx-auto w-full animate-fadeIn">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
-          <h1 className="font-heading font-black text-2xl lg:text-3xl text-text-primary uppercase tracking-tight">
-            Player Dashboard
-          </h1>
-          <p className="font-sans text-xs text-text-muted">
-            Welcome back, {firstName}! Track your active competition entries, ticket spend, and recent prize wins.
+    <div className="relative flex flex-col gap-8 p-4 sm:p-6 lg:p-8 max-w-[1660px] mx-auto w-full animate-fadeIn font-sans">
+      {/* Background ambient lighting for luxury Art-Deco aesthetic */}
+      <div 
+        className="pointer-events-none absolute -top-24 right-1/4 w-[500px] h-[300px] bg-[radial-gradient(ellipse_at_center,_var(--color-accent-bg)_0%,_transparent_70%)] blur-3xl opacity-60" 
+        aria-hidden="true" 
+      />
+
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-divider pb-6">
+        <div className="flex flex-col gap-2">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-xs font-sans text-text-muted">
+            <Link 
+              href="/dashboard/user" 
+              className="hover:text-text-primary transition-colors flex items-center gap-1"
+            >
+              <span>Dashboard</span>
+            </Link>
+            <span className="opacity-40">/</span>
+            <span className="text-text-brand font-semibold">Player Hub</span>
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="font-heading font-black text-2xl lg:text-3xl text-text-primary uppercase tracking-tight">
+              Player Hub &amp; Live Entries
+            </h1>
+            <span className="px-3 py-0.5 rounded-full bg-accent-bg border border-primary/30 text-text-brand font-heading font-bold text-[11px] uppercase tracking-wider">
+              Player Lounge
+            </span>
+          </div>
+
+          <p className="font-sans text-xs sm:text-sm text-text-muted max-w-2xl leading-relaxed">
+            Welcome back, {firstName}! Monitor your active competition entries, historical prize winnings, ticket allocation ledgers, and transaction spend.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+
+        {/* Live Session Badge & Quick Actions */}
+        <div className="flex items-center gap-3 flex-wrap shrink-0">
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-surface border border-border text-xs font-sans shadow-sm">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span className="font-bold text-text-primary text-[11px] tracking-wide uppercase font-heading">
+              Player Session Active
+            </span>
+          </div>
+
           <Link
             href="/dashboard/user/winners"
-            className="px-4 py-2 rounded-xl bg-surface border border-border hover:bg-elevated text-text-primary font-heading font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-1.5 shadow-xs"
+            className="btn-dark-metallic h-10 px-4 rounded-xl font-heading font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer shadow-sm"
           >
             <span>🏆</span> My Winnings ({totalWins})
           </Link>
+
           <Link
             href="/live-raffles"
-            className="btn-gold-metallic px-4 py-2 rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider shadow-md active:scale-98 transition-all flex items-center gap-1.5"
+            className="btn-gold-metallic h-10 px-5 rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer shadow-md"
           >
-            <span>🎯</span> Browse Draws
+            <span>🎯</span> Browse Live Draws
           </Link>
         </div>
       </div>
 
-      {/* KPI Cards Row */}
+      {/* 4 Art-Deco KPI Cards Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 w-full">
         {/* Total Tickets */}
-        <div className="bg-surface border border-border rounded-card p-6 flex flex-col gap-3 shadow-card">
-          <p className="font-sans text-[11px] font-bold uppercase tracking-wider text-text-muted">
-            Total Tickets Purchased
-          </p>
-          <p className="font-heading font-black text-3xl lg:text-4xl leading-tight text-text-primary">
-            {isTicketsLoading ? "..." : allTickets.length}
-          </p>
-          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30 w-fit">
-            <span className="font-sans text-[10px] font-bold text-primary">
-              {allTickets.length > 0 ? "Lifetime entries" : "No entries yet"}
+        <div className="art-deco-card rounded-card p-6 flex flex-col justify-between transition-all duration-300 hover:scale-[1.01] group group-hover:border-primary/40">
+          <div className="flex items-start justify-between gap-3">
+            <span className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              Total Tickets Purchased
             </span>
+            <div className="w-10 h-10 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 group-hover:border-primary/40 transition-colors shadow-inner">
+              <svg className="w-5 h-5 text-text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 mt-4">
+            <span className="font-heading font-black text-3xl lg:text-4xl text-text-primary tracking-tight leading-none">
+              {isTicketsLoading ? "..." : allTickets.length.toLocaleString()}
+            </span>
+            <div className="flex items-center justify-between gap-2 pt-1">
+              <span className="font-sans text-xs text-text-muted">Lifetime draw entries</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-accent-bg border border-primary/30 text-text-brand font-sans font-bold text-[10px] uppercase tracking-wider">
+                {allTickets.length > 0 ? "Active Player" : "No Entries"}
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Active Entries */}
-        <div className="bg-surface border border-border rounded-card p-6 flex flex-col gap-3 shadow-card">
-          <p className="font-sans text-[11px] font-bold uppercase tracking-wider text-text-muted">
-            Active Entries
-          </p>
-          <p className="font-heading font-black text-3xl lg:text-4xl leading-tight text-text-primary">
-            {isTicketsLoading ? "..." : activeTickets.length}
-          </p>
-          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-accent-bg border border-primary/30 w-fit">
-            <span className="font-sans text-[10px] font-bold text-text-brand">
-              {activeCompetitions.length} live draw{activeCompetitions.length === 1 ? "" : "s"}
+        <div className="art-deco-card rounded-card p-6 flex flex-col justify-between transition-all duration-300 hover:scale-[1.01] group group-hover:border-emerald-500/40">
+          <div className="flex items-start justify-between gap-3">
+            <span className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              Live Competition Entries
             </span>
+            <div className="w-10 h-10 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 group-hover:border-emerald-500/40 transition-colors shadow-inner">
+              <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672ZM12 2.25V4.5m5.834.166-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243-1.59-1.59" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 mt-4">
+            <span className="font-heading font-black text-3xl lg:text-4xl text-text-primary tracking-tight leading-none">
+              {isTicketsLoading ? "..." : activeTickets.length.toLocaleString()}
+            </span>
+            <div className="flex items-center justify-between gap-2 pt-1">
+              <span className="font-sans text-xs text-text-muted">In pending draws</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-sans font-bold text-[10px] uppercase tracking-wider">
+                {activeCompetitions.length} Live Draw{activeCompetitions.length === 1 ? "" : "s"}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Won Competitions / Prizes */}
-        <div className="bg-surface border border-border rounded-card p-6 flex flex-col gap-3 shadow-card">
-          <p className="font-sans text-[11px] font-bold uppercase tracking-wider text-text-muted">
-            Won Prizes
-          </p>
-          <p className="font-heading font-black text-3xl lg:text-4xl leading-tight text-text-primary">
-            {isWinnersLoading ? "..." : totalWins}
-          </p>
-          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 w-fit">
-            <span className="font-sans text-[10px] font-bold text-emerald-400">
-              {instantWinsCount > 0 ? `⚡ ${instantWinsCount} Instant Win(s)` : `🏆 ${totalWins} Total Prize(s)`}
+        {/* Won Prizes & Drops */}
+        <div className="art-deco-card rounded-card p-6 flex flex-col justify-between transition-all duration-300 hover:scale-[1.01] group group-hover:border-primary/40">
+          <div className="flex items-start justify-between gap-3">
+            <span className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              Prizes &amp; Drops Won
             </span>
+            <div className="w-10 h-10 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 group-hover:border-primary/40 transition-colors shadow-inner">
+              <svg className="w-5 h-5 text-text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.496m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.496 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 0 0 2.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492c.981.142 1.953.316 2.916.52a6.003 6.003 0 0 1-5.405 4.972m0 0a6.726 6.726 0 0 1-2.749 1.35m0 0a6.772 6.772 0 0 1-3.044 0" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 mt-4">
+            <span className="font-heading font-black text-3xl lg:text-4xl text-text-primary tracking-tight leading-none">
+              {isWinnersLoading ? "..." : totalWins.toLocaleString()}
+            </span>
+            <div className="flex items-center justify-between gap-2 pt-1">
+              <span className="font-sans text-xs text-text-muted">Total claimed prizes</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-accent-bg border border-primary/30 text-text-brand font-sans font-bold text-[10px] uppercase tracking-wider">
+                {instantWinsCount > 0 ? `⚡ ${instantWinsCount} Instant` : `🏆 ${totalWins} Won`}
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Total Lifetime Spent */}
-        <div className="bg-surface border border-border rounded-card p-6 flex flex-col gap-3 shadow-card">
-          <p className="font-sans text-[11px] font-bold uppercase tracking-wider text-text-muted">
-            Total Lifetime Spent
-          </p>
-          <p className="font-heading font-black text-3xl lg:text-4xl leading-tight text-text-primary">
-            {isTransactionsLoading && isTicketsLoading
-              ? "..."
-              : `£${totalLifetimeSpent.toFixed(2)}`}
-          </p>
-          <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-elevated border border-border-medium w-fit">
-            <span className="font-sans text-[10px] font-bold text-text-muted">
-              Lifetime purchases
+        <div className="art-deco-card rounded-card p-6 flex flex-col justify-between transition-all duration-300 hover:scale-[1.01] group group-hover:border-amber-500/40">
+          <div className="flex items-start justify-between gap-3">
+            <span className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              Lifetime Ticket Spend
             </span>
+            <div className="w-10 h-10 rounded-xl bg-surface border border-border flex items-center justify-center shrink-0 group-hover:border-amber-500/40 transition-colors shadow-inner">
+              <svg className="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 7.756a4.5 4.5 0 1 0 0 8.488M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </div>
+          </div>
+          <div className="flex flex-col gap-2 mt-4">
+            <span className="font-heading font-black text-3xl lg:text-4xl text-text-primary tracking-tight leading-none">
+              {isTransactionsLoading && isTicketsLoading
+                ? "..."
+                : `£${totalLifetimeSpent.toFixed(2)}`}
+            </span>
+            <div className="flex items-center justify-between gap-2 pt-1">
+              <span className="font-sans text-xs text-text-muted">All verified purchases</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 font-sans font-bold text-[10px] uppercase tracking-wider">
+                Audited Capital
+              </span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Row 2: Ticket Spend Overview Chart */}
-      <div className="w-full">
-        <div className="w-full bg-surface border border-border rounded-card p-6 flex flex-col min-h-[320px] shadow-card">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4 sm:gap-0">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-3">
-                <span className="font-heading font-black text-2xl lg:text-3xl text-text-primary leading-none">
-                  £{spendChartData.reduce((acc, curr) => acc + curr.spend, 0).toFixed(2)}
-                </span>
-                <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-primary/10 border border-primary/30">
-                  <span className="font-sans text-[11px] font-bold text-primary">
-                    Audited Transactions
-                  </span>
-                </div>
-              </div>
-              <span className="font-sans text-xs text-text-muted mt-1">
-                Ticket Spend ({timeframe}) • Lifetime: £{totalLifetimeSpent.toFixed(2)}
+      <div className="art-deco-card rounded-card p-6 flex flex-col min-h-[340px] shadow-card border border-border">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center w-full gap-4 pb-4 border-b border-border/80">
+          <div className="flex flex-col">
+            <div className="flex items-center gap-3">
+              <span className="font-heading font-black text-2xl lg:text-3xl text-text-primary leading-none">
+                £{spendChartData.reduce((acc, curr) => acc + curr.spend, 0).toFixed(2)}
               </span>
-            </div>
-
-            <div className="flex items-center gap-1.5 bg-elevated p-1 rounded-xl border border-border-medium">
-              {(["7D", "1M", "3M", "1Y"] as const).map((period) => (
-                <button
-                  key={period}
-                  onClick={() => setTimeframe(period)}
-                  className={`px-3 py-1 rounded-lg font-heading font-bold text-xs transition-all cursor-pointer ${
-                    timeframe === period
-                      ? "border border-primary/50 bg-primary/15 text-primary shadow-xs"
-                      : "border border-transparent text-text-muted hover:text-text-primary"
-                  }`}
-                >
-                  {period}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-6 flex-1 w-full relative min-h-[220px]">
-            {isTransactionsLoading ? (
-              <div className="w-full h-full min-h-[200px] flex items-center justify-center text-text-muted font-sans text-xs animate-pulse">
-                Loading spend overview...
+              <div className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-accent-bg border border-primary/30">
+                <span className="font-sans text-[11px] font-bold text-text-brand">
+                  Period Ledger
+                </span>
               </div>
-            ) : (
-              <ResponsiveContainer width="100%" height={220}>
-                <AreaChart data={spendChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorUserSpend" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.35} />
-                      <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis 
-                    dataKey="name" 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{ fill: "#8892B0", fontSize: 11, fontFamily: "sans-serif" }} 
-                    dy={10}
-                  />
-                  <YAxis 
-                    axisLine={false} 
-                    tickLine={false} 
-                    tick={{ fill: "#8892B0", fontSize: 11, fontFamily: "sans-serif" }}
-                    tickFormatter={(val) => `£${val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}`}
-                  />
-                  <RechartsTooltip
-                    cursor={{ stroke: "#D4AF37", strokeWidth: 1, strokeDasharray: "4 4" }}
-                    contentStyle={{ 
-                      backgroundColor: "#12151F", 
-                      borderColor: "rgba(212, 175, 55, 0.3)", 
-                      borderRadius: "12px",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-                      fontFamily: "sans-serif"
-                    }}
-                    itemStyle={{ color: "#D4AF37", fontWeight: "bold" }}
-                    formatter={(val: any) => [
-                      `£${Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 
-                      "Ticket Spend"
-                    ]}
-                  />
-                  <Area 
-                    type="monotone" 
-                    dataKey="spend" 
-                    stroke="#D4AF37" 
-                    strokeWidth={2.5}
-                    fillOpacity={1} 
-                    fill="url(#colorUserSpend)" 
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
+            </div>
+            <span className="font-sans text-xs text-text-muted mt-1">
+              Ticket Spend ({timeframe}) • Total Lifetime: £{totalLifetimeSpent.toFixed(2)}
+            </span>
           </div>
+
+          {/* Timeframe Buttons */}
+          <div className="flex items-center gap-1.5 bg-surface p-1 rounded-xl border border-border">
+            {(["7D", "1M", "3M", "1Y"] as const).map((period) => (
+              <button
+                key={period}
+                onClick={() => setTimeframe(period)}
+                className={`px-3 py-1 rounded-lg font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                  timeframe === period
+                    ? "bg-primary text-[#090A0E] font-black shadow-sm border border-primary"
+                    : "border border-transparent text-text-muted hover:text-text-primary"
+                }`}
+              >
+                {period}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-6 flex-1 w-full relative min-h-[220px]">
+          {isTransactionsLoading ? (
+            <div className="w-full h-full min-h-[200px] flex items-center justify-center text-text-muted font-sans text-xs animate-pulse">
+              Loading spend telemetry...
+            </div>
+          ) : (
+            <ResponsiveContainer width="100%" height={220}>
+              <AreaChart data={spendChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorUserSpend" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#D4AF37" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#D4AF37" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis 
+                  dataKey="name" 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fill: "#A69B82", fontSize: 11, fontFamily: "inherit" }} 
+                  dy={10}
+                />
+                <YAxis 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{ fill: "#A69B82", fontSize: 11, fontFamily: "inherit" }}
+                  tickFormatter={(val) => `£${val >= 1000 ? `${(val / 1000).toFixed(1)}k` : val}`}
+                />
+                <RechartsTooltip
+                  cursor={{ stroke: "rgba(212, 175, 55, 0.4)", strokeWidth: 1, strokeDasharray: "4 4" }}
+                  contentStyle={{ 
+                    backgroundColor: "#141720", 
+                    borderColor: "rgba(212, 175, 55, 0.4)", 
+                    borderRadius: "12px",
+                    boxShadow: "0 12px 30px rgba(0,0,0,0.7)",
+                    fontFamily: "inherit"
+                  }}
+                  itemStyle={{ color: "#D4AF37", fontWeight: "bold" }}
+                  formatter={(val: any) => [
+                    `£${Number(val || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 
+                    "Ticket Spend"
+                  ]}
+                />
+                <Area 
+                  type="monotone" 
+                  dataKey="spend" 
+                  stroke="#D4AF37" 
+                  strokeWidth={2.5}
+                  fillOpacity={1} 
+                  fill="url(#colorUserSpend)" 
+                  activeDot={{ r: 6, fill: "#D4AF37", stroke: "#090A0E", strokeWidth: 2 }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </div>
 
       {/* Row 3: Active Entries & Recent Wins */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 w-full items-start">
+      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 w-full items-start">
         {/* My Active Entries */}
-        <div className="xl:col-span-6 bg-surface border border-border rounded-card p-6 flex flex-col shadow-card">
-          <div className="flex justify-between items-center mb-4 pb-3 border-b border-divider">
+        <div className="xl:col-span-6 art-deco-card rounded-card p-6 flex flex-col shadow-card border border-border">
+          <div className="flex justify-between items-center mb-4 pb-3 border-b border-border/80">
             <div>
               <h3 className="font-heading font-black text-lg text-text-primary uppercase tracking-tight">
                 My Active Entries
@@ -391,16 +476,10 @@ export default function UserDashboardPage() {
             </div>
             <Link
               href="/dashboard/user/tickets"
-              className="flex items-center gap-1 font-sans font-bold text-xs text-text-brand hover:underline transition-all cursor-pointer"
+              className="flex items-center gap-1 font-heading font-bold text-xs uppercase tracking-wider text-text-brand hover:underline transition-all cursor-pointer"
             >
               View All
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
               </svg>
             </Link>
@@ -413,7 +492,7 @@ export default function UserDashboardPage() {
             </div>
           ) : activeCompetitions.length === 0 ? (
             <div className="flex flex-col items-center justify-center text-center py-12 px-4">
-              <div className="w-14 h-14 bg-accent-bg rounded-full border border-primary/30 flex items-center justify-center mb-3 text-primary">
+              <div className="w-14 h-14 bg-accent-bg rounded-2xl border border-primary/30 flex items-center justify-center mb-3 text-2xl shadow-inner">
                 🎟️
               </div>
               <h4 className="font-heading font-bold text-sm text-text-primary mb-1">
@@ -424,20 +503,20 @@ export default function UserDashboardPage() {
               </p>
               <Link
                 href="/live-raffles"
-                className="btn-gold-metallic px-4 py-2 rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider shadow-sm"
+                className="btn-gold-metallic px-4 py-2 rounded-xl text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider shadow-sm"
               >
                 Browse Live Draws
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col divide-y divide-divider">
+            <div className="flex flex-col divide-y divide-border/40">
               {activeCompetitions.map((item) => (
                 <div
                   key={item.raffle.id}
-                  className="py-3.5 flex items-center justify-between gap-3 hover:bg-elevated/40 px-2 rounded-xl transition-colors"
+                  className="py-3.5 flex items-center justify-between gap-3 hover:bg-accent-bg/30 px-2 rounded-xl transition-colors group"
                 >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-accent-bg shrink-0 border border-border">
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-surface shrink-0 border border-primary/30 shadow-xs">
                       <Image
                         src={
                           item.raffle.images?.[0] ||
@@ -447,13 +526,13 @@ export default function UserDashboardPage() {
                         alt={item.raffle.title}
                         fill
                         unoptimized
-                        className="object-cover"
+                        className="object-cover group-hover:scale-105 transition-transform"
                       />
                     </div>
                     <div className="flex flex-col min-w-0">
                       <Link
                         href={`/live-raffles/${item.raffle.slug || item.raffle.id}`}
-                        className="font-heading font-bold text-xs text-text-primary truncate hover:text-text-brand"
+                        className="font-heading font-black text-xs text-text-primary truncate hover:text-text-brand transition-colors"
                       >
                         {item.raffle.title}
                       </Link>
@@ -470,8 +549,8 @@ export default function UserDashboardPage() {
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
-                    <div className="px-3 py-1 bg-elevated border border-border-medium rounded-lg text-center">
-                      <span className="font-sans font-bold text-xs text-text-brand">
+                    <div className="px-3 py-1 bg-accent-bg border border-primary/30 rounded-lg text-center shadow-xs">
+                      <span className="font-mono font-bold text-xs text-text-brand">
                         {item.ticketCount} {item.ticketCount === 1 ? "ticket" : "tickets"}
                       </span>
                     </div>
@@ -482,9 +561,9 @@ export default function UserDashboardPage() {
           )}
         </div>
 
-        {/* Recent Wins (Instant Wins & Main Draw Wins) */}
-        <div className="xl:col-span-6 bg-surface border border-border rounded-card p-6 flex flex-col shadow-card">
-          <div className="flex justify-between items-center mb-4 pb-3 border-b border-divider">
+        {/* Recent Wins */}
+        <div className="xl:col-span-6 art-deco-card rounded-card p-6 flex flex-col shadow-card border border-border">
+          <div className="flex justify-between items-center mb-4 pb-3 border-b border-border/80">
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-heading font-black text-lg text-text-primary uppercase tracking-tight">
@@ -502,16 +581,10 @@ export default function UserDashboardPage() {
             </div>
             <Link
               href="/dashboard/user/winners"
-              className="flex items-center gap-1 font-sans font-bold text-xs text-text-brand hover:underline transition-all cursor-pointer"
+              className="flex items-center gap-1 font-heading font-bold text-xs uppercase tracking-wider text-text-brand hover:underline transition-all cursor-pointer"
             >
               View All ({totalWins})
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
               </svg>
             </Link>
@@ -524,7 +597,7 @@ export default function UserDashboardPage() {
             </div>
           ) : recentWins.length === 0 ? (
             <div className="flex flex-col items-center justify-center text-center py-12 px-4">
-              <div className="w-14 h-14 bg-accent-bg rounded-full border border-primary/30 flex items-center justify-center mb-3 text-primary shadow-xs">
+              <div className="w-14 h-14 bg-accent-bg rounded-2xl border border-primary/30 flex items-center justify-center mb-3 text-2xl shadow-inner">
                 🏆
               </div>
               <h4 className="font-heading font-bold text-sm text-text-primary mb-1">
@@ -535,20 +608,21 @@ export default function UserDashboardPage() {
               </p>
               <Link
                 href="/dashboard/user/competitions"
-                className="btn-gold-metallic px-4 py-2 rounded-xl text-black font-heading font-black text-xs uppercase tracking-wider shadow-sm"
+                className="btn-gold-metallic px-4 py-2 rounded-xl text-[#090A0E] font-heading font-black text-xs uppercase tracking-wider shadow-sm"
               >
                 Explore Competitions
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col divide-y divide-divider">
+            <div className="flex flex-col divide-y divide-border/40">
               {recentWins.map((win) => (
                 <div
                   key={win.id}
-                  className="py-3.5 flex items-center justify-between gap-3 hover:bg-elevated/40 px-2 rounded-xl transition-colors"
+                  onClick={() => handleOpenWinModal(win)}
+                  className="py-3.5 flex items-center justify-between gap-3 hover:bg-accent-bg/30 px-2 rounded-xl transition-colors group cursor-pointer"
                 >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-accent-bg shrink-0 border border-border">
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-surface shrink-0 border border-primary/30 shadow-xs">
                       <Image
                         src={
                           win.prizeImage ||
@@ -558,12 +632,12 @@ export default function UserDashboardPage() {
                         alt={win.prizeName}
                         fill
                         unoptimized
-                        className="object-cover"
+                        className="object-cover group-hover:scale-105 transition-transform"
                       />
                     </div>
                     <div className="flex flex-col min-w-0">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="font-heading font-bold text-xs text-text-primary truncate">
+                        <span className="font-heading font-black text-xs text-text-primary truncate group-hover:text-text-brand transition-colors">
                           {win.prizeName}
                         </span>
                         {win.winType === "INSTANT_WIN" ? (
@@ -582,13 +656,13 @@ export default function UserDashboardPage() {
                       </p>
 
                       <div className="flex items-center gap-2 mt-0.5 text-[10px] font-sans text-text-muted">
-                        <span className="font-mono font-semibold text-text-primary">
+                        <span className="font-mono font-bold text-text-brand">
                           Ticket #{win.ticketNumber}
                         </span>
                         {win.rrpValue ? (
                           <>
                             <span>•</span>
-                            <span className="font-semibold text-primary">
+                            <span className="font-semibold text-text-primary">
                               Value: £{Number(win.rrpValue).toFixed(2)}
                             </span>
                           </>
@@ -623,6 +697,16 @@ export default function UserDashboardPage() {
           )}
         </div>
       </div>
+
+      {/* Draggable User Win Details Modal */}
+      <UserWinDetailsModal
+        isOpen={isWinModalOpen}
+        onClose={() => {
+          setIsWinModalOpen(false);
+          setSelectedWin(null);
+        }}
+        win={selectedWin}
+      />
     </div>
   );
 }

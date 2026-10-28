@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuthUser } from "../../../../hooks/useAuthHooks";
 import { userService } from "../../../../services/user.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import AvatarUploadModal from "../../shared/settings/AvatarUploadModal";
+import { toast } from "sonner";
 
 export default function UserProfileForm() {
   const { data: user, isLoading } = useAuthUser();
@@ -24,12 +26,9 @@ export default function UserProfileForm() {
     confirmPassword: "",
   });
 
-  const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
-  const [profileMessage, setProfileMessage] = useState("");
-  const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
-  const [passwordMessage, setPasswordMessage] = useState("");
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+  const [profileError, setProfileError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -59,16 +58,15 @@ export default function UserProfileForm() {
       return userService.updateProfile(data);
     },
     onSuccess: (data) => {
-      setProfileMessage("Profile saved successfully!");
+      toast.success("Profile details and shipping address saved successfully!");
       queryClient.setQueryData(["user"], data.user);
-      setTimeout(() => setProfileMessage(""), 3000);
+      setProfileError("");
     },
-    onError: () => {
-      setProfileMessage("Failed to save profile.");
+    onError: (error: any) => {
+      const msg = error.response?.data?.message || "Failed to save profile details.";
+      setProfileError(msg);
+      toast.error(msg);
     },
-    onSettled: () => {
-      setIsSubmittingProfile(false);
-    }
   });
 
   const changePasswordMutation = useMutation({
@@ -76,16 +74,15 @@ export default function UserProfileForm() {
       return userService.changePassword(data);
     },
     onSuccess: () => {
-      setPasswordMessage("Password changed successfully!");
+      toast.success("Account password updated successfully!");
       setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
-      setTimeout(() => setPasswordMessage(""), 3000);
+      setPasswordError("");
     },
     onError: (error: any) => {
-      setPasswordMessage(error.response?.data?.message || "Failed to change password.");
+      const msg = error.response?.data?.message || "Failed to change password.";
+      setPasswordError(msg);
+      toast.error(msg);
     },
-    onSettled: () => {
-      setIsSubmittingPassword(false);
-    }
   });
 
   const uploadAvatarMutation = useMutation({
@@ -93,34 +90,38 @@ export default function UserProfileForm() {
       return userService.uploadAvatar(file);
     },
     onSuccess: (data) => {
-      setProfileMessage("Avatar updated successfully!");
       queryClient.setQueryData(["user"], data.user);
-      setTimeout(() => setProfileMessage(""), 3000);
-    },
-    onError: () => {
-      setProfileMessage("Failed to update avatar.");
     },
   });
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      uploadAvatarMutation.mutate(e.target.files[0]);
-    }
-  };
-
-  const handleUploadClick = () => {
-    fileInputRef.current?.click();
+  const handleAvatarUpload = async (file: File) => {
+    await uploadAvatarMutation.mutateAsync(file);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setProfileError("");
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPasswordData((prev) => ({ ...prev, [name]: value }));
+    setPasswordError("");
   };
+
+  const getPasswordStrength = () => {
+    const p = passwordData.newPassword;
+    if (!p) return 0;
+    let score = 0;
+    if (p.length >= 8) score += 1;
+    if (/[A-Z]/.test(p)) score += 1;
+    if (/[0-9]/.test(p)) score += 1;
+    if (/[^A-Za-z0-9]/.test(p)) score += 1;
+    return score;
+  };
+
+  const strength = getPasswordStrength();
 
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,33 +134,31 @@ export default function UserProfileForm() {
         age--;
       }
       if (age < 18) {
-        setProfileMessage("You must be at least 18 years of age. Update refused.");
+        setProfileError("You must be at least 18 years of age to participate in prize draws.");
+        toast.error("Age requirement: Must be at least 18 years old");
         return;
       }
     }
 
-    setIsSubmittingProfile(true);
-    
     updateProfileMutation.mutate({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      phone: formData.phone,
+      firstName: formData.firstName.trim() || undefined,
+      lastName: formData.lastName.trim() || undefined,
+      phone: formData.phone.trim() || undefined,
       dateOfBirth: formData.dateOfBirth || undefined,
-      address: formData.address,
+      address: formData.address.trim() || undefined,
     });
   };
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setPasswordMessage("New passwords do not match.");
+      setPasswordError("New passwords do not match.");
       return;
     }
     if (passwordData.newPassword.length < 8) {
-      setPasswordMessage("Password must be at least 8 characters long.");
+      setPasswordError("Password must be at least 8 characters long.");
       return;
     }
-    setIsSubmittingPassword(true);
     changePasswordMutation.mutate({
       currentPassword: passwordData.currentPassword,
       newPassword: passwordData.newPassword,
@@ -167,74 +166,85 @@ export default function UserProfileForm() {
   };
 
   if (isLoading) {
-    return <div className="text-[#8cb34a] animate-pulse">Loading profile...</div>;
+    return (
+      <div className="flex flex-col xl:flex-row gap-6 w-full animate-pulse">
+        <div className="w-full xl:w-[360px] h-[380px] art-deco-card rounded-card" />
+        <div className="flex-1 h-[520px] art-deco-card rounded-card" />
+      </div>
+    );
   }
 
-  const initials = user?.firstName?.substring(0, 2).toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || "US";
+  const initials = user?.firstName?.substring(0, 2).toUpperCase() || user?.email?.substring(0, 2).toUpperCase() || "PL";
+  const memberSince = user?.createdAt
+    ? new Date(user.createdAt).toLocaleDateString("en-GB", { month: "short", year: "numeric" })
+    : "N/A";
 
   return (
-    <div className="flex flex-col xl:flex-row gap-6 p-6 lg:p-8 max-w-[1660px] mx-auto w-full animate-fadeIn items-start">
-      {/* Left Column: Profile Summary */}
-      <div className="w-full xl:w-[380px] shrink-0 flex flex-col gap-5">
-        <div className="bg-surface border border-border rounded-card p-8 flex flex-col items-center shadow-card">
+    <div className="flex flex-col xl:flex-row gap-6 w-full animate-fadeIn items-start font-sans">
+      {/* Left Column: Player Identity Card */}
+      <div className="w-full xl:w-[360px] shrink-0 flex flex-col gap-5">
+        <div className="art-deco-card rounded-card p-6 lg:p-8 flex flex-col items-center shadow-card border border-border">
           {/* Avatar Area */}
-          <div className="relative mb-6">
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              onChange={handleFileChange} 
-              accept="image/*" 
-              className="hidden" 
-            />
-            <div className="w-[140px] h-[140px] rounded-full border border-border-medium bg-elevated flex items-center justify-center overflow-hidden shadow-xs">
+          <div className="relative mb-4 group">
+            <div className="w-28 h-28 rounded-full border-2 border-primary/40 p-1 bg-surface flex items-center justify-center overflow-hidden shadow-lg">
               {user?.avatarUrl ? (
-                <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={user.avatarUrl} alt="Avatar" className="w-full h-full object-cover rounded-full" />
               ) : (
-                <span className="font-heading font-black text-4xl text-text-brand">{initials}</span>
+                <div className="w-full h-full rounded-full bg-accent-bg flex items-center justify-center font-heading font-black text-3xl text-text-brand">
+                  {initials}
+                </div>
               )}
             </div>
+
             <button 
               type="button"
-              onClick={handleUploadClick}
-              disabled={uploadAvatarMutation.isPending}
-              className="absolute bottom-2 right-2 w-8 h-8 bg-primary rounded-full flex items-center justify-center border-2 border-surface text-white hover:bg-primary/90 transition-colors cursor-pointer shadow-md disabled:opacity-50"
+              onClick={() => setIsAvatarModalOpen(true)}
+              className="absolute bottom-1 right-1 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-[#090A0E] hover:scale-105 transition-transform cursor-pointer shadow-md"
+              title="Change Avatar"
             >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0M18.75 10.5h.008v.008h-.008V10.5Z" />
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
               </svg>
             </button>
           </div>
-          <p 
-            onClick={handleUploadClick}
-            className="font-sans font-bold text-xs text-text-brand mb-6 cursor-pointer hover:underline transition-all"
-          >
-            {uploadAvatarMutation.isPending ? "Uploading..." : "Upload Photo"}
+
+          <h3 className="font-heading font-black text-lg text-text-primary text-center">
+            {user?.firstName ? `${user.firstName} ${user.lastName || ""}` : "Verified Player"}
+          </h3>
+          <p className="font-mono text-xs text-text-muted text-center mt-0.5 truncate max-w-[260px]">
+            {user?.email}
           </p>
 
-          {/* Verification Banner */}
+          <button
+            type="button"
+            onClick={() => setIsAvatarModalOpen(true)}
+            className="btn-dark-metallic h-8 px-4 rounded-xl font-heading font-bold text-[11px] uppercase tracking-wider mt-4 cursor-pointer"
+          >
+            Update Avatar
+          </button>
+
+          {/* Verification Badge */}
           {user?.isEmailVerified && (
-            <div className="w-full bg-success-bg border border-[#BBF7D0] rounded-xl py-2.5 px-4 mb-6 flex items-center justify-center gap-2">
-              <svg className="w-4 h-4 text-success-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <div className="w-full bg-emerald-500/10 border border-emerald-500/30 rounded-xl py-2 px-3 mt-5 flex items-center justify-center gap-2">
+              <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
               </svg>
-              <span className="font-sans font-bold text-xs text-success-text">Email Verified</span>
+              <span className="font-sans font-bold text-xs text-emerald-400">Email Verified Account</span>
             </div>
           )}
 
-          {/* Stats List */}
-          <div className="w-full flex flex-col gap-3 pt-4 border-t border-divider">
+          {/* Player Stats */}
+          <div className="w-full flex flex-col gap-3 pt-5 mt-5 border-t border-border/80 text-xs">
             <div className="flex justify-between items-center w-full">
-              <span className="font-sans text-xs text-text-muted">Member since</span>
-              <span className="font-heading font-bold text-xs text-text-primary">
-                {user?.createdAt ? new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : 'N/A'}
-              </span>
+              <span className="text-text-muted font-sans">Member Since</span>
+              <span className="font-heading font-bold text-text-primary">{memberSince}</span>
             </div>
             <div className="flex justify-between items-center w-full">
-              <span className="font-sans text-xs text-text-muted">Account Role</span>
+              <span className="text-text-muted font-sans">Account Tier</span>
               <div className="px-2.5 py-0.5 rounded-full bg-accent-bg border border-primary/30">
-                <span className="font-sans font-bold text-[10px] text-text-brand tracking-wider uppercase">
-                  {user?.role === 'ADMIN' ? 'Admin' : user?.role === 'HOST' ? 'Host' : 'User'}
+                <span className="font-sans font-bold text-[10px] text-text-brand uppercase tracking-wider">
+                  {user?.role || "USER"}
                 </span>
               </div>
             </div>
@@ -242,123 +252,239 @@ export default function UserProfileForm() {
         </div>
       </div>
 
-      {/* Right Column: Settings Forms */}
-      <div className="flex-1 flex flex-col gap-6">
-        <form onSubmit={handleProfileSubmit} className="flex-1 min-w-0 w-full bg-surface border border-border rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card">
-          
-          {/* Account Information */}
-          <section>
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="font-heading font-black text-lg text-text-primary uppercase tracking-tight">Personal Details</h3>
-              {profileMessage && (
-                <span className={`text-xs font-bold ${profileMessage.includes('Failed') ? 'text-[#DC2626]' : 'text-text-brand'}`}>
-                  {profileMessage}
-                </span>
-              )}
+      {/* Right Column: Profile & Security Forms */}
+      <div className="flex-1 flex flex-col gap-6 w-full min-w-0">
+        {/* Personal Details & Shipping Address Form */}
+        <form
+          onSubmit={handleProfileSubmit}
+          className="art-deco-card rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card border border-border"
+        >
+          <div className="flex justify-between items-center pb-4 border-b border-border/80">
+            <div>
+              <h3 className="font-heading font-black text-lg text-text-primary uppercase tracking-tight">
+                Personal Details &amp; Prize Shipping Address
+              </h3>
+              <p className="font-sans text-xs text-text-muted mt-0.5">
+                Physical coordinates used by competition hosts for postal courier dispatch.
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">First Name</label>
-                <div className="bg-elevated border border-border-medium h-10 rounded-xl px-3 flex items-center focus-within:border-primary transition-all">
-                  <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="First Name" className="bg-transparent outline-none w-full text-sm text-text-primary font-sans font-semibold" />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">Last Name</label>
-                <div className="bg-elevated border border-border-medium h-10 rounded-xl px-3 flex items-center focus-within:border-primary transition-all">
-                  <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Last Name" className="bg-transparent outline-none w-full text-sm text-text-primary font-sans font-semibold" />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1.5 md:col-span-2">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">Email Address</label>
-                <div className="bg-elevated border border-border-medium/60 h-10 rounded-xl px-3 flex items-center opacity-75">
-                  <input type="email" name="email" value={formData.email} disabled className="bg-transparent outline-none w-full text-sm text-text-muted font-sans cursor-not-allowed" />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1.5 md:col-span-2">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">Phone Number</label>
-                <div className="bg-elevated border border-border-medium h-10 rounded-xl px-3 flex items-center focus-within:border-primary transition-all">
-                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+44 7700 900123" className="bg-transparent outline-none w-full text-sm text-text-primary font-sans" />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1.5 md:col-span-2">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">Date of Birth (18+ Only)</label>
-                <div className="bg-elevated border border-border-medium h-10 rounded-xl px-3 flex items-center focus-within:border-primary transition-all">
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
-                    onChange={handleChange}
-                    max={new Date().toISOString().split("T")[0]}
-                    className="bg-transparent outline-none w-full text-sm text-text-primary font-sans"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1.5 md:col-span-2">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">Shipping Address</label>
-                <div className="bg-elevated border border-border-medium rounded-xl p-3 flex focus-within:border-primary transition-all">
-                  <textarea name="address" value={formData.address} onChange={handleChange} className="bg-transparent outline-none w-full text-sm text-text-primary font-sans resize-none h-[70px]" placeholder="123 Street, City, Postcode" />
-                </div>
-              </div>
-            </div>
-          </section>
+          </div>
 
-          {/* Action Footer */}
-          <div className="mt-2 flex justify-end w-full pt-4 border-t border-divider">
-            <button 
-              type="submit" 
-              disabled={isSubmittingProfile}
-              className="btn-gold-metallic h-[42px] px-8 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-black transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
+          {profileError && (
+            <div className="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs rounded-xl font-sans font-semibold flex items-center gap-2">
+              <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+              </svg>
+              <span>{profileError}</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+                First Name
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                placeholder="e.g. Sarah"
+                className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+                Last Name
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                placeholder="e.g. Jenkins"
+                className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5 md:col-span-2">
+              <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+                Email Address (Master Account ID)
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                disabled
+                className="input-obsidian w-full h-11 px-4 rounded-xl font-mono text-xs text-text-muted opacity-60 cursor-not-allowed shadow-sm"
+                title="Email is locked to your account credentials"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+                Contact Phone
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="+44 7700 900123"
+                className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted flex items-center justify-between">
+                <span>Date of Birth</span>
+                <span className="font-mono text-[10px] text-text-brand">18+ Requirement</span>
+              </label>
+              <input
+                type="date"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleChange}
+                max={new Date().toISOString().split("T")[0]}
+                className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary focus:outline-none transition-all shadow-sm"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5 md:col-span-2">
+              <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+                Shipping Address for Prize Dispatches
+              </label>
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="Flat / House number, Street name, City, Postcode, Country"
+                rows={3}
+                className="input-obsidian w-full p-3 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm resize-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-border/80">
+            <button
+              type="submit"
+              disabled={updateProfileMutation.isPending}
+              className="btn-gold-metallic h-10 px-6 rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-md disabled:opacity-50"
             >
-              {isSubmittingProfile ? "Saving..." : "Save Profile Details"}
+              {updateProfileMutation.isPending ? "Saving Profile..." : "Save Profile & Address"}
             </button>
           </div>
         </form>
 
-        <form onSubmit={handlePasswordSubmit} className="bg-surface border border-border rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card">
-          {/* Change Password */}
-          <section>
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="font-heading font-black text-lg text-text-primary uppercase tracking-tight">Security &amp; Password</h3>
-              {passwordMessage && (
-                <span className={`text-xs font-bold ${passwordMessage.includes('Failed') || passwordMessage.includes('not match') || passwordMessage.includes('least') ? 'text-[#DC2626]' : 'text-text-brand'}`}>
-                  {passwordMessage}
+        {/* Security & Password Form */}
+        <form
+          onSubmit={handlePasswordSubmit}
+          className="art-deco-card rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card border border-border"
+        >
+          <div className="flex justify-between items-center pb-4 border-b border-border/80">
+            <div>
+              <h3 className="font-heading font-black text-lg text-text-primary uppercase tracking-tight">
+                Account Security &amp; Password
+              </h3>
+              <p className="font-sans text-xs text-text-muted mt-0.5">
+                Update your login password to ensure your tickets and winnings remain secure.
+              </p>
+            </div>
+          </div>
+
+          {passwordError && (
+            <div className="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs rounded-xl font-sans font-semibold flex items-center gap-2">
+              <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+              </svg>
+              <span>{passwordError}</span>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+                Current Password
+              </label>
+              <input
+                type="password"
+                name="currentPassword"
+                value={passwordData.currentPassword}
+                onChange={handlePasswordChange}
+                placeholder="••••••••••••"
+                className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  name="newPassword"
+                  value={passwordData.newPassword}
+                  onChange={handlePasswordChange}
+                  placeholder="••••••••••••"
+                  className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+                  required
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={passwordData.confirmPassword}
+                  onChange={handlePasswordChange}
+                  placeholder="••••••••••••"
+                  className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Strength Indicator */}
+            {passwordData.newPassword && (
+              <div className="flex items-center gap-2 pt-1">
+                <div className="flex-1 h-1.5 bg-elevated rounded-full overflow-hidden flex gap-1">
+                  <div className={`h-full flex-1 rounded-full ${strength >= 1 ? "bg-rose-500" : "bg-neutral-800"}`} />
+                  <div className={`h-full flex-1 rounded-full ${strength >= 2 ? "bg-amber-500" : "bg-neutral-800"}`} />
+                  <div className={`h-full flex-1 rounded-full ${strength >= 3 ? "bg-primary" : "bg-neutral-800"}`} />
+                  <div className={`h-full flex-1 rounded-full ${strength >= 4 ? "bg-emerald-400" : "bg-neutral-800"}`} />
+                </div>
+                <span className="font-mono text-[10px] text-text-muted uppercase">
+                  {strength <= 1 ? "Weak" : strength === 2 ? "Fair" : strength === 3 ? "Good" : "Strong"}
                 </span>
-              )}
-            </div>
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">Current Password</label>
-                <div className="bg-elevated border border-border-medium h-10 rounded-xl px-3 flex items-center focus-within:border-primary transition-all">
-                  <input type="password" name="currentPassword" value={passwordData.currentPassword} onChange={handlePasswordChange} placeholder="••••••••" className="bg-transparent outline-none w-full text-sm text-text-primary font-sans" required />
-                </div>
               </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">New Password</label>
-                <div className="bg-elevated border border-border-medium h-10 rounded-xl px-3 flex items-center focus-within:border-primary transition-all">
-                  <input type="password" name="newPassword" value={passwordData.newPassword} onChange={handlePasswordChange} placeholder="••••••••" className="bg-transparent outline-none w-full text-sm text-text-primary font-sans" required />
-                </div>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="font-sans font-bold text-[11px] uppercase tracking-wider text-text-muted">Confirm New Password</label>
-                <div className="bg-elevated border border-border-medium h-10 rounded-xl px-3 flex items-center focus-within:border-primary transition-all">
-                  <input type="password" name="confirmPassword" value={passwordData.confirmPassword} onChange={handlePasswordChange} placeholder="••••••••" className="bg-transparent outline-none w-full text-sm text-text-primary font-sans" required />
-                </div>
-              </div>
-            </div>
-          </section>
-          
-          <div className="mt-2 flex justify-end w-full pt-4 border-t border-divider">
-            <button 
-              type="submit" 
-              disabled={isSubmittingPassword}
-              className="btn-gold-metallic h-[42px] px-8 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-black transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
+            )}
+          </div>
+
+          <div className="flex justify-end pt-4 border-t border-border/80">
+            <button
+              type="submit"
+              disabled={changePasswordMutation.isPending}
+              className="btn-gold-metallic h-10 px-6 rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-md disabled:opacity-50"
             >
-              {isSubmittingPassword ? "Updating..." : "Update Password"}
+              {changePasswordMutation.isPending ? "Updating Password..." : "Update Master Password"}
             </button>
           </div>
         </form>
       </div>
+
+      {/* Draggable Avatar Upload Modal */}
+      <AvatarUploadModal
+        isOpen={isAvatarModalOpen}
+        onClose={() => setIsAvatarModalOpen(false)}
+        currentAvatarUrl={user?.avatarUrl}
+        onUpload={handleAvatarUpload}
+      />
     </div>
   );
 }

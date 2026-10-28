@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
+import React, { useState, useEffect } from "react";
 import { useAuthUser } from "../../../../hooks/useAuthHooks";
 import { useUpdateProfileMutation, useUploadAvatarMutation } from "../../../../hooks/useUserHooks";
 import { extractApiError } from "../../../../lib/utils";
+import AvatarUploadModal from "./AvatarUploadModal";
+import { toast } from "sonner";
 
 export default function ProfileSettings() {
   const { data: user, isLoading } = useAuthUser();
@@ -17,9 +18,8 @@ export default function ProfileSettings() {
     location: "",
   });
 
-  const [errors, setErrors] = useState<{ form?: string }>({});
-  const [successMsg, setSuccessMsg] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -34,180 +34,205 @@ export default function ProfileSettings() {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setErrors({});
-    setSuccessMsg("");
+    setErrorMsg("");
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({});
-    setSuccessMsg("");
+    setErrorMsg("");
 
     try {
       await updateMutation.mutateAsync({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        location: formData.location,
+        firstName: formData.firstName.trim() || undefined,
+        lastName: formData.lastName.trim() || undefined,
+        location: formData.location.trim() || undefined,
       });
-      setSuccessMsg("Profile details updated successfully.");
+      toast.success("Profile details updated successfully!");
     } catch (err: any) {
-      setErrors({ form: extractApiError(err, "Failed to update profile.") });
+      setErrorMsg(extractApiError(err, "Failed to update profile details."));
     }
   };
 
-  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setErrors({});
-    setSuccessMsg("");
-
-    try {
-      await avatarMutation.mutateAsync(file);
-      setSuccessMsg("Profile picture updated successfully.");
-    } catch (err: any) {
-      setErrors({ form: extractApiError(err, "Failed to upload image.") });
-    }
-    
-    // reset input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+  const handleAvatarUpload = async (file: File) => {
+    await avatarMutation.mutateAsync(file);
   };
 
   if (isLoading) {
-    return <div className="p-8 text-text-muted font-sans text-sm animate-pulse">Loading profile...</div>;
+    return (
+      <div className="art-deco-card rounded-card p-8 flex flex-col gap-4 animate-pulse">
+        <div className="h-6 w-48 bg-elevated rounded" />
+        <div className="h-4 w-72 bg-elevated rounded" />
+        <div className="h-28 w-full bg-elevated/40 rounded-xl mt-4" />
+      </div>
+    );
   }
 
+  const initials = user?.firstName
+    ? `${user.firstName[0]}${user.lastName ? user.lastName[0] : ""}`.toUpperCase()
+    : (user?.email?.[0] || "U").toUpperCase();
+
   return (
-    <div className="bg-surface border border-border rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card animate-fadeIn">
-      <div>
-        <h2 className="font-heading font-black text-xl text-text-primary uppercase tracking-tight">Profile Details</h2>
-        <p className="font-sans text-xs text-text-muted mt-1">Manage your public profile and contact information.</p>
+    <div className="art-deco-card rounded-card p-6 lg:p-8 flex flex-col gap-6 shadow-card animate-fadeIn border border-border">
+      {/* Section Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border/80">
+        <div>
+          <h2 className="font-heading font-black text-xl text-text-primary uppercase tracking-tight">
+            Personal &amp; Public Profile
+          </h2>
+          <p className="font-sans text-xs text-text-muted mt-0.5">
+            Manage your display name, contact coordinates, and public platform avatar.
+          </p>
+        </div>
+        <span className="px-3 py-1 rounded-full bg-accent-bg border border-primary/30 text-text-brand font-mono font-bold text-xs uppercase self-start sm:self-auto">
+          Role: {user?.role || "USER"}
+        </span>
       </div>
 
-      <div className="h-px w-full bg-divider" />
-
-      {errors.form && (
-        <div className="bg-[#FEE2E2] border border-[#FECACA] text-[#DC2626] text-xs font-sans font-semibold p-3 rounded-xl">
-          ⚠️ {errors.form}
+      {errorMsg && (
+        <div className="p-3 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs rounded-xl font-sans font-semibold flex items-center gap-2">
+          <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+          </svg>
+          <span>{errorMsg}</span>
         </div>
       )}
 
-      {successMsg && (
-        <div className="bg-[#DCFCE7] border border-[#BBF7D0] text-[#15803D] text-xs font-sans font-semibold p-3 rounded-xl">
-          ✅ {successMsg}
+      {/* Avatar Hero Card */}
+      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 p-5 rounded-xl bg-surface/70 border border-primary/20">
+        <div className="relative group">
+          <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-primary/40 p-1 bg-surface shadow-md">
+            {user?.avatarUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={user.avatarUrl}
+                alt="Profile Avatar"
+                className="w-full h-full object-cover rounded-full"
+              />
+            ) : (
+              <div className="w-full h-full rounded-full bg-accent-bg flex items-center justify-center text-text-brand font-heading font-black text-xl">
+                {initials}
+              </div>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsAvatarModalOpen(true)}
+            className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-primary text-[#090A0E] flex items-center justify-center shadow-md cursor-pointer hover:scale-105 transition-transform"
+            title="Update avatar"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Z" />
+            </svg>
+          </button>
         </div>
-      )}
 
-      {/* Avatar Section */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
-        <div className="relative w-20 h-20 rounded-full bg-elevated border border-border-medium flex items-center justify-center shrink-0 overflow-hidden shadow-xs">
-          {user?.avatarUrl ? (
-            <Image 
-              src={user.avatarUrl} 
-              alt="Avatar" 
-              fill 
-              className="object-cover"
-              unoptimized={true} 
-            />
-          ) : (
-            <span className="font-heading font-black text-2xl text-text-brand">
-              {(user?.firstName?.[0] || user?.email?.[0] || 'U').toUpperCase()}
-            </span>
-          )}
-          {avatarMutation.isPending && (
-            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-              <span className="text-white text-[10px] font-bold">Uploading</span>
-            </div>
-          )}
-        </div>
-        
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-3">
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              className="hidden" 
-              accept="image/png, image/jpeg, image/jpg, image/webp"
-              onChange={handleFileSelect}
-            />
-            <button 
+        <div className="flex flex-col items-center sm:items-start min-w-0 flex-1 text-center sm:text-left">
+          <h3 className="font-heading font-black text-base text-text-primary">
+            {user?.firstName ? `${user.firstName} ${user.lastName || ""}` : "Unnamed User"}
+          </h3>
+          <p className="font-mono text-xs text-text-muted mt-0.5">{user?.email}</p>
+          <div className="flex items-center gap-3 mt-3">
+            <button
               type="button"
-              disabled={avatarMutation.isPending}
-              onClick={() => fileInputRef.current?.click()}
-              className="h-[36px] px-4 rounded-xl bg-accent-bg border border-primary/30 hover:bg-primary hover:text-white text-text-brand font-heading font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+              onClick={() => setIsAvatarModalOpen(true)}
+              className="btn-dark-metallic h-8 px-3 rounded-lg font-heading font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer"
             >
-              Upload New Picture
+              Change Photo
             </button>
           </div>
-          <p className="font-sans text-[11px] text-text-muted">Recommended: Square JPG, PNG. Max 5MB.</p>
         </div>
       </div>
 
-      <div className="h-px w-full bg-divider" />
-      
-      {/* Form Fields */}
+      {/* Profile Form */}
       <form onSubmit={handleSave} className="flex flex-col gap-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div className="flex flex-col gap-2">
-            <label className="font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">First Name</label>
-            <input 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              First Name
+            </label>
+            <input
               type="text"
               name="firstName"
               value={formData.firstName}
               onChange={handleInputChange}
-              disabled={updateMutation.isPending}
-              className="w-full h-11 bg-elevated border border-border-medium rounded-xl px-4 text-sm text-text-primary focus:border-primary focus:outline-none transition-all"
+              placeholder="e.g. Sarah"
+              className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
             />
           </div>
-          <div className="flex flex-col gap-2">
-            <label className="font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">Last Name</label>
-            <input 
-              type="text" 
+
+          <div className="flex flex-col gap-1.5">
+            <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              Last Name
+            </label>
+            <input
+              type="text"
               name="lastName"
               value={formData.lastName}
               onChange={handleInputChange}
-              disabled={updateMutation.isPending}
-              className="w-full h-11 bg-elevated border border-border-medium rounded-xl px-4 text-sm text-text-primary focus:border-primary focus:outline-none transition-all"
+              placeholder="e.g. Jenkins"
+              className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
             />
           </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">Email Address</label>
-          <input 
-            type="email" 
-            value={user?.email || ""} 
-            disabled 
-            className="w-full h-11 bg-elevated border border-border-medium/60 rounded-xl px-4 text-sm text-text-muted cursor-not-allowed opacity-75"
-          />
-          <span className="text-[11px] text-text-muted">Email address cannot be changed directly.</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              Email Address (Account ID)
+            </label>
+            <input
+              type="email"
+              disabled
+              value={user?.email || ""}
+              className="input-obsidian w-full h-11 px-4 rounded-xl font-mono text-xs text-text-muted opacity-60 cursor-not-allowed shadow-sm"
+              title="Email address cannot be modified directly"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="font-heading font-bold text-xs uppercase tracking-wider text-text-muted">
+              Location / Region
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              placeholder="e.g. London, United Kingdom"
+              className="input-obsidian w-full h-11 px-4 rounded-xl font-sans text-xs text-text-primary placeholder:text-text-muted focus:outline-none transition-all shadow-sm"
+            />
+          </div>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label className="font-sans font-bold text-[11px] text-text-muted uppercase tracking-wider">Location</label>
-          <input 
-            type="text" 
-            name="location"
-            value={formData.location}
-            onChange={handleInputChange}
-            placeholder="e.g. London, UK"
-            disabled={updateMutation.isPending}
-            className="w-full h-11 bg-elevated border border-border-medium rounded-xl px-4 text-sm text-text-primary focus:border-primary focus:outline-none transition-all"
-          />
-        </div>
-        
-        <div className="flex justify-end pt-4 border-t border-divider mt-2">
-          <button 
+        {/* Action Button */}
+        <div className="flex items-center justify-end pt-4 border-t border-border/80">
+          <button
             type="submit"
             disabled={updateMutation.isPending}
-            className="btn-glossy-red h-[42px] px-8 rounded-xl bg-[#dc2626] text-white font-heading font-bold text-xs uppercase tracking-wider transition-all shadow-md active:scale-98 disabled:opacity-50 cursor-pointer"
+            className="btn-gold-metallic h-10 px-6 rounded-xl font-heading font-black text-xs uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-md disabled:opacity-50"
           >
-            {updateMutation.isPending ? "Saving..." : "Save Changes"}
+            {updateMutation.isPending ? (
+              <>
+                <svg className="animate-spin w-3.5 h-3.5" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <span>Saving Changes...</span>
+              </>
+            ) : (
+              <span>Save Profile Details</span>
+            )}
           </button>
         </div>
       </form>
+
+      {/* Draggable Avatar Upload Modal */}
+      <AvatarUploadModal
+        isOpen={isAvatarModalOpen}
+        onClose={() => setIsAvatarModalOpen(false)}
+        currentAvatarUrl={user?.avatarUrl}
+        onUpload={handleAvatarUpload}
+      />
     </div>
   );
 }
