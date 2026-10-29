@@ -48,27 +48,27 @@ export default function TicketQuantitySelector({
             type="button"
             onClick={() => onQuantityChange(pick)}
             className={cn(
-              "py-2 px-1 text-center font-heading text-xs font-semibold rounded-button border select-none transition-all duration-200 cursor-pointer",
+              "py-2 px-1 text-center font-heading text-xs font-bold rounded-xl border select-none transition-all duration-200 cursor-pointer",
               quantity === pick
-                ? "bg-accent-bg border-border-medium text-[#8cb34a] shadow-glow"
-                : "bg-transparent border-border text-[#5a752a] hover:border-border-medium hover:text-text-primary"
+                ? "bg-gradient-to-r from-[#D4AF37] to-[#B39042] border-[#D4AF37] text-[#090A0E] shadow-[0_0_12px_rgba(212,175,55,0.35)]"
+                : "bg-[#181C28] border-[rgba(212,175,55,0.2)] text-[#F4EBD9] hover:border-[#D4AF37]/50 hover:text-[#D4AF37]"
             )}
           >
-            {pick}
+            +{pick}
           </button>
         ))}
       </div>
 
       {/* Plus/Minus Numeric Selector Container */}
-      <div className="flex items-center border border-border rounded-button overflow-hidden bg-surface h-10 w-full">
+      <div className="flex items-center border border-[rgba(212,175,55,0.25)] rounded-xl overflow-hidden bg-[#090A0E] h-10 w-full shadow-inner">
         {/* Decrement Button */}
         <button
           type="button"
           onClick={handleDecrement}
           disabled={quantity <= minTickets}
           className={cn(
-            "h-full w-10 flex items-center justify-center bg-accent-bg text-text-brand transition-colors cursor-pointer select-none",
-            quantity <= minTickets ? "opacity-35 cursor-not-allowed" : "hover:bg-accent-bg/80"
+            "h-full w-10 flex items-center justify-center bg-[#181C28] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#090A0E] transition-colors cursor-pointer select-none",
+            quantity <= minTickets ? "opacity-35 cursor-not-allowed" : ""
           )}
           aria-label="Decrease ticket quantity"
         >
@@ -85,7 +85,7 @@ export default function TicketQuantitySelector({
         </button>
 
         {/* Quantity Display Box */}
-        <div className="flex-grow h-full bg-[#0d0d0b] text-[#e8edd4] flex items-center justify-center font-heading font-semibold text-sm">
+        <div className="flex-grow h-full bg-transparent text-[#F4EBD9] flex items-center justify-center font-heading font-black text-sm tabular-nums">
           {quantity}
         </div>
 
@@ -95,8 +95,8 @@ export default function TicketQuantitySelector({
           onClick={handleIncrement}
           disabled={quantity >= maxTickets}
           className={cn(
-            "h-full w-10 flex items-center justify-center bg-accent-bg text-text-brand transition-colors cursor-pointer select-none",
-            quantity >= maxTickets ? "opacity-35 cursor-not-allowed" : "hover:bg-accent-bg/80"
+            "h-full w-10 flex items-center justify-center bg-[#181C28] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#090A0E] transition-colors cursor-pointer select-none",
+            quantity >= maxTickets ? "opacity-35 cursor-not-allowed" : ""
           )}
           aria-label="Increase ticket quantity"
         >

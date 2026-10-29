@@ -446,57 +446,59 @@ export default function RaffleEntryCard({ raffle }: RaffleEntryCardProps) {
   };
 
   return (
-    <div className="bg-surface border border-border rounded-card p-6 shadow-card flex flex-col w-full max-w-[400px]">
-      
+    <div className="relative flex w-full max-w-[420px] flex-col rounded-2xl border border-[rgba(212,175,55,0.25)] bg-[#12151F] p-6 sm:p-7 shadow-[0_20px_45px_rgba(0,0,0,0.7)] backdrop-blur-md">
+      {/* Subtle corner flare */}
+      <div className="pointer-events-none absolute top-0 right-0 h-32 w-32 rounded-tr-2xl bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.12)_0%,transparent_70%)]" />
+
       {/* Top Value Section */}
-      <div className="flex flex-col gap-1 mb-6">
-        <span className="font-sans text-[10px] text-text-muted uppercase tracking-wider font-bold">
+      <div className="flex flex-col gap-1 mb-6 relative z-10">
+        <span className="font-heading text-[10px] text-[#A69B82] uppercase tracking-[0.2em] font-black">
           {instantWinPrizes && instantWinPrizes.length > 0 ? "Combined Prize Pool" : "Main Prize Worth"}
         </span>
-        <span className="font-heading font-black text-[32px] text-text-brand leading-tight">
+        <span className="font-heading font-black text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0D4] via-[#D4AF37] to-[#F5E5C0] leading-tight drop-shadow-[0_2px_12px_rgba(212,175,55,0.25)]">
           £{(totalPoolValue || worthPrice || 0).toLocaleString()}
         </span>
         {(worthPrice || totalPoolValue) > 0 && (
-          <span className="font-sans text-[11px] text-text-muted">
+          <span className="font-sans text-[11px] text-[#A69B82]">
             Declared Prize Value: £{(worthPrice || totalPoolValue).toLocaleString()}
           </span>
         )}
       </div>
 
       {/* Stats Rows */}
-      <div className="flex flex-col gap-3 mb-6">
-        <div className="flex flex-col gap-1 pb-3 border-b border-divider">
+      <div className="flex flex-col gap-3 mb-6 relative z-10">
+        <div className="flex flex-col gap-1 pb-3 border-b border-[rgba(212,175,55,0.12)]">
           <div className="flex items-center justify-between">
-            <span className="font-sans text-xs font-semibold text-text-muted">Draw Closing</span>
-            <span className="font-heading font-bold text-xs text-text-brand tabular-nums tracking-wider animate-pulse">
+            <span className="font-sans text-xs font-semibold text-[#A69B82]">Draw Closing</span>
+            <span className="font-heading font-black text-xs text-[#D4AF37] tabular-nums tracking-wider animate-pulse">
               {timeLeft || "Ended"}
             </span>
           </div>
           {endDate && (
-            <div className="flex items-center justify-between text-[11px] text-text-muted">
+            <div className="flex items-center justify-between text-[11px] text-[#A69B82] mt-0.5">
               <span>Draw Date (UK):</span>
-              <span className="font-medium text-text-primary">{formatUkDateTime(endDate)}</span>
+              <span className="font-medium text-[#F4EBD9]">{formatUkDateTime(endDate)}</span>
             </div>
           )}
         </div>
-        <div className="flex items-center justify-between pb-3 border-b border-divider">
-          <span className="font-sans text-xs font-semibold text-text-muted">Ticket Price</span>
-          <span className="font-heading font-bold text-xs text-text-primary">£{ticketPrice.toFixed(2)}</span>
+        <div className="flex items-center justify-between pb-3 border-b border-[rgba(212,175,55,0.12)]">
+          <span className="font-sans text-xs font-semibold text-[#A69B82]">Ticket Price</span>
+          <span className="font-heading font-black text-xs text-[#D4AF37]">£{ticketPrice.toFixed(2)}</span>
         </div>
-        <div className="flex items-center justify-between pb-3 border-b border-divider">
-          <span className="font-sans text-xs font-semibold text-text-muted">Tickets</span>
-          <span className="font-heading font-bold text-xs text-text-primary">{soldTickets.toLocaleString()} / {totalTickets.toLocaleString()}</span>
+        <div className="flex items-center justify-between pb-3 border-b border-[rgba(212,175,55,0.12)]">
+          <span className="font-sans text-xs font-semibold text-[#A69B82]">Tickets Allocated</span>
+          <span className="font-heading font-bold text-xs text-[#F4EBD9]">{soldTickets.toLocaleString()} / {totalTickets.toLocaleString()}</span>
         </div>
         {minAllowed > 1 && (
-          <div className="flex items-center justify-between pb-3 border-b border-divider">
-            <span className="font-sans text-xs font-semibold text-text-muted">Min Entry</span>
-            <span className="font-heading font-bold text-xs text-text-primary">{minAllowed} tickets</span>
+          <div className="flex items-center justify-between pb-3 border-b border-[rgba(212,175,55,0.12)]">
+            <span className="font-sans text-xs font-semibold text-[#A69B82]">Min Entry</span>
+            <span className="font-heading font-bold text-xs text-[#F4EBD9]">{minAllowed} tickets</span>
           </div>
         )}
         {maxPerPerson !== undefined && maxPerPerson !== null && (
-          <div className="flex items-center justify-between pb-3 border-b border-divider">
-            <span className="font-sans text-xs font-semibold text-text-muted">Max Per Person</span>
-            <span className="font-heading font-bold text-xs text-text-primary">
+          <div className="flex items-center justify-between pb-3 border-b border-[rgba(212,175,55,0.12)]">
+            <span className="font-sans text-xs font-semibold text-[#A69B82]">Max Per Person</span>
+            <span className="font-heading font-bold text-xs text-[#F4EBD9]">
               {maxPerPerson} tickets {isAuthenticated && userOwnedTickets > 0 ? `(${userOwnedTickets} owned)` : ''}
             </span>
           </div>
@@ -504,21 +506,22 @@ export default function RaffleEntryCard({ raffle }: RaffleEntryCardProps) {
       </div>
 
       {/* Progress Bar */}
-      <div className="flex flex-col gap-2 mb-6">
-        <div className="w-full h-2 bg-elevated border border-border-medium rounded-full overflow-hidden">
+      <div className="flex flex-col gap-2 mb-6 relative z-10">
+        <div className="w-full h-2 bg-[#090A0E] border border-[rgba(212,175,55,0.2)] rounded-full overflow-hidden p-[1px]">
           <div 
-            className="h-full bg-primary rounded-full" 
+            className="h-full bg-gradient-to-r from-[#B39042] via-[#D4AF37] to-[#F5E5C0] rounded-full shadow-[0_0_8px_rgba(212,175,55,0.4)] transition-all duration-300" 
             style={{ width: `${soldPercent}%` }}
           />
         </div>
-        <div className="flex justify-end">
-          <span className="font-sans text-[11px] text-text-muted font-bold">{remainingTickets.toLocaleString()} tickets left</span>
+        <div className="flex justify-between items-center text-[10px]">
+          <span className="font-mono text-[#D4AF37] font-bold">{soldPercent}% SOLD</span>
+          <span className="font-mono text-[#A69B82] font-semibold">{remainingTickets.toLocaleString()} tickets left</span>
         </div>
       </div>
 
       {/* Ticket Selection */}
-      <div className="flex flex-col gap-3 mb-6">
-        <span className="font-sans text-xs font-bold text-text-primary">Number of tickets</span>
+      <div className="flex flex-col gap-3 mb-6 relative z-10">
+        <span className="font-heading text-xs font-black uppercase tracking-wider text-[#F4EBD9]">Number of tickets</span>
         
         <div className="grid grid-cols-4 gap-2">
           {[1, 5, 10, 20].map((num) => {
@@ -528,26 +531,26 @@ export default function RaffleEntryCard({ raffle }: RaffleEntryCardProps) {
                 key={num}
                 onClick={() => handleQuickPick(num)}
                 disabled={effectiveMax <= 0 || isPersonalLimitReached}
-                className={`h-9 rounded-xl font-heading font-bold text-xs transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed ${
+                className={`h-9 rounded-xl font-heading font-bold text-xs transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none ${
                   quantity === num 
-                    ? "bg-primary text-white border border-primary shadow-xs" 
+                    ? "bg-gradient-to-r from-[#D4AF37] to-[#B39042] text-[#090A0E] shadow-[0_0_12px_rgba(212,175,55,0.35)]" 
                     : isOutOfRange
-                    ? "bg-surface/50 border border-divider text-text-muted/50 hover:border-border-medium"
-                    : "bg-surface border border-border text-text-muted hover:border-border-medium hover:text-text-primary"
+                    ? "bg-[#181C28]/40 border border-[rgba(212,175,55,0.1)] text-[#6E6655]"
+                    : "bg-[#181C28] border border-[rgba(212,175,55,0.25)] text-[#F4EBD9] hover:border-[#D4AF37]/50 hover:text-[#D4AF37]"
                 }`}
               >
-                {num}
+                +{num}
               </button>
             );
           })}
         </div>
 
-        <div className="flex items-center h-11 bg-elevated border border-border-medium rounded-xl overflow-hidden mt-1">
+        <div className="flex items-center h-11 bg-[#090A0E] border border-[rgba(212,175,55,0.25)] rounded-xl overflow-hidden mt-1 shadow-inner">
           <button 
             type="button"
             onClick={handleDecrement}
             disabled={quantity <= minAllowed || effectiveMax <= 0 || isPersonalLimitReached}
-            className="w-11 h-full flex items-center justify-center bg-surface hover:bg-accent-bg text-text-primary font-bold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none"
+            className="w-11 h-full flex items-center justify-center bg-[#181C28] hover:bg-[#D4AF37] hover:text-[#090A0E] text-[#F4EBD9] font-bold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none"
             aria-label="Decrease quantity"
           >
             -
@@ -570,14 +573,14 @@ export default function RaffleEntryCard({ raffle }: RaffleEntryCardProps) {
               }
             }}
             disabled={effectiveMax <= 0 || isPersonalLimitReached}
-            className="flex-1 h-full text-center font-heading font-bold text-sm text-text-primary border-x border-border-medium bg-transparent focus:outline-none focus:bg-accent-bg/40 transition-colors tabular-nums disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex-1 h-full text-center font-heading font-black text-sm text-[#F4EBD9] border-x border-[rgba(212,175,55,0.15)] bg-transparent focus:outline-none focus:bg-[#181C28] transition-colors tabular-nums disabled:opacity-40 disabled:cursor-not-allowed"
             aria-label="Ticket quantity"
           />
           <button 
             type="button"
             onClick={handleIncrement}
             disabled={quantity >= effectiveMax || remainingTickets === 0 || isPersonalLimitReached}
-            className="w-11 h-full flex items-center justify-center bg-surface hover:bg-accent-bg text-text-primary font-bold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none"
+            className="w-11 h-full flex items-center justify-center bg-[#181C28] hover:bg-[#D4AF37] hover:text-[#090A0E] text-[#F4EBD9] font-bold transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed select-none"
             aria-label="Increase quantity"
           >
             +
@@ -586,28 +589,28 @@ export default function RaffleEntryCard({ raffle }: RaffleEntryCardProps) {
       </div>
 
       {/* Total & Enter CTA */}
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <span className="font-sans text-xs font-semibold text-text-muted">Total ({quantity} tickets)</span>
-          <span className="font-heading font-black text-lg text-text-primary">
+      <div className="flex flex-col gap-4 relative z-10">
+        <div className="flex items-center justify-between border-t border-[rgba(212,175,55,0.12)] pt-3">
+          <span className="font-sans text-xs font-semibold text-[#A69B82]">Total ({quantity} tickets)</span>
+          <span className="font-heading font-black text-xl text-[#D4AF37]">
             {ticketPrice === 0 ? "FREE" : `£${totalPrice.toFixed(2)}`}
           </span>
         </div>
 
         {(isExpired || isStatusEnded) && (
-          <div className="p-3 rounded-xl text-xs font-sans text-center font-bold bg-[#FEE2E2] text-[#991B1B] border border-[#FECACA]">
+          <div className="p-3 rounded-xl text-xs font-sans text-center font-bold bg-red-950/70 text-red-200 border border-red-500/40">
             🔒 Competition Closed: This competition has ended and entries are closed.
           </div>
         )}
 
         {!isExpired && !isStatusEnded && isSoldOut && (
-          <div className="p-3 rounded-xl text-xs font-sans text-center font-bold bg-[#FEF3C7] text-[#B45309] border border-[#FDE68A]">
+          <div className="p-3 rounded-xl text-xs font-sans text-center font-bold bg-[#2A1E08] text-[#E5C158] border border-[#D4AF37]/50">
             🎟️ Sold Out: All tickets for this competition have been allocated.
           </div>
         )}
 
         {!isEnded && isPersonalLimitReached && (
-          <div className="p-3 rounded-xl text-xs font-sans text-center font-bold bg-[#FEF3C7] text-[#B45309] border border-[#FDE68A]">
+          <div className="p-3 rounded-xl text-xs font-sans text-center font-bold bg-[#2A1E08] text-[#E5C158] border border-[#D4AF37]/50">
             Personal Limit Reached: You hold {userOwnedTickets} / {maxPerPerson} tickets
           </div>
         )}
@@ -618,7 +621,7 @@ export default function RaffleEntryCard({ raffle }: RaffleEntryCardProps) {
               type="button"
               onClick={handleAddToBasket}
               disabled={isEnded || isPersonalLimitReached || isPurchasing}
-              className="w-full h-12 rounded-xl font-heading font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 border-2 border-[#15803d] text-[#15803d] hover:bg-[#15803d] hover:text-white shadow-xs active:scale-98 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-dark-metallic w-full h-12 rounded-xl font-heading font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 border border-[rgba(212,175,55,0.35)] text-[#D4AF37] hover:border-[#D4AF37] hover:text-[#FFF0D4] shadow-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none"
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -641,15 +644,15 @@ export default function RaffleEntryCard({ raffle }: RaffleEntryCardProps) {
           <button 
             onClick={handlePurchase}
             disabled={isEnded || isPersonalLimitReached || isPurchasing}
-            className={`w-full h-12 rounded-xl font-heading font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center shadow-md active:scale-98 cursor-pointer ${
+            className={`w-full h-12 rounded-xl font-heading font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center shadow-md select-none cursor-pointer ${
               isEnded || isPersonalLimitReached || isPurchasing
-                ? 'bg-elevated border border-border text-text-muted cursor-not-allowed'
-                : 'bg-primary hover:bg-primary-hover text-white'
+                ? 'bg-[#181C28] border border-[rgba(212,175,55,0.15)] text-[#6E6655] cursor-not-allowed'
+                : 'btn-gold-metallic text-[#090A0E]'
             }`}
           >
             {isPurchasing ? (
               <div className="flex items-center gap-2">
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-[#090A0E] border-t-transparent rounded-full animate-spin" />
                 <span>Claiming Free Entry...</span>
               </div>
             ) : (isExpired || isStatusEnded) ? (
@@ -673,20 +676,20 @@ export default function RaffleEntryCard({ raffle }: RaffleEntryCardProps) {
 
         {statusMessage && (
           <div className={`p-3 rounded-xl text-xs font-sans text-center font-medium ${
-            statusMessage.type === 'success' ? 'bg-[#DCFCE7] text-[#15803D] border border-[#BBF7D0]' : 'bg-[#FEE2E2] text-[#991B1B] border border-[#FECACA]'
+            statusMessage.type === 'success' ? 'bg-emerald-950/70 text-emerald-200 border border-emerald-500/40' : 'bg-red-950/70 text-red-200 border border-red-500/40'
           }`}>
             {statusMessage.text}
           </div>
         )}
 
-        <p className="font-sans text-[10px] text-text-muted text-center">
-          Secure checkout. Competitions fully audited. 18+
+        <p className="font-sans text-[10px] text-[#A69B82] text-center">
+          Secure checkout · Transparent verified draws · 18+ UK only
         </p>
       </div>
 
       {/* Share Button */}
-      <button className="w-full h-10 mt-4 flex items-center justify-center gap-2 rounded-xl bg-surface border border-border hover:bg-elevated text-text-primary font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-xs">
-        <svg className="w-3.5 h-3.5 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <button className="w-full h-10 mt-4 flex items-center justify-center gap-2 rounded-xl bg-[#181C28] border border-[rgba(212,175,55,0.2)] hover:border-[#D4AF37]/50 text-[#F4EBD9] font-heading font-bold text-xs uppercase tracking-wider transition-all cursor-pointer shadow-xs select-none">
+        <svg className="w-3.5 h-3.5 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
         </svg>
         <span>Share this competition</span>

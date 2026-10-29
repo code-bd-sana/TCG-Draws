@@ -86,51 +86,110 @@ export default function FinalCtaSection() {
             </div>
           </div>
 
-          {/* RIGHT — Dashboard Preview */}
+          {/* RIGHT — Host Portal Dashboard Mini-Widget Preview */}
           <div className="flex justify-center lg:justify-end">
-            <div className="w-full max-w-[480px] art-deco-card rounded-[24px] p-7 shadow-2xl transition-all duration-300">
+            <div className="w-full max-w-[500px] art-deco-card rounded-3xl p-7 shadow-[0_25px_60px_rgba(0,0,0,0.8),0_0_35px_rgba(212,175,55,0.2)] transition-all duration-300 relative overflow-hidden group">
+              {/* Corner gold flare */}
+              <div className="absolute top-0 right-0 w-36 h-36 bg-gradient-to-bl from-[#D4AF37]/20 to-transparent rounded-bl-full pointer-events-none" />
 
-              {/* Card Header */}
+              {/* Header: Verified Host Portal */}
               <div className="flex items-center justify-between pb-5 border-b border-[rgba(212,175,55,0.2)] mb-6">
-                <div>
-                  <h3 className="font-heading font-black text-sm text-[#F4EBD9] uppercase tracking-wider">Breaker Dashboard</h3>
-                  <p className="font-sans text-[10px] text-[#A69B82] mt-0.5">Live platform metrics</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#1C160E] to-[#12151F] border border-[#D4AF37]/40 flex items-center justify-center font-heading font-black text-sm text-[#D4AF37] shadow-inner">
+                    ⚡
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <h3 className="font-heading font-black text-sm text-[#F4EBD9] uppercase tracking-wide">
+                        Host Portal Dashboard
+                      </h3>
+                    </div>
+                    <span className="font-mono text-[10px] text-emerald-400 font-bold uppercase tracking-wider">
+                      ● Real-time Metrics
+                    </span>
+                  </div>
                 </div>
-                <span className="flex items-center gap-1.5 text-[10px] font-bold text-[#D4AF37] bg-[rgba(212,175,55,0.12)] px-2.5 py-1.5 rounded-full border border-[rgba(212,175,55,0.25)]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
-                  Live Vault
+
+                <span className="flex items-center gap-1.5 text-[10px] font-mono font-bold text-[#D4AF37] bg-[rgba(212,175,55,0.12)] px-3 py-1.5 rounded-full border border-[rgba(212,175,55,0.25)]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live Sync
                 </span>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-3.5 mb-6">
-                {[
-                  { value: isLoading ? "..." : stats.activeDraws, label: "Active Draws" },
-                  { value: isLoading ? "..." : stats.ticketsSold.toLocaleString('en-GB'), label: "Tickets Sold" },
-                  { value: isLoading ? "..." : formatCurrency(stats.totalEarned, 0), label: "Total Earned" },
-                ].map((s) => (
-                  <div key={s.label} className="bg-[#0C0E14] border border-[rgba(212,175,55,0.2)] rounded-xl p-3.5 text-center">
-                    <span className="font-heading text-lg font-black text-[#D4AF37] block">{s.value}</span>
-                    <span className="font-sans text-[9px] text-[#A69B82] font-semibold uppercase tracking-wider mt-0.5 block">{s.label}</span>
-                  </div>
-                ))}
+              {/* 3 Real KPI Metric Cards */}
+              <div className="grid grid-cols-3 gap-3 mb-6">
+                <div className="bg-[#0C0E14] border border-[rgba(212,175,55,0.2)] rounded-2xl p-3.5 text-center flex flex-col justify-between">
+                  <span className="font-mono text-[9px] text-[#A69B82] uppercase tracking-wider font-bold block mb-1">
+                    Live Draws
+                  </span>
+                  <span className="font-heading text-lg sm:text-xl font-black text-[#F4EBD9]">
+                    {isLoading ? "..." : stats.activeDraws}
+                  </span>
+                  <span className="text-[9px] font-mono text-text-muted mt-1">Platform</span>
+                </div>
+
+                <div className="bg-[#0C0E14] border border-[rgba(212,175,55,0.2)] rounded-2xl p-3.5 text-center flex flex-col justify-between">
+                  <span className="font-mono text-[9px] text-[#A69B82] uppercase tracking-wider font-bold block mb-1">
+                    Tickets Sold
+                  </span>
+                  <span className="font-heading text-lg sm:text-xl font-black text-[#D4AF37]">
+                    {isLoading ? "..." : stats.ticketsSold.toLocaleString('en-GB')}
+                  </span>
+                  <span className="text-[9px] font-mono text-text-muted mt-1">Total Entries</span>
+                </div>
+
+                <div className="bg-[#0C0E14] border border-[rgba(212,175,55,0.2)] rounded-2xl p-3.5 text-center flex flex-col justify-between">
+                  <span className="font-mono text-[9px] text-[#A69B82] uppercase tracking-wider font-bold block mb-1">
+                    Total Volume
+                  </span>
+                  <span className="font-heading text-lg sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FFF0D4] via-[#D4AF37] to-[#F5E5C0]">
+                    {isLoading ? "..." : formatCurrency(stats.totalEarned, 0)}
+                  </span>
+                  <span className="text-[9px] font-mono text-emerald-400 mt-1">Escrow Synced</span>
+                </div>
               </div>
 
-              {/* Progress */}
-              <div className="pt-5 border-t border-[rgba(212,175,55,0.2)]">
-                <div className="flex justify-between items-center text-xs text-[#A69B82] mb-3 font-semibold">
-                  <span>Capacity Allocation</span>
+              {/* Verified Platform Architecture Features */}
+              <div className="bg-[#0C0E14]/80 border border-[rgba(212,175,55,0.18)] rounded-2xl p-4 mb-6">
+                <span className="font-mono text-[10px] text-[#D4AF37] uppercase font-bold tracking-wider block mb-2.5">
+                  Host Operating Features
+                </span>
+                <div className="flex flex-col gap-2 font-mono text-[11px] text-[#C8BFAD]">
+                  <div className="flex items-center justify-between">
+                    <span>✓ Automated Ticket Accounting</span>
+                    <span className="text-emerald-400 font-bold">Enabled</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>✓ Next-Day Escrow Payouts</span>
+                    <span className="text-emerald-400 font-bold">Guaranteed</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>✓ Random.org Draw Automation</span>
+                    <span className="text-emerald-400 font-bold">Integrated</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Progress & Payout Status */}
+              <div className="pt-4 border-t border-[rgba(212,175,55,0.2)]">
+                <div className="flex justify-between items-center text-xs text-[#A69B82] mb-2 font-mono">
+                  <span>Draw Capacity Fill Rate</span>
                   <span className="text-[#D4AF37] font-black">{isLoading ? "..." : `${stats.targetPercent}%`}</span>
                 </div>
-                <div className="w-full h-2.5 bg-[#0C0E14] rounded-full overflow-hidden border border-[rgba(212,175,55,0.2)]">
+                <div className="w-full h-2 bg-[#0C0E14] rounded-full overflow-hidden border border-[rgba(212,175,55,0.2)]">
                   <div
-                    className="h-full bg-gradient-to-r from-[#D4AF37] to-[#F5E5C0] rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(212,175,55,0.5)]"
-                    style={{ width: `${isLoading ? 0 : stats.targetPercent}%` }}
+                    className="h-full bg-gradient-to-r from-[#B39042] via-[#D4AF37] to-[#FFF0D4] rounded-full transition-all duration-700 shadow-[0_0_12px_rgba(212,175,55,0.6)]"
+                    style={{ width: `${isLoading ? 0 : Math.max(stats.targetPercent, 0)}%` }}
                   />
                 </div>
-                <p className="font-sans text-[10px] text-[#A69B82] mt-2.5">
-                  {isLoading ? "Loading capacity metrics..." : `${stats.targetPercent}% of draw capacity reached across live card breaks!`}
-                </p>
+                
+                <div className="flex items-center justify-between mt-3 text-[10px] font-mono text-[#A69B82]">
+                  <span className="flex items-center gap-1.5 text-[#F4EBD9]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    Automated Bank Settlement
+                  </span>
+                  <span className="text-[#D4AF37] font-bold">10% Platform Fee</span>
+                </div>
               </div>
 
             </div>

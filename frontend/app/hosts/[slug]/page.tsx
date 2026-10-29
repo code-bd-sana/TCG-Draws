@@ -5,38 +5,9 @@ import WebsiteNavbar from "../../../components/website/layout/WebsiteNavbar";
 import WebsiteFooter from "../../../components/website/layout/WebsiteFooter";
 import HostProfileHeader from "../../../components/website/host-profile/HostProfileHeader";
 import HostProfileTabs from "../../../components/website/host-profile/HostProfileTabs";
-import { verifiedHostsData } from "../../../data/hosts/hosts.data";
-import { liveRafflesData } from "../../../data/live-raffles.data";
-import { hostReviewsData } from "../../../data/reviews/reviews.data";
-import { winnersData } from "../../../data/winners/winners.data";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
-}
-
-function resolveMockHost(slug: string) {
-  const cleanSlug = slug.toLowerCase().trim();
-
-  // 1. Direct or alias match
-  const found = verifiedHostsData.find((h) => {
-    const s = h.slug.toLowerCase();
-    if (s === cleanSlug) return true;
-    if (h.id.toLowerCase() === cleanSlug) return true;
-    // Normalized slug match
-    if (s.replace(/-/g, "") === cleanSlug.replace(/-/g, "")) return true;
-    return false;
-  });
-
-  if (!found) {
-    // Fuzzy fallback if slug contains key host identity
-    if (cleanSlug.includes("vault")) return verifiedHostsData[0];
-    if (cleanSlug.includes("grail")) return verifiedHostsData[1];
-    if (cleanSlug.includes("apex")) return verifiedHostsData[2];
-    if (cleanSlug.includes("pocket")) return verifiedHostsData[3];
-    return verifiedHostsData[0];
-  }
-
-  return found;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -56,13 +27,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       if (host && host.isVerified && !host.isBlocked) {
         name = host.name;
       }
-    } else {
-      const mock = resolveMockHost(slug);
-      if (mock) name = mock.name;
     }
   } catch {
-    const mock = resolveMockHost(slug);
-    if (mock) name = mock.name;
+    // ignore
   }
 
   return {
@@ -93,59 +60,7 @@ export default async function HostProfilePage({ params }: PageProps) {
     console.error("Failed to fetch host from backend API:", e);
   }
 
-  // Fallback to verifiedHostsData if backend is unavailable or host not found in DB
-  if (!host || !host.isVerified || host.isBlocked) {
-    const mock = resolveMockHost(slug);
-    if (mock) {
-      // Build past raffles from winnersData
-      const pastRaffles = winnersData.slice(0, 4).map((w, idx) => ({
-        id: `past-raffle-${w.id || idx}`,
-        title: `${w.prizeTitle} (Concluded)`,
-        description: `Official competition completed with verified ticket winner ${w.name} (${w.location}).`,
-        image:
-          idx === 0
-            ? "https://images.unsplash.com/photo-1613771404784-3a5686aa2be3?q=80&w=800&auto=format&fit=crop"
-            : idx === 1
-            ? "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=800&auto=format&fit=crop"
-            : "https://images.unsplash.com/photo-1563245372-f21724e3856d?q=80&w=800&auto=format&fit=crop",
-        ticketPrice: 2.0,
-        totalTickets: 250,
-        ticketsSold: 250,
-        soldTickets: 250,
-        endDate: w.drawDate || "Draw Closed",
-        status: "ENDED",
-        category: w.category || "Graded Slabs",
-        slug: `past-${w.id}`,
-      }));
-
-      // Find reviews for this host
-      const hostReviews = hostReviewsData.filter(
-        (r) => r.hostId === mock.id || r.status === "approved"
-      );
-
-      host = {
-        id: mock.id,
-        slug: mock.slug,
-        name: mock.name,
-        logo: mock.logo || "/uploads/avatars/ef6734d3d6c19d4ab982e5aa1b5bb10f6.webp",
-        bio:
-          mock.description ||
-          `${mock.name} is an officially verified partner on TCG Draws delivering authentic collectible competitions, audited transparent draws, and fast tracked UK delivery.`,
-        category: mock.category || "Card Vault",
-        isVerified: true,
-        isBlocked: false,
-        drawsHosted: mock.competitionCount || 45,
-        rating: mock.averageRating || 4.9,
-        totalReviews: mock.totalReviews || 120,
-        memberSince: mock.memberSince || 2024,
-        location: mock.location || "Manchester, UK",
-        raffles: [...liveRafflesData.slice(0, 4), ...pastRaffles],
-        reviews: hostReviews,
-      };
-    }
-  }
-
-  // If host is still completely unavailable / not found
+  // If host is unavailable or unverified in database, display standard honest empty state
   if (!host || !host.isVerified || host.isBlocked) {
     return (
       <>
@@ -192,17 +107,9 @@ export default async function HostProfilePage({ params }: PageProps) {
     .substring(0, 2)
     .toUpperCase();
 
-  // Reviews fallback if not passed directly in host object
-  const reviews =
-    host.reviews && host.reviews.length > 0
-      ? host.reviews
-      : hostReviewsData.filter(
-          (r) => r.hostId === host.id || r.status === "approved"
-        );
-
-  // Dynamic host ratings & review metrics
+  const reviews = Array.isArray(host.reviews) ? host.reviews : [];
   const rating = host.rating !== undefined ? host.rating : (host.averageRating !== undefined ? host.averageRating : null);
-  const totalReviews = host.totalReviews !== undefined ? host.totalReviews : (host.reviews ? host.reviews.length : 0);
+  const totalReviews = host.totalReviews !== undefined ? host.totalReviews : reviews.length;
   const reviewsStats = host.reviewsStats || null;
 
   return (

@@ -2,11 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import { raffleService, RecentWinner } from '@/services/raffle.service';
 
 /**
  * Recent Winners section — luxury dark-themed winner cards with gold accents.
+ * Only displays verified winners from the real database.
+ * If no winners exist yet, this section remains hidden.
  */
 export default function WinnersSection() {
   const [winners, setWinners] = useState<RecentWinner[]>([]);
@@ -14,70 +17,117 @@ export default function WinnersSection() {
 
   useEffect(() => {
     raffleService.getRecentWinners()
-      .then(data => setWinners(data))
+      .then(data => {
+        if (data && data.length > 0) {
+          setWinners(data);
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading || winners.length === 0) return null;
+  // Strict check: No fake data. If no real winners exist, do not render.
+  if (loading || winners.length === 0) {
+    return null;
+  }
 
   return (
-    <section id="recent-winners" className="py-20 bg-[#0C0E14] border-t border-[rgba(212,175,55,0.15)]">
-      <div className="container-custom">
+    <section id="recent-winners" className="relative py-24 bg-[#0C0E14] border-t border-[rgba(212,175,55,0.15)] overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-1/2 right-1/4 w-[500px] h-[300px] bg-[radial-gradient(circle,rgba(212,175,55,0.06)_0%,transparent_70%)] blur-3xl pointer-events-none" />
+
+      <div className="container-custom relative z-10">
 
         {/* Header */}
-        <div className="text-center mb-12">
-          <span className="text-[11px] font-black uppercase tracking-[0.2em] text-[#D4AF37] block mb-2">Community Grails</span>
-          <h2 className="font-heading text-3xl sm:text-4xl font-black text-[#F4EBD9]">Recent Winners</h2>
-          <p className="font-sans text-sm text-[#A69B82] mt-3 max-w-md mx-auto leading-relaxed">
-            Real collectors, real PSA 10 grails. See our most recent lucky winners and their verified slab deliveries.
-          </p>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 pb-8 border-b border-[rgba(212,175,55,0.15)]">
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[11px] font-heading font-black uppercase tracking-[0.2em] text-[#D4AF37]">
+                Community Hall of Fame
+              </span>
+            </div>
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-black text-[#F4EBD9] uppercase tracking-tight">
+              Recent Grail Winners
+            </h2>
+            <p className="font-sans text-xs sm:text-sm text-[#A69B82] mt-2 max-w-xl leading-relaxed">
+              Real collectors, genuine PSA 10 slabs. Every winner is verified on stream with tracked, insured next-day Royal Mail courier delivery.
+            </p>
+          </div>
+
+          <Link
+            href="/winners"
+            className="btn-gold-metallic px-6 py-3 rounded-xl font-heading font-black text-xs uppercase tracking-wider shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer flex items-center gap-2 self-start md:self-auto"
+          >
+            <span>View All Winners</span>
+            <span>&rarr;</span>
+          </Link>
         </div>
 
-        {/* Winners Grid */}
+        {/* Real Winners Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {winners.map((winner) => (
+          {winners.slice(0, 4).map((winner) => (
             <div
               key={winner.id}
-              className="group bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-[20px] p-6 flex flex-col justify-between hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.15)] transition-all duration-300"
+              className="art-deco-card rounded-3xl p-6 flex flex-col justify-between group hover:border-[#D4AF37]/50 hover:shadow-[0_20px_45px_rgba(0,0,0,0.8),0_0_30px_rgba(212,175,55,0.18)] hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden"
             >
+              {/* Corner gold flare */}
+              <div className="absolute top-0 right-0 w-28 h-28 bg-gradient-to-bl from-[#D4AF37]/15 to-transparent rounded-bl-full pointer-events-none" />
+
               {/* Avatar + Status */}
               <div className="flex items-center justify-between mb-5">
                 {winner.avatarUrl ? (
-                  <div className="relative w-12 h-12 rounded-2xl overflow-hidden border border-[rgba(212,175,55,0.3)] shadow-sm">
-                    <Image src={winner.avatarUrl} alt={winner.name} fill unoptimized sizes="48px" className="object-cover" />
+                  <div className="relative w-13 h-13 rounded-2xl overflow-hidden border border-[rgba(212,175,55,0.4)] shadow-md">
+                    <Image src={winner.avatarUrl} alt={winner.name} fill unoptimized sizes="52px" className="object-cover" />
                   </div>
                 ) : (
-                  <div className="w-12 h-12 rounded-2xl bg-[#1A1E2C] border border-[rgba(212,175,55,0.3)] flex items-center justify-center font-heading font-black text-[#D4AF37] text-sm shadow-sm">
+                  <div className="w-13 h-13 rounded-2xl bg-[#141722] border border-[rgba(212,175,55,0.4)] flex items-center justify-center font-heading font-black text-[#D4AF37] text-base shadow-inner group-hover:border-[#D4AF37] transition-colors">
                     {winner.initials}
                   </div>
                 )}
 
-                <span className="inline-flex items-center gap-1 bg-[#10B981]/15 border border-[#10B981]/30 px-2.5 py-1 rounded-full text-[9px] font-black text-[#34D399] tracking-wide uppercase">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.75 3.75 0 0 1 21 12Z" />
-                  </svg>
+                <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full text-[10px] font-mono font-bold text-emerald-400 tracking-wider uppercase shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   {winner.statusText}
                 </span>
               </div>
 
               {/* Name + Location */}
-              <h3 className="font-heading font-black text-base text-[#F4EBD9] mb-0.5">{winner.name}</h3>
-              <p className="font-sans text-[11px] text-[#A69B82] mb-4">{winner.location}</p>
-
-              {/* Divider */}
-              <div className="h-px bg-[rgba(212,175,55,0.15)] my-3" />
-
-              {/* Prize */}
               <div className="mb-4">
-                <span className="text-[9px] text-[#A69B82] uppercase tracking-wider font-bold block mb-1">Prize Won</span>
-                <span className="font-heading font-bold text-sm text-[#D4AF37] line-clamp-2">{winner.prizeWon}</span>
+                <h3 className="font-heading font-black text-lg text-[#F4EBD9] group-hover:text-[#D4AF37] transition-colors">
+                  {winner.name}
+                </h3>
+                {winner.location && (
+                  <p className="font-mono text-[11px] text-[#A69B82] mt-0.5">
+                    📍 {winner.location}
+                  </p>
+                )}
               </div>
 
-              {/* Timestamp */}
-              <p className="font-sans text-[10px] text-[#A69B82]/70 italic mt-auto">
-                {formatDistanceToNow(new Date(winner.whenWon), { addSuffix: true })}
-              </p>
+              {/* Prize Details Box */}
+              <div className="bg-[#090A0E]/70 border border-[rgba(212,175,55,0.2)] rounded-2xl p-4 mb-4">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[10px] text-[#A69B82] uppercase tracking-wider font-mono font-bold">
+                    Prize Won
+                  </span>
+                  <span className="text-[10px] font-mono text-[#D4AF37] font-bold">
+                    ✦ VERIFIED
+                  </span>
+                </div>
+                <span className="font-heading font-bold text-sm text-[#F4EBD9] line-clamp-2 leading-snug">
+                  {winner.prizeWon}
+                </span>
+              </div>
+
+              {/* Bottom Timestamp & Verification */}
+              <div className="pt-3 border-t border-[rgba(212,175,55,0.15)] flex items-center justify-between text-[11px] font-mono text-[#A69B82]">
+                <span className="text-emerald-400 font-bold">✓ Insured Courier</span>
+                {winner.whenWon && (
+                  <span className="italic text-[#A69B82]/80">
+                    {formatDistanceToNow(new Date(winner.whenWon), { addSuffix: true })}
+                  </span>
+                )}
+              </div>
             </div>
           ))}
         </div>

@@ -58,7 +58,7 @@ export default function RaffleImageGallery({
       viewBox="0 0 24 24"
       strokeWidth={2}
       stroke="currentColor"
-      className="w-3.5 h-3.5 text-[#8cb34a]"
+      className="w-3.5 h-3.5 text-[#D4AF37]"
     >
       <path
         strokeLinecap="round"
@@ -81,7 +81,7 @@ export default function RaffleImageGallery({
   return (
     <div className="flex flex-col gap-4 w-full select-none">
       {/* Main Image Frame */}
-      <div className="relative w-full h-[320px] sm:h-[400px] md:h-[460px] bg-surface border border-border rounded-card overflow-hidden">
+      <div className="relative w-full h-[320px] sm:h-[400px] md:h-[460px] bg-[#090A0E] border border-[rgba(212,175,55,0.25)] rounded-2xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
         {images.length > 0 ? (
           <Image
             src={images[activeImageIndex]}
@@ -89,49 +89,49 @@ export default function RaffleImageGallery({
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 980px"
-            className="object-cover opacity-85 transition-all duration-300"
+            className="object-cover opacity-90 hover:opacity-100 transition-all duration-300"
             unoptimized
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-text-muted text-xs">
+          <div className="w-full h-full flex items-center justify-center text-[#A69B82] font-heading text-xs uppercase tracking-wider">
             No Images Available
           </div>
         )}
 
         {/* Floating WOW Countdown Badge (Bottom Center) */}
         {timeData && !timeData.ended && (
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-6 bg-surface/90 backdrop-blur-md border border-border flex flex-col items-center justify-center gap-1 px-6 py-2.5 rounded-2xl select-none shadow-card pointer-events-none z-20 transition-all duration-300">
-            <div className="flex items-center gap-1.5 text-text-brand">
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-6 bg-[#12151F]/90 backdrop-blur-md border border-[rgba(212,175,55,0.35)] flex flex-col items-center justify-center gap-1 px-6 py-2.5 rounded-2xl select-none shadow-[0_10px_30px_rgba(0,0,0,0.8)] pointer-events-none z-20 transition-all duration-300">
+            <div className="flex items-center gap-1.5 text-[#D4AF37]">
               <svg className="w-3.5 h-3.5 animate-[spin_3s_linear_infinite]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
-              <span className="text-[9px] font-heading font-bold tracking-widest uppercase text-text-muted">Ends In</span>
+              <span className="text-[9px] font-heading font-black tracking-widest uppercase text-[#D4AF37]">Ends In</span>
             </div>
             
             <div className="flex items-center gap-2 sm:gap-3">
               {timeData.d! > 0 && (
                 <div className="flex flex-col items-center min-w-[32px]">
-                  <span className="text-xl sm:text-2xl font-heading font-black text-text-primary tabular-nums tracking-tight">{timeData.d}</span>
-                  <span className="text-[9px] text-text-muted font-sans font-bold uppercase tracking-wider">Days</span>
+                  <span className="text-xl sm:text-2xl font-heading font-black text-[#F4EBD9] tabular-nums tracking-tight">{timeData.d}</span>
+                  <span className="text-[9px] text-[#A69B82] font-sans font-bold uppercase tracking-wider">Days</span>
                 </div>
               )}
-              {timeData.d! > 0 && <span className="text-border-medium text-xl font-light mb-2.5">:</span>}
+              {timeData.d! > 0 && <span className="text-[#D4AF37]/40 text-xl font-light mb-2.5">:</span>}
 
               <div className="flex flex-col items-center min-w-[32px]">
-                <span className="text-xl sm:text-2xl font-heading font-black text-text-primary tabular-nums tracking-tight">{timeData.h}</span>
-                <span className="text-[9px] text-text-muted font-sans font-bold uppercase tracking-wider">Hrs</span>
+                <span className="text-xl sm:text-2xl font-heading font-black text-[#F4EBD9] tabular-nums tracking-tight">{timeData.h}</span>
+                <span className="text-[9px] text-[#A69B82] font-sans font-bold uppercase tracking-wider">Hrs</span>
               </div>
-              <span className="text-border-medium text-xl font-light mb-2.5">:</span>
+              <span className="text-[#D4AF37]/40 text-xl font-light mb-2.5">:</span>
 
               <div className="flex flex-col items-center min-w-[32px]">
-                <span className="text-xl sm:text-2xl font-heading font-black text-text-primary tabular-nums tracking-tight">{timeData.m}</span>
-                <span className="text-[9px] text-text-muted font-sans font-bold uppercase tracking-wider">Mins</span>
+                <span className="text-xl sm:text-2xl font-heading font-black text-[#F4EBD9] tabular-nums tracking-tight">{timeData.m}</span>
+                <span className="text-[9px] text-[#A69B82] font-sans font-bold uppercase tracking-wider">Mins</span>
               </div>
-              <span className="text-border-medium text-xl font-light mb-2.5">:</span>
+              <span className="text-[#D4AF37]/40 text-xl font-light mb-2.5">:</span>
 
               <div className="flex flex-col items-center min-w-[32px]">
-                <span className="text-xl sm:text-2xl font-heading font-black text-text-brand tabular-nums tracking-tight animate-pulse">{timeData.s}</span>
-                <span className="text-[9px] text-text-brand font-sans font-bold uppercase tracking-wider">Secs</span>
+                <span className="text-xl sm:text-2xl font-heading font-black text-[#D4AF37] tabular-nums tracking-tight animate-pulse">{timeData.s}</span>
+                <span className="text-[9px] text-[#D4AF37] font-sans font-bold uppercase tracking-wider">Secs</span>
               </div>
             </div>
           </div>
@@ -139,7 +139,7 @@ export default function RaffleImageGallery({
 
         {/* Floating Host Name Badge (Top Left) */}
         {hostName && (
-          <div className="absolute left-4 top-4 bg-surface/90 backdrop-blur-sm border border-border px-3 py-1.5 rounded-xl text-xs font-heading font-bold text-text-brand shadow-xs truncate max-w-[200px] pointer-events-none z-20">
+          <div className="absolute left-4 top-4 bg-[#090A0E]/85 backdrop-blur-md border border-[rgba(212,175,55,0.3)] px-3 py-1.5 rounded-xl text-xs font-heading font-bold text-[#F4EBD9] shadow-md truncate max-w-[200px] pointer-events-none z-20">
             By {hostName}
           </div>
         )}
@@ -153,10 +153,10 @@ export default function RaffleImageGallery({
               key={idx}
               onClick={() => setActiveImageIndex(idx)}
               className={cn(
-                "relative w-20 h-16 sm:w-24 sm:h-20 bg-surface rounded-button overflow-hidden border transition-all duration-200 cursor-pointer",
+                "relative w-20 h-16 sm:w-24 sm:h-20 bg-[#090A0E] rounded-xl overflow-hidden border transition-all duration-200 cursor-pointer select-none",
                 activeImageIndex === idx
-                  ? "border-primary shadow-glow opacity-100"
-                  : "border-border opacity-60 hover:opacity-100"
+                  ? "border-[#D4AF37] shadow-[0_0_12px_rgba(212,175,55,0.4)] opacity-100"
+                  : "border-[rgba(212,175,55,0.2)] opacity-60 hover:opacity-100"
               )}
             >
               <Image

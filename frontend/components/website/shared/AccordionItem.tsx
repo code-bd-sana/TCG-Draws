@@ -23,21 +23,26 @@ export default function AccordionItem({
     <div className="border-b border-divider py-1 px-6 transition-all duration-200">
       <button
         onClick={onToggle}
-        className="flex items-center justify-between w-full text-left font-heading font-bold text-sm md:text-base text-text-primary hover:text-text-brand transition-colors duration-200 cursor-pointer group py-4"
+        className="flex items-center justify-between w-full text-left font-heading font-black text-sm md:text-base text-[#F4EBD9] hover:text-[#D4AF37] transition-colors duration-200 cursor-pointer group py-4"
         aria-expanded={isOpen}
       >
         <span>{question}</span>
         
         {/* Toggle Icon */}
-        <span className="ml-4 flex-shrink-0 text-text-secondary group-hover:text-text-brand transition-colors duration-200">
+        <span className={cn(
+          "ml-4 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border transition-all duration-200",
+          isOpen
+            ? "bg-[#D4AF37] border-[#D4AF37] text-[#090A0E] shadow-[0_0_10px_rgba(212,175,55,0.35)]"
+            : "bg-[#181C28] border-[rgba(212,175,55,0.25)] text-[#D4AF37] group-hover:border-[#D4AF37]"
+        )}>
           {isOpen ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={2.5}
+              strokeWidth={3}
               stroke="currentColor"
-              className="w-5 h-5 transition-transform duration-200"
+              className="w-4 h-4"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
             </svg>
@@ -46,9 +51,9 @@ export default function AccordionItem({
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={2.5}
+              strokeWidth={3}
               stroke="currentColor"
-              className="w-5 h-5 transition-transform duration-200"
+              className="w-4 h-4"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
@@ -59,12 +64,12 @@ export default function AccordionItem({
       {/* Accordion Content with transition */}
       <div
         className={cn(
-          "grid transition-all duration-300 ease-in-out font-sans text-xs md:text-sm text-[#334e43] leading-relaxed overflow-hidden",
+          "grid transition-all duration-300 ease-in-out font-sans text-xs md:text-sm text-[#C8BFAD] leading-relaxed overflow-hidden",
           isOpen ? "grid-rows-[1fr] opacity-100 pb-4" : "grid-rows-[0fr] opacity-0"
         )}
       >
         <div className="overflow-hidden">
-          <p dangerouslySetInnerHTML={{ __html: answer }} />
+          <p dangerouslySetInnerHTML={{ __html: answer }} className="text-[#C8BFAD] leading-relaxed" />
         </div>
       </div>
     </div>

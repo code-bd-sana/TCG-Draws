@@ -95,11 +95,17 @@ export default async function RelatedRafflesSection({
   if (related.length === 0) return null;
 
   return (
-    <section className="py-20 bg-surface border-t border-divider">
-      <div className="container-custom">
+    <section className="py-20 bg-[#090A0E] border-t border-[rgba(212,175,55,0.2)] relative isolate overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[radial-gradient(circle,rgba(212,175,55,0.06)_0%,transparent_70%)] blur-[90px] pointer-events-none" />
+
+      <div className="container-custom relative z-10">
         {/* Section Title */}
         <div className="text-center mb-10 md:mb-12">
-          <h2 className="font-heading font-bold text-2xl md:text-3xl text-text-primary">
+          <span className="font-heading text-xs font-bold tracking-[0.2em] text-[#D4AF37] uppercase">
+            ⚡ CURATED DRAWS
+          </span>
+          <h2 className="mt-2 font-heading font-black text-2xl sm:text-3xl md:text-4xl text-[#F4EBD9] uppercase tracking-tight">
             You Might Also Like
           </h2>
         </div>

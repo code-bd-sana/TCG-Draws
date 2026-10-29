@@ -1,25 +1,30 @@
 "use client";
 
 import React, { useState } from "react";
-import InputField from "../shared/InputField";
-import TextareaField from "../shared/TextareaField";
-import PrimaryButton from "../shared/PrimaryButton";
+import Link from "next/link";
 import { ContactFormValues } from "../../../types/contact.types";
 import { cn } from "../../../lib/utils";
 import { contactService } from "../../../services/contact.service";
 
-const SUBJECT_OPTIONS = [
-  { value: "", label: "Select a topic..." },
-  { value: "draw-query", label: "Questions about a Draw" },
-  { value: "hosting", label: "Hosting Competitions" },
-  { value: "billing", label: "Payment & Subscription" },
-  { value: "bug-report", label: "Technical Support" },
-  { value: "other", label: "Other Inquiries" },
+interface SubjectOption {
+  value: string;
+  label: string;
+  icon: string;
+  description: string;
+}
+
+const SUBJECT_TOPICS: SubjectOption[] = [
+  { value: "draw-query", label: "Competition Query", icon: "🎯", description: "Questions regarding active draws or rules" },
+  { value: "instant-wins", label: "Instant Wins & Claims", icon: "⚡", description: "Fulfillment and delivery of instant wins" },
+  { value: "hosting", label: "Host & Breaker Partner", icon: "🏆", description: "Apply to host your own card breaks" },
+  { value: "billing", label: "Payment & Checkout", icon: "💳", description: "Payment status, receipts, or subscriptions" },
+  { value: "bug-report", label: "Technical Assistance", icon: "🛠️", description: "Account access or platform issues" },
+  { value: "other", label: "General Inquiry", icon: "✉️", description: "Postal entries, partnerships, other questions" },
 ];
 
 /**
- * Stateful Contact Form component with backend SMTP integration,
- * validation feedback, and accessible success/error alerts.
+ * Stateful Luxury Contact Form component with backend SMTP integration,
+ * interactive topic pills, real-time validation, and accessible feedback alerts.
  */
 export default function ContactForm() {
   const [formValues, setFormValues] = useState<ContactFormValues>({
@@ -47,12 +52,18 @@ export default function ContactForm() {
       [name]: val,
     }));
 
-    // Clear error message when user starts typing again
     if (errors[name as keyof ContactFormValues]) {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
       }));
+    }
+  };
+
+  const handleSelectTopic = (val: string) => {
+    setFormValues((prev) => ({ ...prev, subject: val }));
+    if (errors.subject) {
+      setErrors((prev) => ({ ...prev, subject: "" }));
     }
   };
 
@@ -124,18 +135,33 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="relative w-full rounded-2xl border border-[rgba(212,175,55,0.2)] bg-[#12151F] p-6 shadow-[0_15px_35px_rgba(0,0,0,0.6)] md:p-8">
-      <h2 className="font-heading font-black text-xl md:text-2xl text-[#F4EBD9] uppercase tracking-wide mb-6">
-        Send Us a Message
-      </h2>
+    <div className="relative isolate w-full rounded-3xl border border-[rgba(212,175,55,0.25)] bg-[#12151F] p-6 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-md overflow-hidden">
+      {/* Corner flare */}
+      <div className="pointer-events-none absolute -top-20 -right-20 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(212,175,55,0.12)_0%,transparent_70%)] blur-2xl" />
+
+      {/* Header */}
+      <div className="flex flex-col gap-2 mb-8 relative z-10 border-b border-[rgba(212,175,55,0.12)] pb-6">
+        <span className="font-heading text-[10px] font-black uppercase tracking-[0.2em] text-[#D4AF37]">
+          DIRECT DISPATCH
+        </span>
+        <h2 className="font-heading font-black text-2xl sm:text-3xl text-[#F4EBD9] uppercase tracking-tight">
+          Send Us a Message
+        </h2>
+        <p className="font-sans text-xs sm:text-sm text-[#A69B82]">
+          Fill out the details below and a dedicated member of our customer concierge will get back to you promptly.
+        </p>
+      </div>
 
       {/* Submit Error Notification */}
       {submitError && (
-        <div className="mb-6 p-4 rounded-xl bg-red-950/60 border border-red-800 text-red-200 font-sans text-xs flex items-center justify-between">
-          <span>⚠️ {submitError}</span>
+        <div className="mb-6 p-4 rounded-xl bg-red-950/70 border border-red-500/40 text-red-200 font-sans text-xs flex items-center justify-between shadow-lg relative z-10">
+          <div className="flex items-center gap-2">
+            <span>⚠️</span>
+            <span>{submitError}</span>
+          </div>
           <button
             onClick={() => setSubmitError(null)}
-            className="text-red-400 hover:text-white font-bold ml-2"
+            className="text-red-400 hover:text-white font-bold ml-2 cursor-pointer"
           >
             ✕
           </button>
@@ -144,103 +170,210 @@ export default function ContactForm() {
 
       {/* Success Notification Alert */}
       {isSuccess ? (
-        <div className="bg-success-bg border border-success text-success-text rounded-button p-6 flex flex-col items-center text-center animate-fadeIn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-            stroke="currentColor"
-            className="w-12 h-12 mb-3 text-[#4ade80]"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-          </svg>
-          <h3 className="font-heading font-bold text-base md:text-lg mb-2">Message Sent to Support!</h3>
-          <p className="font-sans text-xs md:text-sm text-text-muted leading-relaxed max-w-sm mb-4">
-            Thank you for reaching out. Your message has been dispatched to our customer service team. We will respond via email within 24 hours.
+        <div className="rounded-2xl border border-[rgba(212,175,55,0.35)] bg-[#181C28]/90 p-8 sm:p-10 flex flex-col items-center text-center animate-fadeIn relative z-10 shadow-2xl">
+          <div className="w-16 h-16 rounded-2xl bg-[#090A0E] border border-[rgba(212,175,55,0.4)] flex items-center justify-center mb-5 text-[#D4AF37] shadow-[0_0_25px_rgba(212,175,55,0.2)]">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+              stroke="currentColor"
+              className="w-8 h-8 text-emerald-400"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+          </div>
+
+          <span className="font-heading text-[10px] font-black uppercase tracking-[0.2em] text-[#D4AF37] mb-1">
+            DISPATCH CONFIRMED
+          </span>
+
+          <h3 className="font-heading font-black text-2xl text-[#F4EBD9] uppercase tracking-tight mb-2">
+            Message Sent to Support!
+          </h3>
+
+          <p className="font-sans text-xs sm:text-sm text-[#A69B82] leading-relaxed max-w-md mb-8">
+            Thank you for reaching out to TCG Draws. Your inquiry has been routed to our UK support desk. A representative will review and reply to your email within 24 hours (usually &lt; 2 hours during open hours).
           </p>
-          <PrimaryButton onClick={() => setIsSuccess(false)} className="px-5 py-2 text-xs">
-            Send Another Message
-          </PrimaryButton>
+
+          <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+            <button
+              onClick={() => setIsSuccess(false)}
+              className="btn-dark-metallic w-full sm:w-auto px-6 py-3 rounded-xl font-heading font-bold text-xs uppercase tracking-wider text-[#F4EBD9] border border-[rgba(212,175,55,0.3)] cursor-pointer select-none"
+            >
+              Send Another Inquiry
+            </button>
+
+            <Link
+              href="/live-raffles"
+              className="btn-gold-metallic w-full sm:w-auto px-7 py-3 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-md cursor-pointer select-none"
+            >
+              Browse Active Draws &rarr;
+            </Link>
+          </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          {/* Full Name */}
-          <InputField
-            label="Full Name"
-            id="fullName"
-            name="fullName"
-            placeholder="John Smith"
-            value={formValues.fullName}
-            onChange={handleInputChange}
-            error={errors.fullName}
-            disabled={isSubmitting}
-            required
-          />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6 relative z-10">
+          
+          {/* Inquiry Topic Interactive Chips */}
+          <div className="flex flex-col gap-2.5">
+            <div className="flex items-center justify-between">
+              <label className="font-heading text-xs font-black uppercase tracking-wider text-[#F4EBD9] select-none">
+                Select Inquiry Topic <span className="text-[#D4AF37]">*</span>
+              </label>
+              <span className="font-sans text-[11px] text-[#A69B82]">
+                Helps us route your inquiry faster
+              </span>
+            </div>
 
-          {/* Email Address */}
-          <InputField
-            label="Email Address"
-            id="email"
-            name="email"
-            type="email"
-            placeholder="john@example.com"
-            value={formValues.email}
-            onChange={handleInputChange}
-            error={errors.email}
-            disabled={isSubmitting}
-            required
-          />
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+              {SUBJECT_TOPICS.map((topic) => {
+                const isSelected = formValues.subject === topic.value;
+                return (
+                  <button
+                    key={topic.value}
+                    type="button"
+                    onClick={() => handleSelectTopic(topic.value)}
+                    disabled={isSubmitting}
+                    className={cn(
+                      "flex flex-col items-start p-3 rounded-xl border text-left transition-all duration-200 cursor-pointer select-none",
+                      isSelected
+                        ? "bg-gradient-to-br from-[#181C28] to-[#12151F] border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.25)] ring-1 ring-[#D4AF37]/50"
+                        : "bg-[#090A0E] border-[rgba(212,175,55,0.18)] hover:border-[#D4AF37]/50 hover:bg-[#181C28]"
+                    )}
+                  >
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-base">{topic.icon}</span>
+                      <span className={cn(
+                        "font-heading font-black text-xs uppercase tracking-wide",
+                        isSelected ? "text-[#D4AF37]" : "text-[#F4EBD9]"
+                      )}>
+                        {topic.label}
+                      </span>
+                    </div>
+                    <span className="font-sans text-[10px] text-[#A69B82] line-clamp-1">
+                      {topic.description}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
 
-          {/* Subject Dropdown */}
-          <div className="flex flex-col w-full">
-            <label
-              htmlFor="subject"
-              className="font-sans font-medium text-xs md:text-sm text-text-secondary mb-1.5 self-start select-none"
-            >
-              Subject <span className="text-red-500">*</span>
-            </label>
-            <select
-              id="subject"
-              name="subject"
-              value={formValues.subject}
-              onChange={handleInputChange}
-              disabled={isSubmitting}
-              className={cn(
-                "w-full appearance-none rounded-xl border border-[rgba(212,175,55,0.25)] bg-[#12151F] px-4 py-3 font-sans text-xs text-[#F4EBD9] outline-none transition-all duration-200 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/30 cursor-pointer md:text-sm",
-                errors.subject && "border-red-500/80 focus:border-red-500 focus:ring-1 focus:ring-red-500/30",
-                isSubmitting && "opacity-50 cursor-not-allowed"
-              )}
-            >
-              {SUBJECT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value} className="bg-[#12151F] text-[#F4EBD9] py-2">
-                  {opt.label}
-                </option>
-              ))}
-            </select>
             {errors.subject && (
-              <span className="font-sans text-[11px] text-red-500 mt-1 self-start select-none">
-                {errors.subject}
+              <span className="font-sans text-[11px] text-red-400 font-medium mt-1">
+                ⚠️ {errors.subject}
               </span>
             )}
           </div>
 
-          {/* Message Textarea */}
-          <TextareaField
-            label="Message"
-            id="message"
-            name="message"
-            placeholder="Tell us how we can help..."
-            value={formValues.message}
-            onChange={handleInputChange}
-            error={errors.message}
-            disabled={isSubmitting}
-            rows={5}
-            required
-          />
+          {/* Name & Email Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {/* Full Name */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="fullName"
+                className="font-heading text-xs font-black uppercase tracking-wider text-[#F4EBD9] select-none"
+              >
+                Full Name <span className="text-[#D4AF37]">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <span className="absolute left-4 text-[#A69B82] pointer-events-none">
+                  👤
+                </span>
+                <input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  placeholder="e.g. Liam Anderson"
+                  value={formValues.fullName}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                  className={cn(
+                    "w-full rounded-xl border border-[rgba(212,175,55,0.25)] bg-[#090A0E] pl-11 pr-4 py-3 font-sans text-xs sm:text-sm text-[#F4EBD9] placeholder-[#6E6655] outline-none transition-all duration-200 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40 shadow-inner",
+                    errors.fullName && "border-red-500/80 focus:border-red-500 focus:ring-red-500/30",
+                    isSubmitting && "opacity-50 cursor-not-allowed"
+                  )}
+                />
+              </div>
+              {errors.fullName && (
+                <span className="font-sans text-[11px] text-red-400 font-medium mt-0.5">
+                  ⚠️ {errors.fullName}
+                </span>
+              )}
+            </div>
 
-          {/* Privacy Policy Checkbox */}
-          <div className="flex flex-col">
+            {/* Email Address */}
+            <div className="flex flex-col gap-1.5">
+              <label
+                htmlFor="email"
+                className="font-heading text-xs font-black uppercase tracking-wider text-[#F4EBD9] select-none"
+              >
+                Email Address <span className="text-[#D4AF37]">*</span>
+              </label>
+              <div className="relative flex items-center">
+                <span className="absolute left-4 text-[#A69B82] pointer-events-none">
+                  ✉️
+                </span>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="liam@example.com"
+                  value={formValues.email}
+                  onChange={handleInputChange}
+                  disabled={isSubmitting}
+                  className={cn(
+                    "w-full rounded-xl border border-[rgba(212,175,55,0.25)] bg-[#090A0E] pl-11 pr-4 py-3 font-sans text-xs sm:text-sm text-[#F4EBD9] placeholder-[#6E6655] outline-none transition-all duration-200 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40 shadow-inner",
+                    errors.email && "border-red-500/80 focus:border-red-500 focus:ring-red-500/30",
+                    isSubmitting && "opacity-50 cursor-not-allowed"
+                  )}
+                />
+              </div>
+              {errors.email && (
+                <span className="font-sans text-[11px] text-red-400 font-medium mt-0.5">
+                  ⚠️ {errors.email}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Message Textarea */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <label
+                htmlFor="message"
+                className="font-heading text-xs font-black uppercase tracking-wider text-[#F4EBD9] select-none"
+              >
+                Inquiry Message <span className="text-[#D4AF37]">*</span>
+              </label>
+              <span className="font-mono text-[10px] text-[#A69B82]">
+                {formValues.message.length} / 1000
+              </span>
+            </div>
+            <textarea
+              id="message"
+              name="message"
+              rows={5}
+              maxLength={1000}
+              placeholder="Please provide competition reference numbers, ticket IDs, or specific questions..."
+              value={formValues.message}
+              onChange={handleInputChange}
+              disabled={isSubmitting}
+              className={cn(
+                "w-full rounded-xl border border-[rgba(212,175,55,0.25)] bg-[#090A0E] p-4 font-sans text-xs sm:text-sm text-[#F4EBD9] placeholder-[#6E6655] outline-none transition-all duration-200 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40 shadow-inner resize-none",
+                errors.message && "border-red-500/80 focus:border-red-500 focus:ring-red-500/30",
+                isSubmitting && "opacity-50 cursor-not-allowed"
+              )}
+            />
+            {errors.message && (
+              <span className="font-sans text-[11px] text-red-400 font-medium mt-0.5">
+                ⚠️ {errors.message}
+              </span>
+            )}
+          </div>
+
+          {/* Privacy Policy Agreement */}
+          <div className="flex flex-col gap-1">
             <label className="flex items-start gap-3 cursor-pointer group select-none">
               <input
                 type="checkbox"
@@ -248,37 +381,49 @@ export default function ContactForm() {
                 checked={formValues.agreeToPolicy}
                 onChange={handleInputChange}
                 disabled={isSubmitting}
-                className="w-4 h-4 rounded border-border text-primary bg-bg focus:ring-primary/20 cursor-pointer mt-1"
+                className="w-4 h-4 rounded border-[rgba(212,175,55,0.3)] bg-[#090A0E] text-[#D4AF37] focus:ring-[#D4AF37]/40 cursor-pointer mt-0.5 accent-[#D4AF37]"
               />
-              <span className="font-sans font-medium text-xs md:text-sm text-text-secondary group-hover:text-text-primary transition-colors duration-200">
-                I agree to the Privacy Policy
+              <span className="font-sans text-xs text-[#A69B82] leading-normal group-hover:text-[#F4EBD9] transition-colors">
+                I agree to the{" "}
+                <Link href="/privacy" className="text-[#D4AF37] hover:underline">
+                  Privacy Policy
+                </Link>{" "}
+                and consent to TCG Draws processing my contact details to resolve this inquiry.
               </span>
             </label>
             {errors.agreeToPolicy && (
-              <span className="font-sans text-[11px] text-red-500 mt-1.5 self-start select-none">
-                {errors.agreeToPolicy}
+              <span className="font-sans text-[11px] text-red-400 font-medium ml-7">
+                ⚠️ {errors.agreeToPolicy}
               </span>
             )}
           </div>
 
           {/* Submit Button */}
-          <PrimaryButton
+          <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-3 mt-2 text-sm tracking-wide font-semibold"
-            icon={
-              isSubmitting ? (
-                <svg className="animate-spin h-4 w-4 text-primary-text" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                </svg>
-              ) : (
-                <span className="leading-none">&#8594;</span>
-              )
-            }
+            className="btn-gold-metallic w-full py-4 rounded-xl font-heading font-black text-xs uppercase tracking-wider text-[#090A0E] shadow-[0_10px_30px_rgba(212,175,55,0.25)] hover:scale-[1.01] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed select-none mt-2"
           >
-            {isSubmitting ? "Sending to Support..." : "Send Message"}
-          </PrimaryButton>
+            {isSubmitting ? (
+              <div className="flex items-center gap-2.5">
+                <div className="w-4 h-4 border-2 border-[#090A0E] border-t-transparent rounded-full animate-spin" />
+                <span>Dispatching to Concierge...</span>
+              </div>
+            ) : (
+              <>
+                <span>Send Message to Support</span>
+                <span className="text-base">&rarr;</span>
+              </>
+            )}
+          </button>
+
+          {/* Trust reassurance footer */}
+          <div className="flex items-center justify-between text-[10px] font-sans text-[#A69B82] pt-2 border-t border-[rgba(212,175,55,0.1)]">
+            <span className="flex items-center gap-1.5">
+              <span>🔒</span> 256-Bit SSL Encrypted
+            </span>
+            <span>UK Data Protection Compliant</span>
+          </div>
         </form>
       )}
     </div>

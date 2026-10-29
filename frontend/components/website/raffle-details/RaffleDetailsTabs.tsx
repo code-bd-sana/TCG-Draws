@@ -42,18 +42,18 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
   );
 
   return (
-    <div className="w-full flex flex-col font-sans mt-2 bg-surface border border-border rounded-card p-6 shadow-card">
+    <div className="w-full flex flex-col font-sans mt-2 bg-[#12151F] border border-[rgba(212,175,55,0.25)] rounded-2xl p-6 shadow-[0_15px_35px_rgba(0,0,0,0.6)]">
       {/* Tabs Header */}
-      <div className="flex items-center gap-6 border-b border-divider mb-6">
+      <div className="flex items-center gap-6 border-b border-[rgba(212,175,55,0.15)] mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "pb-3 text-xs font-heading font-bold uppercase tracking-wider transition-colors duration-200 border-b-2 -mb-[1px] cursor-pointer",
+              "pb-3 text-xs font-heading font-black uppercase tracking-wider transition-colors duration-200 border-b-2 -mb-[1px] cursor-pointer",
               activeTab === tab.id
-                ? "border-primary text-text-brand"
-                : "border-transparent text-text-muted hover:text-text-primary"
+                ? "border-[#D4AF37] text-[#D4AF37]"
+                : "border-transparent text-[#A69B82] hover:text-[#F4EBD9]"
             )}
           >
             {tab.label}
@@ -65,14 +65,14 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
       <div className="min-h-[140px]">
         {activeTab === "details" && (
           <div className="flex flex-col gap-4 animate-fadeIn">
-            <p className="text-xs text-text-secondary leading-relaxed">
+            <p className="text-xs text-[#D6CEBC] leading-relaxed">
               {raffle.description}
             </p>
             {raffle.highlights.length > 0 && (
               <ul className="flex flex-col gap-2 mt-2">
                 {raffle.highlights.map((highlight, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs text-text-primary font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                  <li key={idx} className="flex items-start gap-2.5 text-xs text-[#F4EBD9] font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-1.5 shrink-0 shadow-[0_0_6px_#D4AF37]" />
                     <span>{highlight}</span>
                   </li>
                 ))}
@@ -84,39 +84,39 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
         {activeTab === "how-to-enter" && (
           <div className="flex flex-col gap-4 animate-fadeIn">
             <div className="flex gap-3.5 items-start">
-              <div className="bg-accent-bg border border-primary/30 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-heading font-bold text-text-brand text-xs">
+              <div className="bg-[#181C28] border border-[rgba(212,175,55,0.35)] w-7 h-7 rounded-full flex items-center justify-center shrink-0 font-heading font-black text-[#D4AF37] text-xs">
                 1
               </div>
               <div>
-                <h4 className="font-heading font-bold text-text-primary text-xs">Select your tickets</h4>
-                <p className="text-xs text-text-muted mt-0.5">Choose how many tickets you&apos;d like to purchase. More tickets = more chances to win.</p>
+                <h4 className="font-heading font-black uppercase tracking-wide text-[#F4EBD9] text-xs">Select your tickets</h4>
+                <p className="text-xs text-[#A69B82] mt-0.5 leading-relaxed">Choose how many tickets you&apos;d like to purchase. More tickets = more chances to win.</p>
               </div>
             </div>
             <div className="flex gap-3.5 items-start">
-              <div className="bg-accent-bg border border-primary/30 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-heading font-bold text-text-brand text-xs">
+              <div className="bg-[#181C28] border border-[rgba(212,175,55,0.35)] w-7 h-7 rounded-full flex items-center justify-center shrink-0 font-heading font-black text-[#D4AF37] text-xs">
                 2
               </div>
               <div>
-                <h4 className="font-heading font-bold text-text-primary text-xs">Complete checkout</h4>
-                <p className="text-xs text-text-muted mt-0.5">Pay securely via card or gateway. Free postal entry also available — see T&Cs.</p>
+                <h4 className="font-heading font-black uppercase tracking-wide text-[#F4EBD9] text-xs">Complete checkout</h4>
+                <p className="text-xs text-[#A69B82] mt-0.5 leading-relaxed">Pay securely via card or gateway. Free postal entry also available — see T&Cs.</p>
               </div>
             </div>
             <div className="flex gap-3.5 items-start">
-              <div className="bg-accent-bg border border-primary/30 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-heading font-bold text-text-brand text-xs">
+              <div className="bg-[#181C28] border border-[rgba(212,175,55,0.35)] w-7 h-7 rounded-full flex items-center justify-center shrink-0 font-heading font-black text-[#D4AF37] text-xs">
                 3
               </div>
               <div>
-                <h4 className="font-heading font-bold text-text-primary text-xs">Instant win check</h4>
-                <p className="text-xs text-text-muted mt-0.5">Your ticket numbers are checked against instant win outcomes automatically. If you win, you&apos;ll know straight away.</p>
+                <h4 className="font-heading font-black uppercase tracking-wide text-[#F4EBD9] text-xs">Instant win check</h4>
+                <p className="text-xs text-[#A69B82] mt-0.5 leading-relaxed">Your ticket numbers are checked against instant win outcomes automatically. If you win, you&apos;ll know straight away.</p>
               </div>
             </div>
             <div className="flex gap-3.5 items-start">
-              <div className="bg-accent-bg border border-primary/30 w-6 h-6 rounded-full flex items-center justify-center shrink-0 font-heading font-bold text-text-brand text-xs">
+              <div className="bg-[#181C28] border border-[rgba(212,175,55,0.35)] w-7 h-7 rounded-full flex items-center justify-center shrink-0 font-heading font-black text-[#D4AF37] text-xs">
                 4
               </div>
               <div>
-                <h4 className="font-heading font-bold text-text-primary text-xs">Watch the live draw</h4>
-                <p className="text-xs text-text-muted mt-0.5">The main draw goes live when the timer ends or tickets sell out. Watch the live selection!</p>
+                <h4 className="font-heading font-black uppercase tracking-wide text-[#F4EBD9] text-xs">Watch the live draw</h4>
+                <p className="text-xs text-[#A69B82] mt-0.5 leading-relaxed">The main draw goes live when the timer ends or tickets sell out. Watch the live selection!</p>
               </div>
             </div>
           </div>
@@ -124,11 +124,11 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
 
         {activeTab === "terms" && (
           <div className="flex flex-col gap-3 animate-fadeIn">
-            <p className="text-xs text-text-muted mb-1 font-semibold">Please read the terms carefully before entering.</p>
+            <p className="text-xs text-[#A69B82] mb-1 font-semibold">Please read the terms carefully before entering.</p>
             <ul className="flex flex-col gap-2">
               {raffle.terms.map((term, i) => (
-                <li key={i} className="flex items-start gap-2.5 text-xs text-text-secondary leading-relaxed">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
+                <li key={i} className="flex items-start gap-2.5 text-xs text-[#D6CEBC] leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] mt-1.5 shrink-0 shadow-[0_0_6px_#D4AF37]" />
                   <span>{term}</span>
                 </li>
               ))}
@@ -139,17 +139,17 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
 
       {/* Instant Win Prizes (Only visible to Admin and creator Host) */}
       {isAuthorizedToViewInstantWins && raffle.instantWinPrizes.length > 0 && (
-        <div className="mt-6 bg-elevated border border-border-medium rounded-xl p-5 flex flex-col gap-3.5">
+        <div className="mt-6 bg-[#090A0E] border border-[rgba(212,175,55,0.25)] rounded-xl p-5 flex flex-col gap-3.5 shadow-inner">
           <div className="flex items-center gap-2 mb-1">
             <span className="text-base">🎁</span>
-            <h3 className="font-heading font-bold text-xs uppercase tracking-wider text-text-primary">Instant Win Prizes</h3>
+            <h3 className="font-heading font-black text-xs uppercase tracking-wider text-[#D4AF37]">Instant Win Prizes</h3>
           </div>
           <div className="flex flex-col gap-2.5">
             {raffle.instantWinPrizes.map((prize) => (
-              <div key={prize.id} className="flex items-center justify-between p-3.5 bg-surface border border-border rounded-xl">
+              <div key={prize.id} className="flex items-center justify-between p-3.5 bg-[#12151F] border border-[rgba(212,175,55,0.2)] rounded-xl">
                 <div className="flex items-center gap-3">
                   {prize.image ? (
-                    <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-elevated border border-border-medium">
+                    <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-[#090A0E] border border-[rgba(212,175,55,0.25)]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={prize.image} alt={prize.title} className="w-full h-full object-cover" />
                     </div>
@@ -157,14 +157,14 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
                     checkIcon
                   )}
                   <div className="flex flex-col">
-                    <span className="font-sans font-semibold text-xs text-text-primary">{prize.title}</span>
-                    <span className="font-sans text-[11px] text-text-muted">
+                    <span className="font-heading font-bold text-xs text-[#F4EBD9]">{prize.title}</span>
+                    <span className="font-mono text-[11px] text-[#A69B82]">
                       Ticket #{prize.ticketNumber}
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center gap-4 text-right">
-                  <span className={cn("font-sans font-bold text-[10px] uppercase px-2.5 py-1 rounded-full shadow-xs", prize.isClaimed ? "bg-elevated border border-border text-text-muted" : "bg-accent-bg border border-primary/30 text-text-brand")}>
+                  <span className={cn("font-heading font-bold text-[10px] uppercase px-2.5 py-1 rounded-full shadow-xs tracking-wider", prize.isClaimed ? "bg-[#181C28] border border-[rgba(212,175,55,0.2)] text-[#6E6655]" : "bg-[#2A1E08] border border-[#D4AF37]/50 text-[#E5C158]")}>
                     {prize.isClaimed ? "Claimed" : "Available"}
                   </span>
                 </div>
@@ -189,9 +189,9 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
         const hostSlug = (raffle as any).hostSlug || raffle.hostName.toLowerCase().replace(/\s+/g, '-');
 
         return (
-          <div className="mt-6 bg-elevated border border-border-medium rounded-xl p-4 sm:p-5 flex items-center justify-between">
+          <div className="mt-6 bg-[#090A0E] border border-[rgba(212,175,55,0.2)] rounded-xl p-4 sm:p-5 flex items-center justify-between shadow-inner">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-accent-bg border border-primary/30 flex items-center justify-center shrink-0 overflow-hidden">
+              <div className="w-10 h-10 rounded-full bg-[#181C28] border border-[rgba(212,175,55,0.35)] flex items-center justify-center shrink-0 overflow-hidden shadow-sm">
                 {isImage ? (
                   <img
                     src={raffle.hostLogo}
@@ -202,24 +202,24 @@ export default function RaffleDetailsTabs({ raffle }: RaffleDetailsTabsProps) {
                     }}
                   />
                 ) : (
-                  <span className="font-heading font-bold text-text-brand text-sm">{initials}</span>
+                  <span className="font-heading font-black text-[#D4AF37] text-sm">{initials}</span>
                 )}
               </div>
               <div className="flex flex-col">
-                <span className="font-sans text-[10px] text-text-muted uppercase tracking-wider font-bold">Hosted by</span>
+                <span className="font-sans text-[10px] text-[#A69B82] uppercase tracking-wider font-bold">Hosted by</span>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="font-heading font-bold text-sm text-text-primary">{raffle.hostName}</span>
+                  <span className="font-heading font-bold text-sm text-[#F4EBD9]">{raffle.hostName}</span>
                   {raffle.hostVerified && (
-                    <span className="bg-[rgba(16,185,129,0.15)] border border-[rgba(16,185,129,0.35)] text-[#10B981] px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wide">Verified</span>
+                    <span className="bg-emerald-950/70 border border-emerald-500/40 text-emerald-400 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider">Verified</span>
                   )}
                 </div>
               </div>
             </div>
             <Link 
               href={`/hosts/${hostSlug}`}
-              className="text-xs font-heading font-bold text-text-brand hover:underline transition-colors"
+              className="text-xs font-heading font-bold uppercase tracking-wider text-[#D4AF37] hover:text-[#FFF0D4] transition-colors"
             >
-              View Host Profile
+              View Host Profile &rarr;
             </Link>
           </div>
         );
